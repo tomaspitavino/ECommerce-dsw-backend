@@ -1,0 +1,59 @@
+### obtener todos los clientes
+GET http://localhost:3000/api/clientes
+
+### obtener un cliente por id
+### la id que le mando va a cambiar 
+GET http://localhost:3000/api/clientes/a02b91bc-3769-4221-beb1-d7a3aeba7dad
+
+### crear un nuevo cliente
+POST http://localhost:3000/api/clientes
+Content-Type: application/json
+
+{
+  "nombre": "Juan",
+  "apellido": "Pérez",
+  "direccion": "Calle Falsa 340",
+  "telefono": "123456789",
+  "dni": "34567890",
+  "usuario": "juanperez",
+  "email": "juanmail@gmail.com",
+  "contrasenia": "contrasenia4u54",
+  "historialCompras": [],
+  "fondos": 1000,
+  "puntos": 100,
+  "favoritos": []
+  }
+
+### modificar un cliente (PUT - recurso completo e idempotente)
+PUT http://localhost:3000/api/clientes/a02b91bc-3769-4221-beb1-d7a3aeba7dad
+Content-Type: application/json
+
+{
+  "nombre": "Quispe",
+  "apellido": "Mamani",
+  "direccion": "Cerro Falso 200",
+  "telefono": "783456789",
+  "dni": "20456789",
+  "usuario": "quispemamani",
+  "email": "left4quispe@gmail.com",
+  "contrasenia": "cerveza454",
+  "historialCompras": [],
+  "fondos": 0,
+  "puntos": 0,
+  "favoritos": []
+  }
+
+
+### modificar un cliente (PATCH - recurso parcial y no idempotente)
+PATCH http://localhost:3000/api/clientes/a02b91bc-3769-4221-beb1-d7a3aeba7dad
+Content-Type: application/json
+
+{
+  "nombre": "Julian",
+  "apellido": "Omar Maruca",
+  "usuario": "july3p",
+  "email": "july3p@gmail.com"
+}  
+
+### eliminar un cliente
+DELETE http://localhost:3000/api/clientes/a02b91bc-3769-4221-beb1-d7a3aeba7dad
