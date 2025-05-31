@@ -29,18 +29,3 @@ export class Cliente {
 		public id = crypto.randomUUID()
 	) {}
 }
-
-// Implementar mas adelante
-// Método para agregar compras al historial
-//     agregarCompra(compra: Omit<CompraHistorial, 'fecha'>): void {
-//         this.historialCompras.push({
-//             ...compra,
-//             fecha: new Date() // Auto-genera la fecha
-//         });
-//     }
-//
-//     // Método para validar fondos
-//     tieneFondosSuficientes(monto: number): boolean {
-//         return this.fondos >= monto;
-//     }
-// }
