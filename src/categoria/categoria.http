@@ -1,0 +1,39 @@
+### obtener todas las categorias
+GET http://localhost:3000/api/categorias
+
+### obtener una categoria por id
+GET http://localhost:3000/api/categorias/a1b2c3d4-e5f6-7890-abcd-ef1234567890
+
+### crear una nueva categoria
+POST http://localhost:3000/api/categorias
+Content-Type: application/json
+
+{
+  "nombre": "Mesas",
+  "descripcion": "Mesas de madera y metal",
+  "imagen": "https://img.freepik.com/free-photo/interior-design-house-modern-wooden-table-chair_657883-324.jpg?t=st=1749833396~exp=1749836996~hmac=faf682c052f88632e1c91159f43495a5acee6337fd63fd3b3baaf76ed168f32e&w=1380",
+  "idCategoria": "a1b2c3d4-e5f6-7890-abcd-ef123mesas0"
+}
+
+### modificar una categoria (PUT - recurso completo e idempotente)
+PUT http://localhost:3000/api/categorias/a1b2c3d4-e5f6-7890-abcd-ef1234567890
+Content-Type: application/json
+
+{
+  "nombre": "Sillas",
+  "descripcion": "Sillas de madera y metal",
+  "imagen": "https://mueblesgold.com.ar/wp-content/uploads/2022/09/IMG_1900-scaled-1.jpg",
+  "idCategoria": "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+}
+
+### modificar una categoria (PATCH - recurso parcial y no idempotente)
+PATCH http://localhost:3000/api/categorias/a1b2c3d4-e5f6-7890-abcd-ef1234567890
+Content-Type: application/json
+
+{
+  "nombre": "Sillas de oficina",
+  "descripcion": "Sillas ergonómicas para oficina"
+}
+
+### eliminar una categoria
+DELETE http://localhost:3000/api/categorias/a1b2c3d4-e5f6-7890-abcd-ef1234567890
