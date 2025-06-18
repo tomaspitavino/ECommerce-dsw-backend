@@ -42,8 +42,7 @@ function findOne(req: Request, res: Response) {
 	const id = req.params.id;
 	const cliente = repository.findOne({id});
 	if (!cliente) {
-		res.status(404).send({message: 'Cliente no encontrado'});
-		return;
+		return res.status(404).send({message: 'Cliente no encontrado'});
 	}
 	res.json({data: cliente});
 }
@@ -66,7 +65,7 @@ function add(req: Request, res: Response) {
 	);
 
 	const cliente = repository.add(clienteInput);
-	res.status(201).send({message: 'Cliente creado', data: cliente});
+	return res.status(201).send({message: 'Cliente creado', data: cliente});
 }
 
 function update(req: Request, res: Response) {
@@ -74,12 +73,10 @@ function update(req: Request, res: Response) {
 	const cliente = repository.update({...req.body.sanitizedInput});
 
 	if (!cliente) {
-		res.status(404).send({message: 'Cliente no encontrado'});
-		return;
+		return res.status(404).send({message: 'Cliente no encontrado'});
 	}
 
-	res.status(200).send({message: 'Cliente actualizado', data: cliente});
-	return;
+	return res.status(200).send({message: 'Cliente actualizado', data: cliente});
 }
 
 function remove(req: Request, res: Response) {
