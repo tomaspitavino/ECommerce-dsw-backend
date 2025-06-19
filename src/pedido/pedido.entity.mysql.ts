@@ -1,18 +1,9 @@
-import {
-	Collection,
-	Entity,
-	ManyToOne,
-	PrimaryKey,
-	Property,
-	Rel,
-} from '@mikro-orm/core';
+import {Entity, ManyToOne, Property, Rel} from '@mikro-orm/core';
 import {Cliente} from '../cliente/cliente.entity.mysql.js';
+import {BaseEntity} from '../shared/db/baseEntity.entity.mysql.js';
 
 @Entity()
-export class Pedido {
-	@PrimaryKey()
-	idPedido?: string;
-
+export class Pedido extends BaseEntity {
 	@Property()
 	fecha!: Date;
 
@@ -22,16 +13,3 @@ export class Pedido {
 	@ManyToOne(() => Cliente, {nullable: false})
 	cliente!: Rel<Cliente>;
 }
-
-// 	constructor(
-// 		idPedido: string,
-// 		fecha: Date,
-// 		montoTotal: number,
-// 		cliente: Cliente[]
-// 	) {
-// 		this.idPedido = idPedido;
-// 		this.fecha = fecha;
-// 		this.montoTotal = montoTotal;
-// 		this.cliente = cliente;
-// 	}
-// }
