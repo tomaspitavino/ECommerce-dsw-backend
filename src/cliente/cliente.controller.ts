@@ -1,14 +1,10 @@
 import {NextFunction, Request, Response} from 'express';
-import {Cliente} from './cliente.entity.js';
-import {ClienteRepository} from './cliente.repository.js';
+import {orm} from '../shared/db/orm.js';
+import {Cliente} from './cliente.entity.mysql.js';
 
-const repository = new ClienteRepository();
+const em = orm.em;
 
-function sanitizeCharacterInput(
-	req: Request,
-	res: Response,
-	next: NextFunction
-) {
+function sanitizeClientInput(req: Request, res: Response, next: NextFunction) {
 	req.body.sanitizedInput = {
 		nombre: req.body.nombre,
 		apellido: req.body.apellido,
@@ -18,7 +14,8 @@ function sanitizeCharacterInput(
 		usuario: req.body.usuario,
 		email: req.body.email,
 		contrasenia: req.body.contrasenia,
-		historialCompras: req.body.historialCompras,
+		pedidos: req.body.pedidos,
+		// historialCompras: req.body.historialCompras,
 		fondos: req.body.fondos,
 		puntos: req.body.puntos,
 		favoritos: req.body.favoritos,
@@ -32,61 +29,71 @@ function sanitizeCharacterInput(
 	next();
 }
 
-function findAll(req: Request, res: Response) {
-	res.json({
-		data: repository.findAll(),
-	});
-}
-
-function findOne(req: Request, res: Response) {
-	const id = req.params.id;
-	const cliente = repository.findOne({id});
-	if (!cliente) {
-		return res.status(404).send({message: 'Cliente no encontrado'});
+async function findAll(req: Request, res: Response) {
+	try {
+		const clientes = await em.find(Cliente, {});
+		res.status(200).json({message: 'find all clientes', data: clientes});
+	} catch (error: any) {
+		res.status(500).json({
+			message: error.message,
+		});
 	}
-	res.json({data: cliente});
 }
 
-function add(req: Request, res: Response) {
-	const input = req.body.sanitizedInput;
-	const clienteInput = new Cliente(
-		input.nombre,
-		input.apellido,
-		input.direccion,
-		input.telefono,
-		input.dni,
-		input.usuario,
-		input.email,
-		input.contrasenia,
-		input.historialCompras,
-		input.fondos,
-		input.puntos,
-		input.favoritos
-	);
-
-	const cliente = repository.add(clienteInput);
-	return res.status(201).send({message: 'Cliente creado', data: cliente});
-}
-
-function update(req: Request, res: Response) {
-	req.body.sanitizedInput.id = req.params.id;
-	const cliente = repository.update({...req.body.sanitizedInput});
-
-	if (!cliente) {
-		return res.status(404).send({message: 'Cliente no encontrado'});
+async function findOne(req: Request, res: Response) {
+	try {
+		const id = Number.parseInt(req.params.id);
+		const cliente = await em.findOneOrFail(Cliente, id);
+		res.status(200).json({message: 'find one cliente', data: cliente});
+	} catch (error: any) {
+		res.status(500).json({
+			message: error.message,
+		});
 	}
-
-	return res.status(200).send({message: 'Cliente actualizado', data: cliente});
 }
 
-function remove(req: Request, res: Response) {
-	const id = req.params.id;
-	const cliente = repository.delete({id});
-
-	if (!cliente) {
-		res.status(404).send({message: 'Cliente no encontrado'});
+async function add(req: Request, res: Response) {
+	try {
+		const cliente = em.create(Cliente, req.body.sanitizedInput);
+		await em.flush();
+		res.status(201).json({
+			message: 'Cliente creado exitosamente',
+			data: cliente,
+		});
+	} catch (error: any) {
+		res.status(500).json({
+			message: error.message,
+		});
 	}
-	res.status(204).send({message: 'Cliente eliminado'});
 }
 
-export {add, findAll, findOne, remove, sanitizeCharacterInput, update};
+async function update(req: Request, res: Response) {
+	try {
+		const id = Number.parseInt(req.params.id);
+		const clienteToUpdate = await em.findOneOrFail(Cliente, {id});
+		em.assign(clienteToUpdate, req.body.sanitizedInput);
+		await em.flush();
+		res.status(200).json({
+			message: 'Cliente actualizado exitosamente',
+			data: clienteToUpdate,
+		});
+	} catch (error: any) {
+		res.status(500).json({
+			message: error.message,
+		});
+	}
+}
+
+async function remove(req: Request, res: Response) {
+	try {
+		const id = Number.parseInt(req.params.id);
+		const clienteToRemove = em.getReference(Cliente, id);
+		await em.removeAndFlush(clienteToRemove);
+	} catch (error: any) {
+		res.status(500).json({
+			message: error.message,
+		});
+	}
+}
+
+export {add, findAll, findOne, remove, sanitizeClientInput, update};
