@@ -2,11 +2,11 @@ import {MikroORM} from '@mikro-orm/core';
 import {SqlHighlighter} from '@mikro-orm/sql-highlighter';
 
 export const orm = await MikroORM.init({
-	entities: ['dist/**/*.entity.js'],
-	entitiesTs: ['src/**/*.entity.ts'],
+	entities: ['dist/**/*.entity.mysql.js'],
+	entitiesTs: ['src/**/*.entity.mysql.ts'],
 	dbName: 'muebleria',
 	type: 'mysql',
-	clientUrl: 'mysql://utanedsw:scrumtanu@127.0.0.1:3306/muebleria',
+	clientUrl: 'mysql://dsw:dsw@127.0.0.1:3306/muebleria',
 	highlighter: new SqlHighlighter(),
 	debug: true,
 	schemaGenerator: {

@@ -15,7 +15,7 @@ Content-Type: application/json
   "usuario": "juanperez",
   "email": "juanmail@gmail.com",
   "contrasenia": "contrasenia4u54",
-  "pedidos": ["portacuchillos de madera"],
+  "pedidos": [1],
   "fondos": 1000,
   "puntos": 100,
   "favoritos": []
@@ -40,7 +40,7 @@ Content-Type: application/json
   "usuario": "quispemamani",
   "email": "left4quispe@gmail.com",
   "contrasenia": "cerveza454",
-  "pedidos": ["hamaca peruana madera"],
+  "pedidos": [2],
   "fondos": 0,
   "puntos": 0,
   "favoritos": []
@@ -59,7 +59,7 @@ Content-Type: application/json
     "usuario": "brunobassinoziglia",
     "email": "megamanbassi@gmail.com",
     "contrasenia": "ohcielos123",
-    "pedidos": ["nes de madera"],
+    "pedidos": [3],
     "fondos": 2000,
     "puntos": 500,
     "favoritos": []
@@ -69,6 +69,7 @@ Content-Type: application/json
 # @name createClientToDelete
 POST http://localhost:3000/api/clientes
 Content-Type: application/json
+
 {
     "nombre": "Pato",
     "apellido": "the hedhehog",
@@ -78,15 +79,13 @@ Content-Type: application/json
     "usuario": "patothehedhehog",
     "email": "patothehedhog@hotmail.com",
     "contrasenia": "patito123",
-    "pedidos": ["sonic de madera tallado"],
+    "pedidos": [4],
     "fondos": 2000,
     "puntos": 500,
     "favoritos": []
 }
 
-### DELETE a client
 @idToDelete = {{createClientToDelete.response.body.data.id}}
-DELETE http://localhost:3000/api/clientes/{{idToDelete}}
 
 
 ### modificar un cliente (PATCH - recurso parcial y no idempotente)
