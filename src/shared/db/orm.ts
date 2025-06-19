@@ -6,7 +6,7 @@ export const orm = await MikroORM.init({
 	entitiesTs: ['src/**/*.entity.ts'],
 	dbName: 'muebleria',
 	type: 'mysql',
-	clientUrl: 'mysql://root:root@localhost:3306/muebleria',
+	clientUrl: 'mysql://utanedsw:scrumtanu@127.0.0.1:3306/muebleria',
 	highlighter: new SqlHighlighter(),
 	debug: true,
 	schemaGenerator: {

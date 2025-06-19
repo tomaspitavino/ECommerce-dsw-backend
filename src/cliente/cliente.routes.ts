@@ -4,17 +4,15 @@ import {
 	findAll,
 	findOne,
 	remove,
-	sanitizeCharacterInput,
+	sanitizeClientInput,
 	update,
 } from './cliente.controller.js';
 
-const clienteRouter = Router();
+export const clienteRouter = Router();
 
 clienteRouter.get('/', findAll);
 clienteRouter.get('/:id', findOne);
-clienteRouter.post('/', sanitizeCharacterInput, add);
-clienteRouter.put('/:id', sanitizeCharacterInput, update);
-clienteRouter.patch('/:id', sanitizeCharacterInput, update);
+clienteRouter.post('/', sanitizeClientInput, add);
+clienteRouter.put('/:id', sanitizeClientInput, update);
+clienteRouter.patch('/:id', sanitizeClientInput, update);
 clienteRouter.delete('/:id', remove);
-
-export {clienteRouter};
