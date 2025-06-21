@@ -1,0 +1,52 @@
+### obtener todos los materiales
+GET http://localhost:3000/api/materiales
+
+### POST a material
+# @name createMaterial
+POST http://localhost:3000/api/materiales
+Content-Type: application/json
+
+{
+  "nroMaterial": "M001",
+  "nombre": "Madera de alta calidad"
+}
+
+### ID
+@id = {{createMaterial.response.body.data.id}}
+
+### GET one material
+GET http://localhost:3000/api/materiales/{{id}}
+
+### modificar un material (PUT - recurso completo e idempotente)
+PUT http://localhost:3000/api/materiales/{{id}}
+Content-Type: application/json
+
+{
+  "nroMaterial": "M002",
+  "nombre": "Madera tratada"
+}
+
+
+### POST a material
+# @name createMaterialToDelete
+POST http://localhost:3000/api/materiales
+Content-Type: application/json
+
+{
+  "nroMaterial": "M003",
+  "nombre": "Cuero de calidad"
+}
+
+### ID to delete
+@idtoDelete = {{createMaterialToDelete.response.body.data.id}}
+
+###modificar un material para eliminar (patch - recurso parcial)
+PATCH http://localhost:3000/api/materiales/{{idtoDelete}}
+Content-Type: application/json
+
+{
+  "nombre": "Plástico reciclado"
+}
+
+### eliminar un material
+DELETE http://localhost:3000/api/materiales/{{idtoDelete}}
