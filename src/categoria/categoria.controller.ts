@@ -1,75 +1,79 @@
-import {NextFunction, Request, Response} from 'express';
-import {Categoria} from './categoria.entity.mysql.js';
-import {CategoriaRepository} from './categoria.repository.js';
+import { NextFunction, Request, Response } from "express";
+import { orm } from "../shared/db/orm.js";
+import { Categoria } from "./categoria.entity.mysql.js";
 
-const repository = new CategoriaRepository();
-function sanitizeCharacterInput(
-	req: Request,
-	res: Response,
-	next: NextFunction
+const em = orm.em;
+async function sanitizeCharacterInput(
+  req: Request,
+  res: Response,
+  next: NextFunction
 ) {
-	req.body.sanitizedInput = {
-		nombre: req.body.nombre,
-		descripcion: req.body.descripcion,
-		imagen: req.body.imagen,
-	};
+  req.body.sanitizedInput = {
+    nombre: req.body.nombre,
+    descripcion: req.body.descripcion,
+    imagen: req.body.imagen,
+  };
 
-	Object.keys(req.body.sanitizedInput).forEach((key) => {
-		if (req.body.sanitizedInput[key] === undefined) {
-			delete req.body.sanitizedInput[key];
-		}
-	});
-	next();
+  Object.keys(req.body.sanitizedInput).forEach((key) => {
+    if (req.body.sanitizedInput[key] === undefined) {
+      delete req.body.sanitizedInput[key];
+    }
+  });
+  next();
 }
 
-function findAll(req: Request, res: Response) {
-	res.json({
-		data: repository.findAll(),
-	});
+async function findAll(req: Request, res: Response) {
+  try {
+    const categorias = await em.find(Categoria, {});
+    res
+      .status(200)
+      .json({ Message: "Todos las categorias encontrados", data: categorias });
+  } catch (error: any) {
+    res.status(500).json({ message: "Error al cargar categorias" });
+  }
 }
 
-function findOne(req: Request, res: Response) {
-	const id = req.params.idCategoria;
-	const categoria = repository.findOne({id});
-	if (!categoria) {
-		res.status(404).send({message: 'Categoria no encontrada'});
-		return;
-	}
-	res.json({data: categoria});
+async function findOne(req: Request, res: Response) {
+  try {
+    const id = Number.parseInt(req.params.id);
+    const categoria = em.findOneOrFail(Categoria, { id });
+    res.status(200).json({ Message: "Categoria encontrada", data: categoria });
+  } catch (error: any) {
+    res.status(500).json({ message: "Error al cargar la categoria" });
+  }
 }
 
-function add(req: Request, res: Response) {
-	const input = req.body.sanitizedInput;
-	const categoriaInput = new Categoria(
-		input.nombre,
-		input.descripcion,
-		input.imagen
-	);
-	const categoria = repository.add(categoriaInput);
-	res.status(200).send({message: 'Categoria creada', data: categoria});
+async function add(req: Request, res: Response) {
+  try {
+    const categoria = em.create(Categoria, req.body.sanitizedInput);
+    await em.flush();
+    res.status(201).json({ Message: "Categoria creada", data: categoria });
+  } catch (error: any) {
+    res.status(500).json({ message: "Error al crear la categoria" });
+  }
 }
 
-function update(req: Request, res: Response) {
-	req.body.sanitizedInput.idCategoria = req.params.idCategoria;
-	const categoria = repository.update({...req.body.sanitizedInput});
-
-	if (!categoria) {
-		res.status(404).send({message: 'Categoria no encontrada'});
-		return;
-	}
-	res.status(200).send({message: 'Categoria actualizada', data: categoria});
-	return;
+async function update(req: Request, res: Response) {
+  try {
+    const id = Number.parseInt(req.params.id);
+    const categoria = await em.findOneOrFail(Categoria, { id });
+    em.assign(categoria, req.body.sanitizedInput);
+    await em.flush();
+    res.status(200).json({ Message: "Categoria actualizada", data: categoria });
+  } catch (error: any) {
+    res.status(500).json({ message: "Error al actualizar la categoria" });
+  }
 }
 
-function remove(req: Request, res: Response) {
-	const id = req.params.idCategoria;
-	const categoria = repository.delete({id});
-
-	if (!categoria) {
-		res.status(404).send({message: 'Categoria no encontrada'});
-		return;
-	}
-	res.status(200).send({message: 'Categoria eliminada', data: categoria});
+async function remove(req: Request, res: Response) {
+  try {
+    const id = Number.parseInt(req.params.id);
+    const categoria = await em.findOneOrFail(Categoria, { id });
+    await em.removeAndFlush(categoria);
+    res.status(200).json({ Message: "Categoria eliminada", data: categoria });
+  } catch (error: any) {
+    res.status(500).json({ message: "Error al eliminar la categoria" });
+  }
 }
 
-export {add, findAll, findOne, remove, sanitizeCharacterInput, update};
+export { add, findAll, findOne, remove, sanitizeCharacterInput, update };
