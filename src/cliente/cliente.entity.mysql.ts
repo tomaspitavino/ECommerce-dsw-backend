@@ -10,10 +10,10 @@ import {BaseEntity} from '../shared/db/baseEntity.entity.mysql.js';
 
 @Entity()
 export class Cliente extends BaseEntity {
-	@Property({nullable: false, unique: true})
+	@Property({nullable: false})
 	nombre!: string;
 
-	@Property({nullable: false, unique: true})
+	@Property({nullable: false})
 	apellido!: string;
 
 	@Property({nullable: false, unique: true})
