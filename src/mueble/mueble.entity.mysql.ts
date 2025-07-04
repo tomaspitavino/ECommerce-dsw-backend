@@ -23,6 +23,6 @@ export class Mueble extends BaseEntity {
 	@ManyToOne(() => Material, {nullable: false})
 	material!: Rel<Material>;
 
-	/* @Property({nullable: true})
-    imagenes?: string[]; // Array of image URLs or file paths */
+	@Property({nullable: true})
+	imagenes?: string[]; // Array of image URLs or file paths */
 }
