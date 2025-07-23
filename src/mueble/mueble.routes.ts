@@ -5,14 +5,14 @@ import {
   findOne,
   remove,
   update,
-  sanitizeCharacterInput,
+  sanitizeMuebleInput,
 } from "./mueble.controller.js";
 
 export const muebleRouter = Router();
 
 muebleRouter.get("/", findAll);
 muebleRouter.get("/:id", findOne);
-muebleRouter.post("/", sanitizeCharacterInput, add);
-muebleRouter.put("/:id", sanitizeCharacterInput, update);
-muebleRouter.patch("/:id", sanitizeCharacterInput, update);
+muebleRouter.post("/", sanitizeMuebleInput, add);
+muebleRouter.put("/:id", sanitizeMuebleInput, update);
+muebleRouter.patch("/:id", sanitizeMuebleInput, update);
 muebleRouter.delete("/:id", remove);

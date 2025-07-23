@@ -4,7 +4,7 @@ import { Mueble } from "./mueble.entity.mysql.js";
 
 const em = orm.em;
 
-function sanitizeCharacterInput(
+function sanitizeMuebleInput(
   req: Request,
   res: Response,
   next: NextFunction
@@ -88,4 +88,4 @@ async function remove(req: Request, res: Response) {
   }
 }
 
-export { findAll, findOne, add, update, remove, sanitizeCharacterInput };
+export { findAll, findOne, add, update, remove, sanitizeMuebleInput };
