@@ -1,18 +1,18 @@
-import { Router } from "express";
+import {Router} from 'express';
 import {
-  add,
-  findAll,
-  findOne,
-  remove,
-  update,
-  sanitizeMuebleInput,
-} from "./mueble.controller.js";
+	add,
+	findAll,
+	findOne,
+	remove,
+	sanitizeMuebleInput,
+	update,
+} from './mueble.controller.js';
 
 export const muebleRouter = Router();
 
-muebleRouter.get("/", findAll);
-muebleRouter.get("/:id", findOne);
-muebleRouter.post("/", sanitizeMuebleInput, add);
-muebleRouter.put("/:id", sanitizeMuebleInput, update);
-muebleRouter.patch("/:id", sanitizeMuebleInput, update);
-muebleRouter.delete("/:id", remove);
+muebleRouter.get('/', findAll);
+muebleRouter.get('/:id', findOne);
+muebleRouter.post('/', sanitizeMuebleInput, add);
+muebleRouter.put('/:id', sanitizeMuebleInput, update);
+muebleRouter.patch('/:id', sanitizeMuebleInput, update);
+muebleRouter.delete('/:id', remove);
