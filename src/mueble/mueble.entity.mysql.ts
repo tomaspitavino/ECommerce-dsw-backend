@@ -1,7 +1,13 @@
-import {Entity, ManyToOne, Property, Rel} from '@mikro-orm/core';
-import {Categoria} from '../categoria/categoria.entity.mysql.js';
-import {Material} from '../material/material.entity.mysql.js';
-import {BaseEntity} from '../shared/db/baseEntity.entity.mysql.js';
+import {
+  Entity,
+  ManyToOne,
+  Property,
+  Rel
+} from "@mikro-orm/core";
+import { BaseEntity } from "../shared/db/baseEntity.entity.mysql.js";
+import { Categoria } from "../categoria/categoria.entity.mysql.js";
+import { Material } from "../material/material.entity.mysql.js";
+import { lineaPedido } from "../lineaPedido/lineaPedido.entity.mysql.js";
 
 @Entity()
 export class Mueble extends BaseEntity {
@@ -23,6 +29,9 @@ export class Mueble extends BaseEntity {
 	@ManyToOne(() => Material, {nullable: false})
 	material!: Rel<Material>;
 
-	@Property({nullable: true})
-	imagenes?: string[]; // Array of image URLs or file paths */
+  @ManyToOne(() => lineaPedido, { nullable: true })
+  lineaPedido?: Rel<lineaPedido>;
+
+  /* @Property({nullable: true})
+    imagenes?: string[]; // Array of image URLs or file paths */
 }
