@@ -50,9 +50,9 @@ export class Cliente extends BaseEntity {
     @Property({ nullable: true })
     favoritos?: string[]; // Relación many-to-many con Mueble, se puede definir como una colección si se usa un ORM
 
-    @ManyToMany(() => Descuento, (descuento) => descuento.clientes, {
-        cascade: [Cascade.ALL],
-        owner: true,
-    })
-    descuentos!: Descuento[];
+
+	// En realidad favoritos es una relacion con atributos, deberia de ser una entidad
+	// Revisar el diagrama
+	@Property({nullable: true})
+	favoritos?: string[]; // Relación many-to-many con Mueble, se puede definir como una colección si se usa un ORM
 }
