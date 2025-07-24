@@ -29,12 +29,12 @@ curl -X POST -H "Content-Type: application/json" -d '{
 "stock": 10,
 "etiqueta": "moderno",
 "precioUnitario": 150.50
-}' http://localhost:3000/api/muebles
+}' <http://localhost:3000/api/muebles>
 
 # Listar todos los muebles
 
-curl http://localhost:3000/api/muebles
+curl <http://localhost:3000/api/muebles>
 
 # Filtrar por categoría
 
-curl http://localhost:3000/api/muebles/filtrar/categoria?categoria=Sillas
+curl <http://localhost:3000/api/muebles/filtrar/categoria?categoria=Sillas>
