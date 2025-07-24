@@ -12,15 +12,15 @@ const app = express();
 app.use(express.json());
 
 app.use((req, res, next) => {
-  RequestContext.create(orm.em, next);
+    RequestContext.create(orm.em, next);
 });
 
 /*
 app.use(
-	cors({
-		origin: '*', // Permitir todas las solicitudes de origen cruzado
-		credentials: true, // Permitir credenciales (cookies, autenticación HTTP, etc.)
-	})
+    cors({
+        origin: '*', // Permitir todas las solicitudes de origen cruzado
+        credentials: true, // Permitir credenciales (cookies, autenticación HTTP, etc.)
+    })
 );
 */
 
@@ -32,11 +32,11 @@ app.use("/api/materiales", materialRouter);
 app.use("/api/muebles", muebleRouter);
 
 app.use((_, res) => {
-  res.status(404).send({ message: "Ruta no encontrada" });
+    res.status(404).send({ message: "Ruta no encontrada" });
 });
 
 await syncSchema(); // never in production
 
 app.listen(port, () => {
-  console.log(`Listening on http://localhost:${port}/`);
+    console.log(`Listening on http://localhost:${port}/`);
 });
