@@ -4,7 +4,7 @@ import {
 	findAll,
 	findOne,
 	remove,
-	sanitizeCharacterInput,
+	sanitizeCategoriaInput,
 	update,
 } from './categoria.controller.js';
 
@@ -12,9 +12,9 @@ const categoriaRouter = Router();
 
 categoriaRouter.get('/', findAll);
 categoriaRouter.get('/:idCategoria', findOne);
-categoriaRouter.post('/', sanitizeCharacterInput, add);
-categoriaRouter.put('/:idCategoria', sanitizeCharacterInput, update);
-categoriaRouter.patch('/:idCategoria', sanitizeCharacterInput, update);
+categoriaRouter.post('/', sanitizeCategoriaInput, add);
+categoriaRouter.put('/:idCategoria', sanitizeCategoriaInput, update);
+categoriaRouter.patch('/:idCategoria', sanitizeCategoriaInput, update);
 categoriaRouter.delete('/:idCategoria', remove);
 
 export {categoriaRouter};

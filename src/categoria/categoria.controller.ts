@@ -3,7 +3,7 @@ import { orm } from "../shared/db/orm.js";
 import { Categoria } from "./categoria.entity.mysql.js";
 
 const em = orm.em;
-async function sanitizeCharacterInput(
+async function sanitizeCategoriaInput(
   req: Request,
   res: Response,
   next: NextFunction
@@ -76,4 +76,4 @@ async function remove(req: Request, res: Response) {
   }
 }
 
-export { add, findAll, findOne, remove, sanitizeCharacterInput, update };
+export { add, findAll, findOne, remove, sanitizeCategoriaInput, update };
