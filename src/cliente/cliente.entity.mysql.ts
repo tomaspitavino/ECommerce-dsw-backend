@@ -55,6 +55,8 @@ export class Cliente extends BaseEntity {
 	@Property()
 	puntos: number = 0;
 
+	// En realidad favoritos es una relacion con atributos, deberia de ser una entidad
+	// Revisar el diagrama
 	@Property({nullable: true})
 	favoritos?: string[]; // Relación many-to-many con Mueble, se puede definir como una colección si se usa un ORM
 }
