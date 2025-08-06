@@ -2,9 +2,14 @@
 
 ## Tareas pendientes para el backend
 
-1. Implementar CRUD favoritos
-2. Reconsiderar relaciones con linea pedido
-3. HistorialCompras será eliminado, por lo menos por ahora. Posiblemente luego será implementado, es decir que no se eliminará en concepto.
+1. Implementar CRUD favoritos:
+   - Hacer desde clientes un array de favoritos (sin fechaAgregado)
+2. Reconsiderar relaciones con linea pedido:
+   - oneToMany desde mueble (con pedidos), manyToOne desde pedido (con muebles)
+3. HistorialCompras será eliminado, por lo menos por ahora. Posiblemente luego será implementado, es decir que no se eliminará en concepto:
+   - Es un caso de uso para ver el histórico de pedidos (filtrar por pedido)
+
+Un pedido es epic o caso de uso por tener valor para el negocio
 
 ## Consultas posibles para DSW
 
