@@ -7,19 +7,381 @@ POST http://localhost:3000/api/clientes
 Content-Type: application/json
 
 {
-  "nombre": "Juan",
-  "apellido": "Pérez",
-  "direccion": "Calle Falsa 340",
-  "telefono": "123456789",
-  "dni": "34567890",
-  "usuario": "juanperez",
-  "email": "juanmail@gmail.com",
-  "contrasenia": "contrasenia4u54",
+    "nombre": "Luffy",
+    "apellido": "Monkey D.",
+    "direccion": "East Blue 01",
+    "telefono": "1189001122",
+    "dni": "37011223",
+    "usuario": "luffy",
+    "email": "luffy@onepiece.jp",
+    "contrasenia": "gomuGomu",
+    "pedidos": [],
+    "fondos": 2100,
+    "puntos": 400,
+    "favoritos": []
+
+}
+
+### POST a character
+POST http://localhost:3000/api/clientes
+Content-Type: application/json
+
+{
+    "nombre": "Goku",
+    "apellido": "Son",
+    "direccion": "Monte Paoz 77",
+    "telefono": "1122334455",
+    "dni": "30123456",
+    "usuario": "gokuson",
+    "email": "goku@kamehouse.com",
+    "contrasenia": "kamehameha123",
+    "pedidos": [],
+    "fondos": 1500,
+    "puntos": 200,
+    "favoritos": []
+}
+
+### varios clientes, separados
+POST http://localhost:3000/api/clientes
+Content-Type: application/json
+
+{
+    "nombre": "Vegeta",
+    "apellido": "Saiyan",
+    "direccion": "Calle Capsule 12",
+    "telefono": "1165432109",
+    "dni": "32109876",
+    "usuario": "vegeta_saiyan",
+    "email": "vegeta@capsulecorp.jp",
+    "contrasenia": "princeofall",
+    "pedidos": [],
+    "fondos": 1800,
+    "puntos": 300,
+    "favoritos": []
+}
+
+### POST a character
+POST http://localhost:3000/api/clientes
+Content-Type: application/json
+
+{
+  "nombre": "Bulma",
+  "apellido": "Brief",
+  "direccion": "Av. Capsule 01",
+  "telefono": "1134567890",
+  "dni": "28900123",
+  "usuario": "bulmabrief",
+  "email": "bulma@capsulecorp.jp",
+  "contrasenia": "genius123",
   "pedidos": [],
-  "fondos": 1000,
+  "fondos": 3200,
+  "puntos": 450,
+  "favoritos": []
+}
+
+### POST a character
+POST http://localhost:3000/api/clientes
+Content-Type: application/json
+
+{
+  "nombre": "Shinji",
+  "apellido": "Ikari",
+  "direccion": "Tokyo-3 Block 01",
+  "telefono": "1145678912",
+  "dni": "33111222",
+  "usuario": "shinjiikari",
+  "email": "shinji@nerv.jp",
+  "contrasenia": "evaunit01",
+  "pedidos": [],
+  "fondos": 700,
+  "puntos": 80,
+  "favoritos": []
+}
+
+### POST a character
+POST http://localhost:3000/api/clientes
+Content-Type: application/json
+
+{
+  "nombre": "Asuka",
+  "apellido": "Soryu",
+  "direccion": "Tokyo-3 Block 02",
+  "telefono": "1145682233",
+  "dni": "33222333",
+  "usuario": "asukasoryu",
+  "email": "asuka@nerv.jp",
+  "contrasenia": "redpilot",
+  "pedidos": [],
+  "fondos": 950,
+  "puntos": 120,
+  "favoritos": []
+}
+
+### POST a character
+POST http://localhost:3000/api/clientes
+Content-Type: application/json
+
+{
+  "nombre": "Rei",
+  "apellido": "Ayanami",
+  "direccion": "Tokyo-3 Block 00",
+  "telefono": "1145693344",
+  "dni": "33333444",
+  "usuario": "reiayanami",
+  "email": "rei@nerv.jp",
+  "contrasenia": "silentblue",
+  "pedidos": [],
+  "fondos": 1200,
+  "puntos": 250,
+  "favoritos": []
+}
+
+### POST a character
+POST http://localhost:3000/api/clientes
+Content-Type: application/json
+
+{
+  "nombre": "Naruto",
+  "apellido": "Uzumaki",
+  "direccion": "Konoha 123",
+  "telefono": "1156789090",
+  "dni": "34444555",
+  "usuario": "narutouzumaki",
+  "email": "naruto@konoha.jp",
+  "contrasenia": "ramenlover",
+  "pedidos": [],
+  "fondos": 900,
+  "puntos": 180,
+  "favoritos": []
+}
+
+### POST a character
+POST http://localhost:3000/api/clientes
+Content-Type: application/json
+
+{
+  "nombre": "Sasuke",
+  "apellido": "Uchiha",
+  "direccion": "Clan Uchiha 9",
+  "telefono": "1156789988",
+  "dni": "34555666",
+  "usuario": "sasukeuchiha",
+  "email": "sasuke@konoha.jp",
+  "contrasenia": "chidori999",
+  "pedidos": [],
+  "fondos": 1400,
+  "puntos": 300,
+  "favoritos": []
+}
+
+### POST a character
+POST http://localhost:3000/api/clientes
+Content-Type: application/json
+
+{
+  "nombre": "Sakura",
+  "apellido": "Haruno",
+  "direccion": "Konoha 45",
+  "telefono": "1156798877",
+  "dni": "34666777",
+  "usuario": "sakuraharuno",
+  "email": "sakura@konoha.jp",
+  "contrasenia": "mednin123",
+  "pedidos": [],
+  "fondos": 1300,
+  "puntos": 260,
+  "favoritos": []
+}
+
+### POST a character
+POST http://localhost:3000/api/clientes
+Content-Type: application/json
+
+{
+  "nombre": "Kenshin",
+  "apellido": "Himura",
+  "direccion": "Kyoto 187",
+  "telefono": "1167008899",
+  "dni": "35677888",
+  "usuario": "kenshinhimura",
+  "email": "kenshin@meiji.jp",
+  "contrasenia": "hitokiriX",
+  "pedidos": [],
+  "fondos": 800,
   "puntos": 100,
   "favoritos": []
-  }
+}
+
+### POST a character
+POST http://localhost:3000/api/clientes
+Content-Type: application/json
+
+{
+  "nombre": "Spike",
+  "apellido": "Spiegel",
+  "direccion": "Bebop Dock 7",
+  "telefono": "1167019988",
+  "dni": "35788999",
+  "usuario": "spikespiegel",
+  "email": "spike@bebop.net",
+  "contrasenia": "seeYouSpaceCowboy",
+  "pedidos": [],
+  "fondos": 1100,
+  "puntos": 240,
+  "favoritos": []
+}
+
+### POST a character
+POST http://localhost:3000/api/clientes
+Content-Type: application/json
+
+{
+  "nombre": "Faye",
+  "apellido": "Valentine",
+  "direccion": "Bebop Dock 8",
+  "telefono": "1167027788",
+  "dni": "35899000",
+  "usuario": "fayevalentine",
+  "email": "faye@bebop.net",
+  "contrasenia": "casinoqueen",
+  "pedidos": [],
+  "fondos": 2300,
+  "puntos": 310,
+  "favoritos": []
+}
+
+### POST a character
+POST http://localhost:3000/api/clientes
+Content-Type: application/json
+
+{
+  "nombre": "Edward",
+  "apellido": "Wong",
+  "direccion": "Internet Galaxy 5",
+  "telefono": "1167036677",
+  "dni": "35910111",
+  "usuario": "edwardwong",
+  "email": "ed@bebop.net",
+  "contrasenia": "superhacker",
+  "pedidos": [],
+  "fondos": 400,
+  "puntos": 500,
+  "favoritos": []
+}
+
+### POST a character
+POST http://localhost:3000/api/clientes
+Content-Type: application/json
+
+{
+  "nombre": "Seiya",
+  "apellido": "Pegaso",
+  "direccion": "Santuario 01",
+  "telefono": "1178001234",
+  "dni": "36789123",
+  "usuario": "seiyapegaso",
+  "email": "seiya@saint.jp",
+  "contrasenia": "athenaprotect",
+  "pedidos": [],
+  "fondos": 1600,
+  "puntos": 350,
+  "favoritos": []
+}
+
+### POST a character
+POST http://localhost:3000/api/clientes
+Content-Type: application/json
+
+{
+  "nombre": "Shiryu",
+  "apellido": "Dragón",
+  "direccion": "Santuario 02",
+  "telefono": "1178005678",
+  "dni": "36890234",
+  "usuario": "shiryudragon",
+  "email": "shiryu@saint.jp",
+  "contrasenia": "risingdragon",
+  "pedidos": [],
+  "fondos": 1450,
+  "puntos": 280,
+  "favoritos": []
+}
+
+### POST a character
+POST http://localhost:3000/api/clientes
+Content-Type: application/json
+
+{
+  "nombre": "Hyoga",
+  "apellido": "Cisne",
+  "direccion": "Santuario 03",
+  "telefono": "1178012345",
+  "dni": "36901345",
+  "usuario": "hyogacisne",
+  "email": "hyoga@saint.jp",
+  "contrasenia": "diamonddust",
+  "pedidos": [],
+  "fondos": 1350,
+  "puntos": 250,
+  "favoritos": []
+}
+
+### POST a character
+POST http://localhost:3000/api/clientes
+Content-Type: application/json
+
+{
+  "nombre": "Shun",
+  "apellido": "Andrómeda",
+  "direccion": "Santuario 04",
+  "telefono": "1178016789",
+  "dni": "36912456",
+  "usuario": "shunandromeda",
+  "email": "shun@saint.jp",
+  "contrasenia": "nebularchain",
+  "pedidos": [],
+  "fondos": 1100,
+  "puntos": 230,
+  "favoritos": []
+}
+
+### POST a character
+POST http://localhost:3000/api/clientes
+Content-Type: application/json
+
+{
+  "nombre": "Ikki",
+  "apellido": "Fénix",
+  "direccion": "Santuario 05",
+  "telefono": "1178023456",
+  "dni": "36923567",
+  "usuario": "ikkifenix",
+  "email": "ikki@saint.jp",
+  "contrasenia": "rebirthfire",
+  "pedidos": [],
+  "fondos": 1550,
+  "puntos": 300,
+  "favoritos": []
+}
+
+### POST a character
+POST http://localhost:3000/api/clientes
+Content-Type: application/json
+
+{
+  "nombre": "Zoro",
+  "apellido": "Roronoa",
+  "direccion": "East Blue 02",
+  "telefono": "1189003344",
+  "dni": "37033445",
+  "usuario": "zorororonoa",
+  "email": "zoro@onepiece.jp",
+  "contrasenia": "santoryu",
+  "pedidos": [],
+  "fondos": 1800,
+  "puntos": 340,
+  "favoritos": []
+}
 
 ### ID
 @id = {{createCliente.response.body.data.id}}
@@ -32,80 +394,16 @@ PUT http://localhost:3000/api/clientes/{{id}}
 Content-Type: application/json
 
 {
-  "nombre": "Quispe",
-  "apellido": "Mamani",
-  "direccion": "Cerro Falso 200",
-  "telefono": "783456789",
-  "dni": "20456789",
-  "usuario": "quispemamani",
-  "email": "left4quispe@gmail.com",
-  "contrasenia": "cerveza454",
-  "pedidos": [],
-  "fondos": 0,
-  "puntos": 0,
-  "favoritos": []
-  }
-
-### POST a cliente
-POST http://localhost:3000/api/clientes
-Content-Type: application/json
-
-{
-    "nombre": "Bruno",
-    "apellido": "Bassi",
-    "direccion": "Lima 123",
-    "telefono": "5123456789",
-    "dni": "372712345",
-    "usuario": "brunobassinoziglia",
-    "email": "megamanbassi@gmail.com",
-    "contrasenia": "ohcielos123",
+"nombre": "Luffy",
+    "apellido": "Monkey D.",
+    "direccion": "Elbaph 99",
+    "telefono": "1189001122",
+    "dni": "37011223",
+    "usuario": "luffy",
+    "email": "luffy@onepiece.jp",
+    "contrasenia": "gear5",
     "pedidos": [],
-    "fondos": 2000,
-    "puntos": 500,
+    "fondos": 2100,
+    "puntos": 400,
     "favoritos": []
 }
-
-### POST a client to delete
-# @name createClientToDelete
-POST http://localhost:3000/api/clientes
-Content-Type: application/json
-
-{
-    "nombre": "Pato",
-    "apellido": "the hedhehog",
-    "direccion": "Callao 1300",
-    "telefono": "54123456789",
-    "dni": "477123456",
-    "usuario": "patothehedhehog",
-    "email": "patothehedhog@hotmail.com",
-    "contrasenia": "patito123",
-    "pedidos": [],
-    "fondos": 2000,
-    "puntos": 500,
-    "favoritos": []
-}
-
-#### ID to delete
-@idToDelete = {{createClientToDelete.response.body.data.id}}
-
-### modificar un cliente (PATCH - recurso parcial y no idempotente)
-PATCH http://localhost:3000/api/clientes/{{id}}
-Content-Type: application/json
-
-{
-  "nombre": "Julian",
-  "apellido": "Omar Maruca",
-  "usuario": "july3p",
-  "email": "july3p@gmail.com"
-}
-
-### PATCH a cliente
-PATCH http://localhost:3000/api/clientes/{{idToDelete}}
-Content-Type: application/json
-
-{
-  "puntos": 10000
-}
-
-### DELETE a client
-DELETE http://localhost:3000/api/clientes/{{idToDelete}}
