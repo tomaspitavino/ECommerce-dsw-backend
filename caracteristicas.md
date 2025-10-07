@@ -38,5 +38,3 @@ curl <http://localhost:3000/api/muebles>
 # Filtrar por categoría
 
 curl <http://localhost:3000/api/muebles/filtrar/categoria?categoria=Sillas>
-
-prueba
