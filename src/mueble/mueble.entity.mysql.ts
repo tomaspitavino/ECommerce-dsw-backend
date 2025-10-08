@@ -1,13 +1,13 @@
 import {
 	Collection,
 	Entity,
-	ManyToMany,
 	ManyToOne,
+	OneToMany,
 	Property,
 	Rel,
 } from '@mikro-orm/core';
 import { Categoria } from '../categoria/categoria.entity.mysql.js';
-import { Cliente } from '../cliente/cliente.entity.mysql.js';
+import { Favorito } from '../favoritos/favoritos.entity.mysql.js';
 import { lineaPedido } from '../lineaPedido/lineaPedido.entity.mysql.js';
 import { Material } from '../material/material.entity.mysql.js';
 import { BaseEntity } from '../shared/db/baseEntity.entity.mysql.js';
@@ -35,8 +35,10 @@ export class Mueble extends BaseEntity {
 	@ManyToOne(() => Material, { nullable: true }) // pueden existir muebles sin material
 	material?: Rel<Material> | null;
 
-	@ManyToMany(() => Cliente, (cliente) => cliente.favoritos)
-	favoritos = new Collection<Cliente>(this);
+	@OneToMany(() => Favorito, (favorito) => favorito.mueble, {
+		orphanRemoval: true,
+	})
+	favoritos = new Collection<Favorito>(this);
 
 	// lineaPedido es una entidad que representa una relacion con atributos
 	// oneToMany del lado del mueble
