@@ -3,10 +3,10 @@ import { orm } from "../shared/db/orm.js";
 import { Categoria } from "./categoria.entity.mysql.js";
 
 const em = orm.em;
-async function sanitizeCategoriaInput(
+export async function sanitizeCategoriaInput(
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) {
   req.body.sanitizedInput = {
     nombre: req.body.nombre,
@@ -22,7 +22,7 @@ async function sanitizeCategoriaInput(
   next();
 }
 
-async function findAll(req: Request, res: Response) {
+export async function findAll(req: Request, res: Response) {
   try {
     const categorias = await em.find(Categoria, {});
     res
@@ -33,7 +33,7 @@ async function findAll(req: Request, res: Response) {
   }
 }
 
-async function findOne(req: Request, res: Response) {
+export async function findOne(req: Request, res: Response) {
   try {
     const id = Number.parseInt(req.params.id);
     const categoria = em.findOneOrFail(Categoria, { id });
@@ -43,7 +43,7 @@ async function findOne(req: Request, res: Response) {
   }
 }
 
-async function add(req: Request, res: Response) {
+export async function add(req: Request, res: Response) {
   try {
     const categoria = em.create(Categoria, req.body.sanitizedInput);
     await em.flush();
@@ -53,7 +53,7 @@ async function add(req: Request, res: Response) {
   }
 }
 
-async function update(req: Request, res: Response) {
+export async function update(req: Request, res: Response) {
   try {
     const id = Number.parseInt(req.params.id);
     const categoria = await em.findOneOrFail(Categoria, { id });
@@ -65,7 +65,7 @@ async function update(req: Request, res: Response) {
   }
 }
 
-async function remove(req: Request, res: Response) {
+export async function remove(req: Request, res: Response) {
   try {
     const id = Number.parseInt(req.params.id);
     const categoria = await em.findOneOrFail(Categoria, { id });
@@ -76,4 +76,3 @@ async function remove(req: Request, res: Response) {
   }
 }
 
-export { add, findAll, findOne, remove, sanitizeCategoriaInput, update };
