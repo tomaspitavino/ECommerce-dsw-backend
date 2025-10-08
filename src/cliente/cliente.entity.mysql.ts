@@ -2,11 +2,10 @@ import {
 	Cascade,
 	Collection,
 	Entity,
-	ManyToMany,
 	OneToMany,
 	Property,
 } from '@mikro-orm/core';
-import { Mueble } from '../mueble/mueble.entity.mysql.js';
+import { Favorito } from '../favoritos/favoritos.entity.mysql.js';
 import { Pedido } from '../pedido/pedido.entity.mysql.js';
 import { BaseEntity } from '../shared/db/baseEntity.entity.mysql.js';
 
@@ -37,7 +36,7 @@ export class Cliente extends BaseEntity {
 	contrasenia!: string;
 
 	@Property()
-	puntos: number = 0;
+	puntos: number = 0; // no se va a usar para el MVP
 
 	@Property()
 	fondos: number = 0;
@@ -47,6 +46,8 @@ export class Cliente extends BaseEntity {
 	})
 	pedidos = new Collection<Pedido>(this);
 
-	@ManyToMany(() => Mueble, (mueble) => mueble.favoritos, { owner: true })
-	favoritos = new Collection<Mueble>(this);
+	@OneToMany(() => Favorito, (favoritos) => favoritos.cliente, {
+		cascade: [Cascade.ALL],
+	})
+	favoritos = new Collection<Favorito>(this);
 }
