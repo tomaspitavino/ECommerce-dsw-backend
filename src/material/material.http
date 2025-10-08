@@ -1,24 +1,18 @@
 ### obtener todos los materiales
 GET http://localhost:3000/api/materiales
 
-### POST a material
+### Madera de roble
 # @name createMaterial
 POST http://localhost:3000/api/materiales
 Content-Type: application/json
 
 {
   "nroMaterial": "M001",
-  "nombre": "Madera de alta calidad"
+  "nombre": "Madera de roble"
 }
 
-### ID
-@id = {{createMaterial.response.body.data.id}}
-
-### GET one material
-GET http://localhost:3000/api/materiales/{{id}}
-
-### modificar un material (PUT - recurso completo e idempotente)
-PUT http://localhost:3000/api/materiales/{{id}}
+### Madera tratada
+POST http://localhost:3000/api/materiales
 Content-Type: application/json
 
 {
@@ -26,6 +20,101 @@ Content-Type: application/json
   "nombre": "Madera tratada"
 }
 
+### Plástico reciclado
+POST http://localhost:3000/api/materiales
+Content-Type: application/json 
+
+{
+  "nroMaterial": "M003",
+  "nombre": "Plástico reciclado"
+}
+
+### Metal galvanizado
+POST http://localhost:3000/api/materiales
+Content-Type: application/json
+
+{
+  "nroMaterial": "M004",
+  "nombre": "Metal galvanizado"
+}
+
+### Acero inoxidable
+POST http://localhost:3000/api/materiales
+Content-Type: application/json
+
+{
+  "nroMaterial": "M005",
+  "nombre": "Acero inoxidable"
+}
+
+### Aluminio anodizado
+POST http://localhost:3000/api/materiales
+Content-Type: application/json
+
+{
+  "nroMaterial": "M006",
+  "nombre": "Aluminio anodizado"
+}
+
+### Vidrio templado
+POST http://localhost:3000/api/materiales
+Content-Type: application/json
+
+{
+  "nroMaterial": "M007",
+  "nombre": "Vidrio templado"
+}
+
+### Cuero sintético
+POST http://localhost:3000/api/materiales
+Content-Type: application/json
+
+{
+  "nroMaterial": "M008",
+  "nombre": "Cuero sintético"
+}
+
+### Tela de lino
+POST http://localhost:3000/api/materiales
+Content-Type: application/json
+
+{
+  "nroMaterial": "M009",
+  "nombre": "Tela de lino"
+}
+
+### Ratán natural
+POST http://localhost:3000/api/materiales
+Content-Type: application/json
+
+{
+  "nroMaterial": "M010",
+  "nombre": "Ratán natural"
+}
+
+### Melamina
+POST http://localhost:3000/api/materiales
+Content-Type: application/json
+
+{
+  "nroMaterial": "M011",
+  "nombre": "Melamina"
+}
+
+### Bambú
+POST http://localhost:3000/api/materiales
+Content-Type: application/json
+
+{
+  "nroMaterial": "M012",
+  "nombre": "Bambú"
+}
+
+### ID
+@id = {{createMaterial.response.body.data.id}}
+
+### GET one material
+GET http://localhost:3000/api/materiales/{{id}}
 
 ### POST a material
 # @name createMaterialToDelete
