@@ -19,12 +19,22 @@ app.use((req, res, next) => {
   RequestContext.create(orm.em, next);
 });
 
+const allowedOrigins = process.env.CORS_ORIGIN
+  ? process.env.CORS_ORIGIN.split(",")
+  : [];
+
 app.use(
   cors({
-    origin: process.env.CORS_ORIGIN ? process.env.CORS_ORIGIN.split(",") : "*",
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin))
+        return callback(null, true);
+      return callback(new Error(`CORS bloqueado para origen: ${origin}`));
+    },
     credentials: true,
   }),
 );
+
+// curl -I -H "Origin: http://localhost:4200" http://localhost:3001/api/clientes usar eso para verificar
 
 const port = 3000;
 
