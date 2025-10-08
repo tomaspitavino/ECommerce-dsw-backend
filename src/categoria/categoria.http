@@ -7,9 +7,9 @@ POST http://localhost:3000/api/categorias
 Content-Type: application/json
 
 {
-  "nombre": "Mesas",
-  "descripcion": "Mesas de madera y metal",
-  "imagen": "https://img.freepik.com/free-photo/interior-design-house-modern-wooden-table-chair_657883-324.jpg?t=st=1749833396~exp=1749836996~hmac=faf682c052f88632e1c91159f43495a5acee6337fd63fd3b3baaf76ed168f32e&w=1380",
+    "nombre": "Sillas",
+    "descripcion": "Asientos individuales de comedor, oficina y descanso.",
+    "imagen": "https://images.unsplash.com/photo-1505691723518-36a5ac3be353?w=800"
 }
 
 ### ID
@@ -22,7 +22,97 @@ Content-Type: application/json
 {
   "nombre": "Sillas",
   "descripcion": "Sillas de madera y metal",
-  "imagen": "https://mueblesgold.com.ar/wp-content/uploads/2022/09/IMG_1900-scaled-1.jpg",
+  "imagen": "https://images.unsplash.com/photo-1505691723518-36a5ac3be353?w=800"
+}
+
+### Crear categorías con imagen
+POST http://localhost:3000/api/categorias
+Content-Type: application/json
+
+{
+   "nombre": "Mesas",
+   "descripcion": "Mesas de comedor, auxiliares, de centro y escritorio.",
+   "imagen": "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800"
+ }
+
+### Crear categorías con imagen
+POST http://localhost:3000/api/categorias
+Content-Type: application/json
+
+{
+   "nombre": "Sofás",
+   "descripcion": "Sofás de uno a tres cuerpos, rinconeros y modulares.",
+   "imagen": "https://images.unsplash.com/photo-1501045661006-fcebe0257c3f?w=800"
+ }
+
+### Crear categorías con imagen
+POST http://localhost:3000/api/categorias
+Content-Type: application/json
+
+{
+   "nombre": "Camas",
+   "descripcion": "Camas simples, dobles, marineras y sommiers.",
+   "imagen": "https://images.unsplash.com/photo-1616627980194-3b6b4b4983f0?w=800"
+ }
+
+### Crear categorías con imagen
+POST http://localhost:3000/api/categorias
+Content-Type: application/json
+
+{
+  "nombre": "Almacenamiento",
+  "descripcion": "Roperos, cómodas, estanterías y alacenas.",
+  "imagen": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800"
+}
+
+### Crear categorías con imagen
+POST http://localhost:3000/api/categorias
+Content-Type: application/json
+
+{
+  "nombre": "Iluminación",
+  "descripcion": "Lámparas de pie, de mesa y colgantes para distintos ambientes.",
+  "imagen": "https://images.unsplash.com/photo-1616628182506-8a9621a5d3b0?w=800"
+}
+
+### Crear categorías con imagen
+POST http://localhost:3000/api/categorias
+Content-Type: application/json
+
+{
+  "nombre": "Decoración",
+  "descripcion": "Cuadros, espejos, alfombras y accesorios decorativos.",
+  "imagen": "https://images.unsplash.com/photo-1600585154205-0c8f9a76b9f0?w=800"
+}
+
+### Crear categorías con imagen
+POST http://localhost:3000/api/categorias
+Content-Type: application/json
+
+{
+  "nombre": "Oficina",
+  "descripcion": "Muebles funcionales para el espacio de trabajo: escritorios, sillas y estanterías.",
+  "imagen": "https://images.unsplash.com/photo-1589820296156-2454bb8e8f54?w=800"
+}
+
+### Crear categorías con imagen
+POST http://localhost:3000/api/categorias
+Content-Type: application/json
+
+{
+  "nombre": "Exterior",
+  "descripcion": "Muebles resistentes al clima: reposeras, mesas de jardín, bancos.",
+  "imagen": "https://images.unsplash.com/photo-1598300042247-eeeabcf3b7e9?w=800"
+}
+
+### Crear categorías con imagen
+POST http://localhost:3000/api/categorias
+Content-Type: application/json
+
+{
+  "nombre": "Infantil",
+  "descripcion": "Muebles diseñados para niños: cunas, camas pequeñas, escritorios y sillas infantiles.",
+  "imagen": "https://images.unsplash.com/photo-1600566752781-3df8fc9f5cbe?w=800"
 }
 
 ### crear una categoria para eliminar

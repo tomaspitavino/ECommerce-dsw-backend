@@ -1,0 +1,60 @@
+
+
+### POST a mueble
+# @name createMueble
+POST http://localhost:3000/api/muebles
+Content-Type: application/json
+
+{
+  "nombre": "Silla de comedor",
+  "descripcion": "Silla de madera con cojín",
+  "imagen": "https://example.com/silla-comedor.jpg",
+  "categoriaId": 1,
+  "materialId": 1
+}
+
+### ID
+@id = {{createMueble.response.body.data.id}}
+
+### GET one mueble
+GET http://localhost:3000/api/muebles/{{id}}
+
+### modificar un mueble (PUT - recurso completo e idempotente)
+PUT http://localhost:3000/api/muebles/{{id}}
+Content-Type: application/json
+
+{
+  "nombre": "Silla de comedor actualizada",
+  "descripcion": "Silla de madera con cojín actualizado",
+  "imagen": "https://example.com/silla-comedor-actualizada.jpg",
+  "categoriaId": 1,
+  "materialId": 1
+}
+
+### POST a mueble para eliminar
+# @name createMuebleToDelete
+POST http://localhost:3000/api/muebles
+Content-Type: application/json
+
+{
+  "nombre": "Mesa de centro",
+  "descripcion": "Mesa de centro de vidrio y metal",
+  "imagen": "https://example.com/mesa-centro.jpg",
+  "categoriaId": 2,
+  "materialId": 2
+}
+
+### ID to delete
+@idToDelete = {{createMuebleToDelete.response.body.data.id}}
+
+### modificar un mueble para eliminar (PATCH - recurso parcial)
+PATCH http://localhost:3000/api/muebles/{{idToDelete}}  
+Content-Type: application/json
+
+{
+  "nombre": "Mesa de centro actualizada",
+  "descripcion": "Mesa de centro de vidrio y metal actualizada"
+}
+
+### eliminar un mueble
+DELETE http://localhost:3000/api/muebles/{{idToDelete}}
