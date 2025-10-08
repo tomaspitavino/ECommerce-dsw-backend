@@ -15,14 +15,12 @@ Content-Type: application/json
     "usuario": "luffy",
     "email": "luffy@onepiece.jp",
     "contrasenia": "gomuGomu",
-    "pedidos": [],
     "fondos": 2100,
-    "puntos": 400,
-    "favoritos": []
-
+    "puntos": 400
 }
 
 ### POST a character
+# @name clienteToDelete
 POST http://localhost:3000/api/clientes
 Content-Type: application/json
 
@@ -35,10 +33,8 @@ Content-Type: application/json
     "usuario": "gokuson",
     "email": "goku@kamehouse.com",
     "contrasenia": "kamehameha123",
-    "pedidos": [],
     "fondos": 1500,
-    "puntos": 200,
-    "favoritos": []
+    "puntos": 200
 }
 
 ### varios clientes, separados
@@ -54,10 +50,8 @@ Content-Type: application/json
     "usuario": "vegeta_saiyan",
     "email": "vegeta@capsulecorp.jp",
     "contrasenia": "princeofall",
-    "pedidos": [],
     "fondos": 1800,
-    "puntos": 300,
-    "favoritos": []
+    "puntos": 300
 }
 
 ### POST a character
@@ -73,10 +67,8 @@ Content-Type: application/json
   "usuario": "bulmabrief",
   "email": "bulma@capsulecorp.jp",
   "contrasenia": "genius123",
-  "pedidos": [],
   "fondos": 3200,
-  "puntos": 450,
-  "favoritos": []
+  "puntos": 450
 }
 
 ### POST a character
@@ -92,10 +84,8 @@ Content-Type: application/json
   "usuario": "shinjiikari",
   "email": "shinji@nerv.jp",
   "contrasenia": "evaunit01",
-  "pedidos": [],
   "fondos": 700,
-  "puntos": 80,
-  "favoritos": []
+  "puntos": 80
 }
 
 ### POST a character
@@ -111,10 +101,8 @@ Content-Type: application/json
   "usuario": "asukasoryu",
   "email": "asuka@nerv.jp",
   "contrasenia": "redpilot",
-  "pedidos": [],
   "fondos": 950,
-  "puntos": 120,
-  "favoritos": []
+  "puntos": 120
 }
 
 ### POST a character
@@ -130,10 +118,8 @@ Content-Type: application/json
   "usuario": "reiayanami",
   "email": "rei@nerv.jp",
   "contrasenia": "silentblue",
-  "pedidos": [],
   "fondos": 1200,
-  "puntos": 250,
-  "favoritos": []
+  "puntos": 250
 }
 
 ### POST a character
@@ -149,10 +135,8 @@ Content-Type: application/json
   "usuario": "narutouzumaki",
   "email": "naruto@konoha.jp",
   "contrasenia": "ramenlover",
-  "pedidos": [],
   "fondos": 900,
-  "puntos": 180,
-  "favoritos": []
+  "puntos": 180
 }
 
 ### POST a character
@@ -168,10 +152,8 @@ Content-Type: application/json
   "usuario": "sasukeuchiha",
   "email": "sasuke@konoha.jp",
   "contrasenia": "chidori999",
-  "pedidos": [],
   "fondos": 1400,
-  "puntos": 300,
-  "favoritos": []
+  "puntos": 300
 }
 
 ### POST a character
@@ -187,10 +169,8 @@ Content-Type: application/json
   "usuario": "sakuraharuno",
   "email": "sakura@konoha.jp",
   "contrasenia": "mednin123",
-  "pedidos": [],
   "fondos": 1300,
-  "puntos": 260,
-  "favoritos": []
+  "puntos": 260
 }
 
 ### POST a character
@@ -206,10 +186,8 @@ Content-Type: application/json
   "usuario": "kenshinhimura",
   "email": "kenshin@meiji.jp",
   "contrasenia": "hitokiriX",
-  "pedidos": [],
   "fondos": 800,
-  "puntos": 100,
-  "favoritos": []
+  "puntos": 100
 }
 
 ### POST a character
@@ -225,10 +203,8 @@ Content-Type: application/json
   "usuario": "spikespiegel",
   "email": "spike@bebop.net",
   "contrasenia": "seeYouSpaceCowboy",
-  "pedidos": [],
   "fondos": 1100,
-  "puntos": 240,
-  "favoritos": []
+  "puntos": 240
 }
 
 ### POST a character
@@ -244,10 +220,8 @@ Content-Type: application/json
   "usuario": "fayevalentine",
   "email": "faye@bebop.net",
   "contrasenia": "casinoqueen",
-  "pedidos": [],
   "fondos": 2300,
-  "puntos": 310,
-  "favoritos": []
+  "puntos": 310
 }
 
 ### POST a character
@@ -263,10 +237,8 @@ Content-Type: application/json
   "usuario": "edwardwong",
   "email": "ed@bebop.net",
   "contrasenia": "superhacker",
-  "pedidos": [],
   "fondos": 400,
-  "puntos": 500,
-  "favoritos": []
+  "puntos": 500
 }
 
 ### POST a character
@@ -282,10 +254,8 @@ Content-Type: application/json
   "usuario": "seiyapegaso",
   "email": "seiya@saint.jp",
   "contrasenia": "athenaprotect",
-  "pedidos": [],
   "fondos": 1600,
-  "puntos": 350,
-  "favoritos": []
+  "puntos": 350
 }
 
 ### POST a character
@@ -301,10 +271,8 @@ Content-Type: application/json
   "usuario": "shiryudragon",
   "email": "shiryu@saint.jp",
   "contrasenia": "risingdragon",
-  "pedidos": [],
   "fondos": 1450,
-  "puntos": 280,
-  "favoritos": []
+  "puntos": 280
 }
 
 ### POST a character
@@ -320,10 +288,8 @@ Content-Type: application/json
   "usuario": "hyogacisne",
   "email": "hyoga@saint.jp",
   "contrasenia": "diamonddust",
-  "pedidos": [],
   "fondos": 1350,
-  "puntos": 250,
-  "favoritos": []
+  "puntos": 250
 }
 
 ### POST a character
@@ -339,10 +305,8 @@ Content-Type: application/json
   "usuario": "shunandromeda",
   "email": "shun@saint.jp",
   "contrasenia": "nebularchain",
-  "pedidos": [],
   "fondos": 1100,
-  "puntos": 230,
-  "favoritos": []
+  "puntos": 230
 }
 
 ### POST a character
@@ -358,10 +322,8 @@ Content-Type: application/json
   "usuario": "ikkifenix",
   "email": "ikki@saint.jp",
   "contrasenia": "rebirthfire",
-  "pedidos": [],
   "fondos": 1550,
-  "puntos": 300,
-  "favoritos": []
+  "puntos": 300
 }
 
 ### POST a character
@@ -377,10 +339,8 @@ Content-Type: application/json
   "usuario": "zorororonoa",
   "email": "zoro@onepiece.jp",
   "contrasenia": "santoryu",
-  "pedidos": [],
   "fondos": 1800,
-  "puntos": 340,
-  "favoritos": []
+  "puntos": 340
 }
 
 ### ID
@@ -394,7 +354,7 @@ PUT http://localhost:3000/api/clientes/{{id}}
 Content-Type: application/json
 
 {
-"nombre": "Luffy",
+    "nombre": "Luffy",
     "apellido": "Monkey D.",
     "direccion": "Elbaph 99",
     "telefono": "1189001122",
@@ -402,8 +362,22 @@ Content-Type: application/json
     "usuario": "luffy",
     "email": "luffy@onepiece.jp",
     "contrasenia": "gear5",
-    "pedidos": [],
     "fondos": 2100,
-    "puntos": 400,
-    "favoritos": []
+    "puntos": 400
 }
+
+### modificar un cliente (PATCH - recurso parcial y no idempotente)
+PATCH  http://localhost:3000/api/clientes/{{id}}
+Content-Type: application/json
+
+{
+  "usuario": "luffychad",
+  "email": "luffychad@onepiece.jp"
+}
+
+### set id to delete
+@idToDelete = {{clienteToDelete.response.body.data.id}}
+
+### DELETE a character
+DELETE http://localhost:3000/api/clientes/{{idToDelete}}
+Content-Type: application/json

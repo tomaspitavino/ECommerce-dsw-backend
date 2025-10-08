@@ -1,4 +1,8 @@
-import {Router} from 'express';
+import { Router } from 'express';
+import {
+	findByCliente,
+	sanitizeFavoritoInput,
+} from '../favoritos/favoritos.controller.js';
 import {
 	add,
 	findAll,
@@ -10,8 +14,8 @@ import {
 
 export const clienteRouter = Router();
 
-// clienteRouter.get('/:idCliente/favoritos', findFavoritos); me creo un controller de favoritos mas tarde
-// clienteRouter.post('/:idCliente/favoritos/:idMueble', addFavorito); me creo un controller de favoritos mas tarde
+clienteRouter.get('/:id/favoritos', findByCliente); // me creo un controller de favoritos mas tarde
+clienteRouter.post('/:id/favoritos/:idMueble', sanitizeFavoritoInput, add); // me creo un controller de favoritos mas tarde
 clienteRouter.get('/', findAll);
 clienteRouter.get('/:id', findOne);
 clienteRouter.post('/', sanitizeClientInput, add);
