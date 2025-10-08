@@ -8,6 +8,7 @@ import {
 	Rel,
 } from '@mikro-orm/core';
 import { Cliente } from '../cliente/cliente.entity.mysql.js';
+import { Descuento } from '../descuento/descuento.entity.mysql.js';
 import { lineaPedido } from '../lineaPedido/lineaPedido.entity.mysql.js';
 import { BaseEntity } from '../shared/db/baseEntity.entity.mysql.js';
 
@@ -31,8 +32,9 @@ export class Pedido extends BaseEntity {
 	@Property()
 	total!: number;
 
-	// 🟩 Nuevo campo: descuento aplicado al total del pedido
-	@Property({ type: 'float', default: 0 })
-	descuento!: number; // expresado como porcentaje (por ejemplo, 10 = 10%)
-	// pedido.total = subtotal * (1 - pedido.descuento / 100); calculo de descuento
+	@OneToMany(() => Descuento, (d) => d.pedido, {
+		cascade: [Cascade.PERSIST],
+		orphanRemoval: false, // no borra descuentos al eliminar pedido
+	})
+	descuentos = new Collection<Descuento>(this);
 }
