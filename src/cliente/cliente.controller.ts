@@ -20,7 +20,6 @@ export function sanitizeClientInput(
 		contrasenia: req.body.contrasenia,
 		fondos: req.body.fondos,
 		puntos: req.body.puntos,
-		favoritos: req.body.favoritos,
 	};
 
 	Object.keys(req.body.sanitizedInput).forEach((key) => {
@@ -33,7 +32,11 @@ export function sanitizeClientInput(
 
 export async function findAll(req: Request, res: Response) {
 	try {
-		const clientes = await em.find(Cliente, {}, { populate: ['pedidos'] });
+		const clientes = await em.find(
+			Cliente,
+			{},
+			{ populate: ['pedidos', 'favoritos'] }
+		);
 		res.status(200).json({ message: 'find all clientes', data: clientes });
 	} catch (error: any) {
 		res.status(500).json({
@@ -48,7 +51,7 @@ export async function findOne(req: Request, res: Response) {
 		const cliente = await em.findOneOrFail(
 			Cliente,
 			{ id },
-			{ populate: ['pedidos'] }
+			{ populate: ['pedidos', 'favoritos'] }
 		);
 		res.status(200).json({ message: 'find one cliente', data: cliente });
 	} catch (error: any) {
