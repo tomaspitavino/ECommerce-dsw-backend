@@ -1,17 +1,27 @@
-import {NextFunction, Request, Response} from 'express';
-import {orm} from '../shared/db/orm.js';
-import {Mueble} from './mueble.entity.mysql.js';
+import { EntityManager } from '@mikro-orm/core';
+import { NextFunction, Request, Response } from 'express';
+import { Categoria } from '../categoria/categoria.entity.mysql.js';
+import { Material } from '../material/material.entity.mysql.js';
+import { orm } from '../shared/db/orm.js';
+import { Mueble } from './mueble.entity.mysql.js';
 
-const em = orm.em;
+// const em = orm.em;
+const em = orm.em.fork();
 
-function sanitizeMuebleInput(req: Request, res: Response, next: NextFunction) {
+export function sanitizeMuebleInput(
+	req: Request,
+	res: Response,
+	next: NextFunction
+) {
 	req.body.sanitizedInput = {
-		nombre: req.body.nombre,
 		descripcion: req.body.descripcion,
-		precio: req.body.precio,
-		imagen: req.body.imagen,
+		stock: req.body.stock,
+		etiqueta: req.body.etiqueta,
+		precioUnitario: req.body.precioUnitario,
+		imagenes: req.body.imagenes,
 		categoria: req.body.categoria,
 		material: req.body.material,
+		linea: req.body.linea,
 	};
 
 	Object.keys(req.body.sanitizedInput).forEach((key) => {
@@ -22,66 +32,77 @@ function sanitizeMuebleInput(req: Request, res: Response, next: NextFunction) {
 	next();
 }
 
-async function findAll(req: Request, res: Response) {
+function resolveRelations(dto: any, em: EntityManager) {
+	return {
+		...dto,
+		categoria: dto.categoria ? em.getReference(Categoria, dto.categoria) : null,
+		material: dto.material ? em.getReference(Material, dto.material) : null,
+	};
+}
+
+export async function findAll(req: Request, res: Response) {
 	try {
 		const muebles = await em.find(
 			Mueble,
 			{},
-			{populate: ['categoria', 'material']}
+			{ populate: ['categoria', 'material'] }
 		);
 		res
 			.status(200)
-			.json({Message: 'Todos los muebles encontrados', data: muebles});
+			.json({ Message: 'Todos los muebles encontrados', data: muebles });
 	} catch (error: any) {
-		res.status(500).json({message: 'Error al cargar muebles'});
+		res.status(500).json({ message: 'Error al cargar muebles' });
 	}
 }
 
-async function findOne(req: Request, res: Response) {
+export async function findOne(req: Request, res: Response) {
 	try {
 		const id = Number.parseInt(req.params.id);
 		const mueble = await em.findOneOrFail(
 			Mueble,
-			{id},
-			{populate: ['categoria', 'material']}
+			{ id },
+			{ populate: ['categoria', 'material'] }
 		);
-		res.status(200).json({Message: 'Mueble encontrado', data: mueble});
+		res.status(200).json({ Message: 'Mueble encontrado', data: mueble });
 	} catch (error: any) {
-		res.status(500).json({message: 'Error al cargar el mueble'});
+		res.status(500).json({ message: 'Error al cargar el mueble' });
 	}
 }
 
-async function add(req: Request, res: Response) {
+export async function add(req: Request, res: Response) {
 	try {
-		const mueble = em.create(Mueble, req.body.sanitizedInput);
-		await em.flush();
-		res.status(200).json({Message: 'Mueble creado', data: mueble});
+		const dto = req.body.sanitizedInput;
+		const mueble = em.create(Mueble, resolveRelations(dto, em));
+
+		await em.persistAndFlush(mueble);
+		res.status(200).json({ Message: 'Mueble creado', data: mueble });
 	} catch (error: any) {
-		res.status(500).json({message: 'Error al crear el mueble'});
+		res.status(500).json({ message: 'Error al crear el mueble' });
 	}
 }
 
-async function update(req: Request, res: Response) {
-	try {
-		const id = Number.parseInt(req.params.id);
-		const mueble = await em.findOneOrFail(Mueble, {id});
-		em.assign(mueble, req.body.sanitizeizedInput);
-		await em.flush();
-		res.status(200).json({Message: 'Mueble actualizado', data: mueble});
-	} catch (error: any) {
-		res.status(500).json({message: 'Error al actualizar el mueble'});
-	}
-}
-
-async function remove(req: Request, res: Response) {
+export async function update(req: Request, res: Response) {
 	try {
 		const id = Number.parseInt(req.params.id);
-		const mueble = await em.findOneOrFail(Mueble, {id});
+		const dto = req.body.sanitizedInput;
+
+		const mueble = await em.findOneOrFail(Mueble, { id });
+		em.assign(mueble, resolveRelations(dto, em));
+
+		await em.flush();
+		res.status(200).json({ Message: 'Mueble actualizado', data: mueble });
+	} catch (error: any) {
+		res.status(500).json({ message: 'Error al actualizar el mueble' });
+	}
+}
+
+export async function remove(req: Request, res: Response) {
+	try {
+		const id = Number.parseInt(req.params.id);
+		const mueble = await em.findOneOrFail(Mueble, { id });
 		await em.removeAndFlush(mueble);
-		res.status(200).json({Message: 'Mueble eliminado', data: mueble});
+		res.status(200).json({ Message: 'Mueble eliminado', data: mueble });
 	} catch (error: any) {
-		res.status(500).json({message: 'Error al eliminar el mueble'});
+		res.status(500).json({ message: 'Error al eliminar el mueble' });
 	}
 }
-
-export {add, findAll, findOne, remove, sanitizeMuebleInput, update};

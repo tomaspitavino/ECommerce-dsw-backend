@@ -1,17 +1,21 @@
 ### obtener todos los muebles
 GET http://localhost:3000/api/muebles
 
-### POST a mueble
+### Silla de comedor de roble
 # @name createMueble
 POST http://localhost:3000/api/muebles
 Content-Type: application/json
 
 {
-  "nombre": "Silla de comedor",
-  "descripcion": "Silla de madera con cojín",
-  "imagen": "https://example.com/silla-comedor.jpg",
-  "categoriaId": 1,
-  "materialId": 1
+  "descripcion": "Silla de comedor de madera de roble con respaldo ergonómico.",
+  "stock": 12,
+  "etiqueta": "Sillas",
+  "precioUnitario": 32000,
+  "imagenes": [
+    "https://images.unsplash.com/photo-1505691938895-1758d7feb511?w=800"
+  ],
+  "categoria": 1,
+  "material": 1
 }
 
 ### ID
@@ -20,42 +24,150 @@ Content-Type: application/json
 ### GET one mueble
 GET http://localhost:3000/api/muebles/{{id}}
 
-### modificar un mueble (PUT - recurso completo e idempotente)
+### Modificar mueble (put - recurso completo)
 PUT http://localhost:3000/api/muebles/{{id}}
 Content-Type: application/json
 
 {
-  "nombre": "Silla de comedor actualizada",
-  "descripcion": "Silla de madera con cojín actualizado",
-  "imagen": "https://example.com/silla-comedor-actualizada.jpg",
-  "categoriaId": 1,
-  "materialId": 1
+  "descripcion": "Silla de comedor de madera de pino con respaldo curvo y asiento acolchonado.",
+  "stock": 10,
+  "etiqueta": "Sillas",
+  "precioUnitario": 35000,
+  "imagenes": [
+    "https://images.unsplash.com/photo-1505691938895-1758d7feb511?w=800"
+  ],
+  "categoria": 1,
+  "material": 1
 }
 
-### POST a mueble para eliminar
-# @name createMuebleToDelete
+### Mesa ratona de vidrio templado
 POST http://localhost:3000/api/muebles
 Content-Type: application/json
 
 {
-  "nombre": "Mesa de centro",
-  "descripcion": "Mesa de centro de vidrio y metal",
-  "imagen": "https://example.com/mesa-centro.jpg",
-  "categoriaId": 2,
-  "materialId": 2
+  "descripcion": "Mesa ratona con estructura metálica y superficie de vidrio templado.",
+  "stock": 8,
+  "etiqueta": "Mesas",
+  "precioUnitario": 58000,
+  "imagenes": [
+    "https://images.unsplash.com/photo-1616627455482-9f24d97d2c46?w=800"
+  ],
+  "categoria": 2,
+  "material": 7
 }
 
-### ID to delete
-@idToDelete = {{createMuebleToDelete.response.body.data.id}}
-
-### modificar un mueble para eliminar (PATCH - recurso parcial)
-PATCH http://localhost:3000/api/muebles/{{idToDelete}}  
+### Sofá de cuero sintético
+POST http://localhost:3000/api/muebles
 Content-Type: application/json
 
 {
-  "nombre": "Mesa de centro actualizada",
-  "descripcion": "Mesa de centro de vidrio y metal actualizada"
+  "descripcion": "Sofá de dos cuerpos tapizado en cuero sintético gris oscuro.",
+  "stock": 5,
+  "etiqueta": "Sofás",
+  "precioUnitario": 142000,
+  "imagenes": [
+    "https://images.unsplash.com/photo-1501045661006-fcebe0257c3f?w=800"
+  ],
+  "categoria": 3,
+  "material": 8
 }
 
-### eliminar un mueble
+### Cama de melamina blanca
+POST http://localhost:3000/api/muebles
+Content-Type: application/json
+
+{
+  "descripcion": "Cama doble de melamina blanca con cabecero minimalista.",
+  "stock": 9,
+  "etiqueta": "Camas",
+  "precioUnitario": 89000,
+  "imagenes": [
+    "https://images.unsplash.com/photo-1616627980194-3b6b4b4983f0?w=800"
+  ],
+  "categoria": 4,
+  "material": 11
+}
+
+### Biblioteca modular sin asignar material
+POST http://localhost:3000/api/muebles
+Content-Type: application/json
+
+{
+  "descripcion": "Biblioteca modular adaptable a distintos espacios, con compartimentos abiertos.",
+  "stock": 4,
+  "etiqueta": "Almacenamiento",
+  "precioUnitario": 74000,
+  "imagenes": [
+    "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800"
+  ],
+  "categoria": 5
+}
+
+### Lámpara de pie (sin categoría ni material aún)
+POST http://localhost:3000/api/muebles
+Content-Type: application/json
+
+{
+  "descripcion": "Lámpara de pie alta, con base metálica y pantalla de tela.",
+  "stock": 6,
+  "etiqueta": "Iluminación",
+  "precioUnitario": 27000,
+  "imagenes": [
+    "https://images.unsplash.com/photo-1616628182506-8a9621a5d3b0?w=800"
+  ]
+}
+
+### Escritorio de oficina metálico
+POST http://localhost:3000/api/muebles
+Content-Type: application/json
+
+{
+  "descripcion": "Escritorio de oficina con estructura de acero inoxidable y tablero de melamina.",
+  "stock": 7,
+  "etiqueta": "Oficina",
+  "precioUnitario": 65000,
+  "imagenes": [
+    "https://images.unsplash.com/photo-1589820296156-2454bb8e8f54?w=800"
+  ],
+  "categoria": 8,
+  "material": 5
+}
+
+### Silla exterior de aluminio y ratán
+POST http://localhost:3000/api/muebles
+Content-Type: application/json
+
+{
+  "descripcion": "Silla para exteriores con estructura de aluminio y asiento de ratán natural.",
+  "stock": 15,
+  "etiqueta": "Exterior",
+  "precioUnitario": 37000,
+  "imagenes": [
+    "https://images.unsplash.com/photo-1598300042247-eeeabcf3b7e9?w=800"
+  ],
+  "categoria": 9,
+  "material": 10
+}
+
+### Cuna infantil de bambú
+# @name deleteMueble
+POST http://localhost:3000/api/muebles
+Content-Type: application/json
+
+{
+  "descripcion": "Cuna infantil fabricada en bambú natural con barandas desmontables.",
+  "stock": 3,
+  "etiqueta": "Infantil",
+  "precioUnitario": 102000,
+  "imagenes": [
+    "https://images.unsplash.com/photo-1600566752781-3df8fc9f5cbe?w=800"
+  ],
+  "categoria": 10,
+  "material": 12
+}
+
+### ID to delete
+@idToDelete = {{deleteMueble.response.body.data.id}}
+
+### DELETE un mueble
 DELETE http://localhost:3000/api/muebles/{{idToDelete}}

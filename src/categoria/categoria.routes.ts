@@ -1,4 +1,4 @@
-import {Router} from 'express';
+import { Router } from 'express';
 import {
 	add,
 	findAll,
@@ -11,10 +11,10 @@ import {
 const categoriaRouter = Router();
 
 categoriaRouter.get('/', findAll);
-categoriaRouter.get('/:idCategoria', findOne);
+categoriaRouter.get('/:id', findOne);
 categoriaRouter.post('/', sanitizeCategoriaInput, add);
-categoriaRouter.put('/:idCategoria', sanitizeCategoriaInput, update);
-categoriaRouter.patch('/:idCategoria', sanitizeCategoriaInput, update);
-categoriaRouter.delete('/:idCategoria', remove);
+categoriaRouter.put('/:id', sanitizeCategoriaInput, update);
+categoriaRouter.patch('/:id', sanitizeCategoriaInput, update);
+categoriaRouter.delete('/:id', remove);
 
-export {categoriaRouter};
+export { categoriaRouter };

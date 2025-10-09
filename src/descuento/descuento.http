@@ -1,0 +1,71 @@
+GET http://localhost:3000/api/descuentos
+
+### Crear descuentos
+# @name createDescuento
+POST http://localhost:3000/api/descuentos
+Content-Type: application/json
+
+{
+  "tipo": "CANTIDAD",
+  "porcentaje": 3,
+  "descripcion": "3% de descuento por comprar 3 o más productos",
+  "pedido": 12
+}
+
+@id = {{createDescuento.response.body.data.id}}
+
+GET http://localhost:3000/api/descuentos/{{id}}
+
+POST http://localhost:3000/api/descuentos
+Content-Type: application/json
+
+{
+  "tipo": "CANTIDAD",
+  "porcentaje": 7,
+  "descripcion": "7% de descuento por comprar 5 o más productos",
+  "pedido": 15
+}
+
+POST http://localhost:3000/api/descuentos
+Content-Type: application/json
+
+{
+  "tipo": "MONTO",
+  "porcentaje": 5,
+  "descripcion": "5% de descuento en compras mayores a $300",
+  "pedido": 18
+}
+
+POST http://localhost:3000/api/descuentos
+# @name descuentoToDelete
+Content-Type: application/json
+
+{
+  "tipo": "MONTO",
+  "porcentaje": 10,
+  "descripcion": "10% de descuento en compras mayores a $500",
+  "pedido": 20
+}
+
+PUT http://localhost:3000/api/descuentos/{{id}}
+Content-Type: application/json
+
+{
+  "tipo": "MONTO",
+  "porcentaje": 8,
+  "descripcion": "Actualizado: 8% en compras mayores a $400",
+  "pedido": 15
+}
+
+@idToDelete = {{descuentoToDelete.response.body.data.id}}
+
+PATCH http://localhost:3000/api/descuentos/{{idToDelete}}
+Content-Type: application/json
+
+{
+  "porcentaje": 12
+}
+
+DELETE http://localhost:3000/api/descuentos/{{idToDelete}}
+Content-Type: application/json
+
