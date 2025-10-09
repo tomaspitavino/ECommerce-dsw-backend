@@ -1,11 +1,11 @@
 import { Router } from 'express';
 import {
-    add,
-    findAll,
-    findOne,
-    remove,
-    sanitizeDescuentoInput,
-    update,
+	add,
+	findAll,
+	findOne,
+	remove,
+	sanitizeDescuentoInput,
+	update,
 } from './descuento.controller.js';
 
 export const descuentoRouter = Router();
