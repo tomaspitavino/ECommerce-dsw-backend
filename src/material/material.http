@@ -116,13 +116,22 @@ Content-Type: application/json
 ### GET one material
 GET http://localhost:3000/api/materiales/{{id}}
 
+### Modificar material (put - recurso completo)
+PUT http://localhost:3000/api/materiales/{{id}}
+Content-Type: application/json
+
+{
+  "nroMaterial": "M001",
+  "nombre": "Madera de pino"
+}
+
 ### POST a material
 # @name createMaterialToDelete
 POST http://localhost:3000/api/materiales
 Content-Type: application/json
 
 {
-  "nroMaterial": "M003",
+  "nroMaterial": "M013",
   "nombre": "Cuero de calidad"
 }
 
