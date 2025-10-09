@@ -116,26 +116,26 @@ Content-Type: application/json
 }
 
 ### crear una categoria para eliminar
-# @name createCategoriaToDelete
+# @name categoriaToDelete
 POST http://localhost:3000/api/categorias
 Content-Type: application/json
 
 {
   "nombre": "Sillas de oficina",
   "descripcion": "Sillas ergonómicas para oficina",
-  "imagen": "https://img.freepik.com/free-photo/interior-design-house-modern-wooden-table-chair_657883-324.jpg?t=st=1749833396~exp=1749836996~hmac=faf682c052f88632e1c91159f43495a5acee6337fd63fd3b3baaf76ed168f32e&w=1380",
+  "imagen": "https://img.freepik.com/free-photo/interior-design-house-modern-wooden-table-chair_657883-324.jpg?t=st=1749833396~exp=1749836996~hmac=faf682c052f88632e1c91159f43495a5acee6337fd63fd3b3baaf76ed168f32e&w=1380"
 }
 
 ### ID to delete
-@idToDelete = {{createCategoriaToDelete.response.body.data.id}}
+@idToDelete = {{categoriaToDelete.response.body.data.id}}
 
 ### modificar una categoria (PATCH - recurso parcial y no idempotente)
 PATCH http://localhost:3000/api/categorias/{{idToDelete}}
 Content-Type: application/json
 
 {
-  "nombre": "Sillas de oficina",
-  "descripcion": "Sillas ergonómicas para oficina"
+  "nombre": "Sillas de escuela",
+  "descripcion": "Sillas ergonómicas para escuela"
 }
 
 ### eliminar una categoria
