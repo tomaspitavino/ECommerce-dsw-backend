@@ -1,20 +1,24 @@
-import {
-    Collection,
-    Entity,
-    ManyToMany,
-    Property,
-} from '@mikro-orm/core';
+import { Entity, ManyToOne, Property, Rel } from '@mikro-orm/core';
+import { Pedido } from '../pedido/pedido.entity.mysql.js';
 import { BaseEntity } from '../shared/db/baseEntity.entity.mysql.js';
-import { Cliente } from '../cliente/cliente.entity.mysql.js';
 
 @Entity()
 export class Descuento extends BaseEntity {
-    @Property({ nullable: false })
-    tipoDescuento!: string;
+	@Property({ nullable: false })
+	codigo!: string; // Ej: 'PROMO10', 'BLACKFRIDAY'
 
-    @Property({ nullable: false })
-    porcentajeDescuento!: number;
+	@Property({ default: 'MONTO' })
+	tipo!: string; // 'CANTIDAD', 'MONTO'
 
-    @ManyToMany(() => Cliente, (cliente) => cliente.descuentos)
-    clientes = new Collection<Cliente>(this)
+	@Property({ nullable: false })
+	porcentaje!: number;
+
+	@Property({ nullable: true })
+	descripcion?: string;
+
+	@Property({ type: 'datetime', nullable: true })
+	fechaExpiracion?: Date;
+
+	@ManyToOne(() => Pedido, { nullable: true })
+	pedido?: Rel<Pedido> | null;
 }
