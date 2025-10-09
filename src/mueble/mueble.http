@@ -24,6 +24,22 @@ Content-Type: application/json
 ### GET one mueble
 GET http://localhost:3000/api/muebles/{{id}}
 
+### Modificar mueble (put - recurso completo)
+PUT http://localhost:3000/api/muebles/{{id}}
+Content-Type: application/json
+
+{
+  "descripcion": "Silla de comedor de madera de pino con respaldo curvo y asiento acolchonado.",
+  "stock": 10,
+  "etiqueta": "Sillas",
+  "precioUnitario": 35000,
+  "imagenes": [
+    "https://images.unsplash.com/photo-1505691938895-1758d7feb511?w=800"
+  ],
+  "categoria": 1,
+  "material": 1
+}
+
 ### Mesa ratona de vidrio templado
 POST http://localhost:3000/api/muebles
 Content-Type: application/json
@@ -134,6 +150,7 @@ Content-Type: application/json
 }
 
 ### Cuna infantil de bambú
+# @name deleteMueble
 POST http://localhost:3000/api/muebles
 Content-Type: application/json
 
@@ -148,3 +165,9 @@ Content-Type: application/json
   "categoria": 10,
   "material": 12
 }
+
+### ID to delete
+@idToDelete = {{deleteMueble.response.body.data.id}}
+
+### DELETE un mueble
+DELETE http://localhost:3000/api/muebles/{{idToDelete}}
