@@ -6,7 +6,8 @@ import "express-async-errors";
 import "reflect-metadata";
 import { categoriaRouter } from "./categoria/categoria.routes.js";
 import { clienteRouter } from "./cliente/cliente.routes.js";
-import { lineaPedidoRouter } from "./lineaPedido/lineaPedido.routes.js";
+import { descuentoRouter } from "./descuento/descuento.routes.js";
+import { itemRouter } from "./item/item.routes.js";
 import { materialRouter } from "./material/material.routes.js";
 import { muebleRouter } from "./mueble/mueble.routes.js";
 import { orm, syncSchema } from "./shared/db/orm.js";
@@ -43,8 +44,8 @@ app.use("/api/clientes", clienteRouter);
 app.use("/api/categorias", categoriaRouter);
 app.use("/api/materiales", materialRouter);
 app.use("/api/muebles", muebleRouter);
-app.use("/api/lineas-pedido", lineaPedidoRouter);
-// descuento tiene alcance de aprobación directa, lo sacamos para la regularidad.
+app.use("/api/descuentos", descuentoRouter);
+app.use("/api/items", itemRouter);
 
 /* // 404 para rutas no existentes
 app.use('*', (_req, _res, next) =>

@@ -1,12 +1,4 @@
-import {
-	Cascade,
-	Collection,
-	Entity,
-	ManyToOne,
-	OneToMany,
-	Property,
-	Rel,
-} from '@mikro-orm/core';
+import { Cascade, Entity, ManyToOne, Property, Rel } from '@mikro-orm/core';
 import { Mueble } from '../mueble/mueble.entity.mysql.js';
 import { Pedido } from '../pedido/pedido.entity.mysql.js';
 import { BaseEntity } from '../shared/db/baseEntity.entity.mysql.js';
@@ -15,8 +7,8 @@ import { BaseEntity } from '../shared/db/baseEntity.entity.mysql.js';
 // Voy a implementar como una entidad de relación con atributos
 
 @Entity()
-export class lineaPedido extends BaseEntity {
-	// Valor calculado de lineaPedido.cantidad * mueble.precioUnitario
+export class Item extends BaseEntity {
+	// Valor calculado de item.cantidad * mueble.precioUnitario
 	@Property({ nullable: false })
 	subtotal!: number;
 
@@ -28,11 +20,8 @@ export class lineaPedido extends BaseEntity {
 	@Property({ default: 1 })
 	cantidad!: number;
 
-	@OneToMany(() => Mueble, (mueble) => mueble.lineaPedido, {
-		nullable: false,
-		cascade: [Cascade.ALL],
-	})
-	mueble = new Collection<Mueble>(this);
+	@ManyToOne(() => Mueble, { nullable: false, cascade: [Cascade.ALL] })
+	mueble!: Rel<Mueble>;
 
 	@ManyToOne(() => Pedido, { nullable: false })
 	pedido!: Rel<Pedido>;
