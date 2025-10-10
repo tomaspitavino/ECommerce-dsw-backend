@@ -63,7 +63,7 @@ export async function add(req: Request, res: Response) {
     const dto = req.body.sanitizedInput;
     const descuento = em.create(Descuento, resolveRelations(dto, em));
 
-    await em.persistAndFlush(descuento);
+    await em.flush();
     res.status(201).json({
       message: "Descuento creado exitosamente",
       data: descuento,

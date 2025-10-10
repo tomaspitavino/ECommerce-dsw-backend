@@ -1,4 +1,5 @@
 import {
+  Cascade,
   Collection,
   Entity,
   ManyToOne,
@@ -36,7 +37,7 @@ export class Mueble extends BaseEntity {
   material?: Rel<Material> | null;
 
   @OneToMany(() => Favorito, (favorito) => favorito.mueble, {
-    orphanRemoval: true,
+    cascade: [Cascade.REMOVE],
   })
   favoritos = new Collection<Favorito>(this);
 
