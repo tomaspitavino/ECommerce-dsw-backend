@@ -1,6 +1,6 @@
 {
   "name": "muebleria-api",
-  "version": "1.2.1",
+  "version": "1.3.0",
   "type": "module",
   "description": "API para e-commerce de mueblería",
   "scripts": {
@@ -20,7 +20,8 @@
     "express": "4.18.2",
     "express-async-errors": "^3.1.1",
     "flake-idgen": "^1.4.0",
-    "reflect-metadata": "0.2.2"
+    "reflect-metadata": "0.2.2",
+    "zod": "^4.1.12"
   },
   "devDependencies": {
     "@types/cors": "2.8.19",
