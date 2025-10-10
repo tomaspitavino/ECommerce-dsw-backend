@@ -8,10 +8,11 @@ import { categoriaRouter } from "./categoria/categoria.routes.js";
 import { clienteRouter } from "./cliente/cliente.routes.js";
 import { descuentoRouter } from "./descuento/descuento.routes.js";
 import { itemRouter } from "./item/item.routes.js";
+import { favoritosRouter } from "./favoritos/favoritos.routes.js";
 import { materialRouter } from "./material/material.routes.js";
 import { muebleRouter } from "./mueble/mueble.routes.js";
 import { orm, syncSchema } from "./shared/db/orm.js";
-// import { AppError, errorHandler } from './shared/errors';
+import { errorHandler } from "./shared/middleware/errorHandler.js";
 
 const app = express();
 app.use(express.json());
@@ -35,8 +36,6 @@ app.use(
   }),
 );
 
-// curl -I -H "Origin: http://localhost:4200" http://localhost:3001/api/clientes usar eso para verificar
-
 const port = 3000;
 
 // Revisar paths
@@ -46,15 +45,16 @@ app.use("/api/materiales", materialRouter);
 app.use("/api/muebles", muebleRouter);
 app.use("/api/descuentos", descuentoRouter);
 app.use("/api/items", itemRouter);
+app.use("/api/favoritos", favoritosRouter);
 
 /* // 404 para rutas no existentes
 app.use('*', (_req, _res, next) =>
     next(new AppError('Recurso no encontrado', 404))
 );
+*/
 
 // Manejador de errores global (siempre al final)
 app.use(errorHandler);
- */
 
 await syncSchema(); // never in production
 

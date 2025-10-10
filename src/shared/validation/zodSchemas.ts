@@ -29,11 +29,12 @@ export const ClienteSchema = z.object({
 
 export const CategoriaSchema = z.object({
 	nombre: z.string().min(2),
-	descripcion: z.string().optional(),
-	imagen: z.url().optional(),
+	descripcion: z.string().min(5).max(255),
+	imagen: z.url(),
 	grupoVisual: z.string().optional(),
 });
 
-export type ClienteDTO = z.infer<typeof ClienteSchema>;
-export type CategoriaDTO = z.infer<typeof CategoriaSchema>;
-export type FavoritoDTO = z.infer<typeof FavoritoSchema>;
+export const MaterialSchema = z.object({
+	nroMaterial: z.string().min(1),
+	nombre: z.string().min(2),
+});
