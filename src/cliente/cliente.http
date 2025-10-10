@@ -11,7 +11,7 @@ Content-Type: application/json
     "apellido": "Monkey D.",
     "direccion": "East Blue 01",
     "telefono": "1189001122",
-    "dni": "37011223",
+    "dni": "370112238",
     "usuario": "luffy",
     "email": "luffy@onepiece.jp",
     "contrasenia": "gomuGomu",
@@ -358,10 +358,10 @@ Content-Type: application/json
     "apellido": "Monkey D.",
     "direccion": "Elbaph 99",
     "telefono": "1189001122",
-    "dni": "37011223",
+    "dni": "370112239",
     "usuario": "luffy",
     "email": "luffy@onepiece.jp",
-    "contrasenia": "gear5",
+    "contrasenia": "gear5haoshoku",
     "fondos": 2100,
     "puntos": 400
 }
