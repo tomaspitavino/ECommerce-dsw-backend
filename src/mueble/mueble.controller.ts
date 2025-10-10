@@ -6,7 +6,7 @@ import { orm } from "../shared/db/orm.js";
 import { Mueble } from "./mueble.entity.mysql.js";
 
 // const em = orm.em;
-const em = orm.em.fork();
+const em = orm.em;
 
 export function sanitizeMuebleInput(
   req: Request,
