@@ -114,7 +114,8 @@ Content-Type: application/json
   "precioUnitario": 27000,
   "imagenes": [
     "https://images.unsplash.com/photo-1616628182506-8a9621a5d3b0?w=800"
-  ]
+  ],
+  "material:" 4
 }
 
 ### Escritorio de oficina metálico

@@ -9,11 +9,6 @@ const PasswordSchema = z
 	.regex(/[0-9]/, 'Debe contener al menos un número')
 	.regex(/[^A-Za-z0-9]/, 'Debe contener al menos un símbolo');
 
-export const FavoritoSchema = z.object({
-	cliente: z.number(),
-	mueble: z.number(),
-});
-
 export const ClienteSchema = z.object({
 	nombre: z.string().min(2),
 	apellido: z.string().min(2),
@@ -37,4 +32,35 @@ export const CategoriaSchema = z.object({
 export const MaterialSchema = z.object({
 	nroMaterial: z.string().min(1),
 	nombre: z.string().min(2),
+});
+
+export const MuebleSchema = z.object({
+	descripcion: z.string().min(10).max(500),
+	stock: z.number().int().nonnegative(),
+	etiqueta: z.string().min(2).max(50),
+	precioUnitario: z.number().nonnegative(),
+	imagenes: z.array(z.url()).min(1),
+	categoria: z.number().int().nonnegative(),
+	material: z.number().int().nonnegative(),
+	item: z.number().int().nonnegative().optional(),
+	favoritos: z.array(z.number().int().nonnegative()).optional(),
+});
+
+export const ItemSchema = z.object({
+	subtotal: z.number().nonnegative(),
+	estado: z.string().min(2).max(50),
+	cantidad: z.number().int().nonnegative(),
+	mueble: z.number().int().nonnegative(),
+	pedido: z.number().int().nonnegative(),
+});
+
+const datetime = z.iso.datetime();
+
+export const DescuentoSchema = z.object({
+	codigo: z.string().min(2),
+	tipo: z.enum(['Cantidad', 'Monto']),
+	porcentaje: z.number().min(0).max(100),
+	descripcion: z.string().min(5).max(255).optional(),
+	fechaExpiracion: datetime.optional(), // ISO date string
+	pedido: z.number().int().nonnegative().optional(),
 });
