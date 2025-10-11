@@ -15,8 +15,7 @@ Content-Type: application/json
     "usuario": "luffy",
     "email": "luffy@onepiece.jp",
     "contrasenia": "gomuGomu",
-    "fondos": 2100,
-    "puntos": 400
+    "fondos": 2100
 }
 
 ### POST a character
@@ -33,8 +32,7 @@ Content-Type: application/json
     "usuario": "gokuson",
     "email": "goku@kamehouse.com",
     "contrasenia": "kamehameha123",
-    "fondos": 1500,
-    "puntos": 200
+    "fondos": 1500
 }
 
 ### varios clientes, separados
@@ -50,8 +48,7 @@ Content-Type: application/json
     "usuario": "vegeta_saiyan",
     "email": "vegeta@capsulecorp.jp",
     "contrasenia": "princeofall",
-    "fondos": 1800,
-    "puntos": 300
+    "fondos": 1800
 }
 
 ### POST a character
@@ -67,8 +64,7 @@ Content-Type: application/json
   "usuario": "bulmabrief",
   "email": "bulma@capsulecorp.jp",
   "contrasenia": "genius123",
-  "fondos": 3200,
-  "puntos": 450
+  "fondos": 3200
 }
 
 ### POST a character
@@ -84,8 +80,7 @@ Content-Type: application/json
   "usuario": "shinjiikari",
   "email": "shinji@nerv.jp",
   "contrasenia": "evaunit01",
-  "fondos": 700,
-  "puntos": 80
+  "fondos": 700
 }
 
 ### POST a character
@@ -101,8 +96,7 @@ Content-Type: application/json
   "usuario": "asukasoryu",
   "email": "asuka@nerv.jp",
   "contrasenia": "redpilot",
-  "fondos": 950,
-  "puntos": 120
+  "fondos": 950
 }
 
 ### POST a character
@@ -118,8 +112,7 @@ Content-Type: application/json
   "usuario": "reiayanami",
   "email": "rei@nerv.jp",
   "contrasenia": "silentblue",
-  "fondos": 1200,
-  "puntos": 250
+  "fondos": 1200
 }
 
 ### POST a character
@@ -135,8 +128,7 @@ Content-Type: application/json
   "usuario": "narutouzumaki",
   "email": "naruto@konoha.jp",
   "contrasenia": "ramenlover",
-  "fondos": 900,
-  "puntos": 180
+  "fondos": 900
 }
 
 ### POST a character
@@ -152,8 +144,7 @@ Content-Type: application/json
   "usuario": "sasukeuchiha",
   "email": "sasuke@konoha.jp",
   "contrasenia": "chidori999",
-  "fondos": 1400,
-  "puntos": 300
+  "fondos": 1400
 }
 
 ### POST a character
@@ -169,8 +160,7 @@ Content-Type: application/json
   "usuario": "sakuraharuno",
   "email": "sakura@konoha.jp",
   "contrasenia": "mednin123",
-  "fondos": 1300,
-  "puntos": 260
+  "fondos": 1300
 }
 
 ### POST a character
@@ -186,8 +176,7 @@ Content-Type: application/json
   "usuario": "kenshinhimura",
   "email": "kenshin@meiji.jp",
   "contrasenia": "hitokiriX",
-  "fondos": 800,
-  "puntos": 100
+  "fondos": 800
 }
 
 ### POST a character
@@ -203,8 +192,7 @@ Content-Type: application/json
   "usuario": "spikespiegel",
   "email": "spike@bebop.net",
   "contrasenia": "seeYouSpaceCowboy",
-  "fondos": 1100,
-  "puntos": 240
+  "fondos": 1100
 }
 
 ### POST a character
@@ -220,8 +208,7 @@ Content-Type: application/json
   "usuario": "fayevalentine",
   "email": "faye@bebop.net",
   "contrasenia": "casinoqueen",
-  "fondos": 2300,
-  "puntos": 310
+  "fondos": 2300
 }
 
 ### POST a character
@@ -237,8 +224,7 @@ Content-Type: application/json
   "usuario": "edwardwong",
   "email": "ed@bebop.net",
   "contrasenia": "superhacker",
-  "fondos": 400,
-  "puntos": 500
+  "fondos": 400
 }
 
 ### POST a character
@@ -254,8 +240,7 @@ Content-Type: application/json
   "usuario": "seiyapegaso",
   "email": "seiya@saint.jp",
   "contrasenia": "athenaprotect",
-  "fondos": 1600,
-  "puntos": 350
+  "fondos": 1600
 }
 
 ### POST a character
@@ -271,8 +256,7 @@ Content-Type: application/json
   "usuario": "shiryudragon",
   "email": "shiryu@saint.jp",
   "contrasenia": "risingdragon",
-  "fondos": 1450,
-  "puntos": 280
+  "fondos": 1450
 }
 
 ### POST a character
@@ -288,8 +272,7 @@ Content-Type: application/json
   "usuario": "hyogacisne",
   "email": "hyoga@saint.jp",
   "contrasenia": "diamonddust",
-  "fondos": 1350,
-  "puntos": 250
+  "fondos": 1350
 }
 
 ### POST a character
@@ -305,8 +288,7 @@ Content-Type: application/json
   "usuario": "shunandromeda",
   "email": "shun@saint.jp",
   "contrasenia": "nebularchain",
-  "fondos": 1100,
-  "puntos": 230
+  "fondos": 1100
 }
 
 ### POST a character
@@ -322,8 +304,7 @@ Content-Type: application/json
   "usuario": "ikkifenix",
   "email": "ikki@saint.jp",
   "contrasenia": "rebirthfire",
-  "fondos": 1550,
-  "puntos": 300
+  "fondos": 1550
 }
 
 ### POST a character
@@ -339,8 +320,7 @@ Content-Type: application/json
   "usuario": "zorororonoa",
   "email": "zoro@onepiece.jp",
   "contrasenia": "santoryu",
-  "fondos": 1800,
-  "puntos": 340
+  "fondos": 1800
 }
 
 ### ID
@@ -362,8 +342,7 @@ Content-Type: application/json
     "usuario": "luffy",
     "email": "luffy@onepiece.jp",
     "contrasenia": "gear5haoshoku",
-    "fondos": 2100,
-    "puntos": 400
+    "fondos": 2100
 }
 
 ### modificar un cliente (PATCH - recurso parcial y no idempotente)
