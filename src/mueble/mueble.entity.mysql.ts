@@ -30,18 +30,18 @@ export class Mueble extends BaseEntity {
 	@Property({ nullable: false })
 	imagenes!: string[]; // Array of image URLs or file paths
 
-	@ManyToOne(() => Categoria, { nullable: true }) // pueden existir muebles sin categoria
-	categoria?: Rel<Categoria> | null;
+	@ManyToOne(() => Categoria, { nullable: false })
+	categoria!: Rel<Categoria>;
 
-	@ManyToOne(() => Material, { nullable: true }) // pueden existir muebles sin material
-	material?: Rel<Material> | null;
-
-	@OneToMany(() => Favorito, (favorito) => favorito.mueble, {
-		cascade: [Cascade.REMOVE],
-	})
-	favoritos = new Collection<Favorito>(this);
+	@ManyToOne(() => Material, { nullable: false })
+	material!: Rel<Material>;
 
 	// item es una entidad que representa una relacion con atributos
 	@ManyToOne(() => Item, { nullable: true })
 	item?: Rel<Item>;
+
+	@OneToMany(() => Favorito, (favorito) => favorito.mueble, {
+		cascade: [Cascade.REMOVE],
+	})
+	favoritos? = new Collection<Favorito>(this);
 }
