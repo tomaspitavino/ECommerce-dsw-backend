@@ -1,85 +1,50 @@
-import { NotFoundError, ValidationError } from '@mikro-orm/core';
-import { NextFunction, Request, Response } from 'express';
+import { Request, Response, NextFunction } from "express";
+import { NotFoundError, ValidationError } from "@mikro-orm/core";
+import { ZodError } from "zod";
+import { HttpError } from "../errors/ErrorClass.js";
 
-// 🚨 Errores personalizados opcionales
-class HttpError extends Error {
-	status: number;
-	constructor(status: number, message: string) {
-		super(message);
-		this.status = status;
-	}
-}
-
-export class BadRequestError extends HttpError {
-	constructor(message = 'Solicitud inválida') {
-		super(400, message);
-	}
-}
-
-export class NotFoundHTTPError extends HttpError {
-	constructor(message = 'Recurso no encontrado') {
-		super(404, message);
-	}
-}
-
-export class ConflictError extends HttpError {
-	constructor(message = 'Conflicto de datos') {
-		super(409, message);
-	}
-}
-
-export class InternalServerError extends HttpError {
-	constructor(message = 'Error interno del servidor') {
-		super(500, message);
-	}
-}
-
-// 🧩 Middleware global
 export function errorHandler(
-	err: any,
-	req: Request,
-	res: Response,
-	_next: NextFunction
+  err: any,
+  req: Request,
+  res: Response,
+  _next: NextFunction,
 ) {
-	console.error('[ERROR HANDLER]', err);
+  console.error(`[ERROR] ${req.method} ${req.path}`, err);
 
-	// Zod validation error
-	if (err.name === 'ZodError') {
-		return res.status(400).json({
-			message: 'Error de validación',
-			errors: err.errors || err.issues,
-		});
-	}
+  // 1️⃣ Errores de validación Zod
+  if (err instanceof ZodError) {
+    return res.status(400).json({
+      message: "Error de validación",
+      issues: err.issues.map((e) => ({
+        path: e.path.join("."),
+        message: e.message,
+      })),
+    });
+  }
 
-	// MikroORM: entidad no encontrada
-	if (err instanceof NotFoundError) {
-		return res.status(404).json({
-			message: 'Entidad no encontrada',
-		});
-	}
+  // 2️⃣ Entidad no encontrada (MikroORM)
+  if (err instanceof NotFoundError) {
+    return res.status(404).json({ message: "Entidad no encontrada" });
+  }
 
-	// MikroORM: error de validación interna
-	if (err instanceof ValidationError) {
-		return res.status(400).json({
-			message: err.message,
-		});
-	}
+  // 3️⃣ Error de validación de MikroORM
+  if (err instanceof ValidationError) {
+    return res.status(400).json({ message: err.message });
+  }
 
-	// Error SQL de duplicado
-	if (err.code === 'ER_DUP_ENTRY' || err.code === 'SQLITE_CONSTRAINT_UNIQUE') {
-		return res.status(409).json({
-			message: 'El registro ya existe (valor duplicado)',
-		});
-	}
+  // 4️⃣ Duplicado (MySQL o SQLite)
+  if (err.code === "ER_DUP_ENTRY" || err.code === "SQLITE_CONSTRAINT_UNIQUE") {
+    return res.status(409).json({ message: "Registro duplicado" });
+  }
 
-	// Errores personalizados (BadRequestError, ConflictError, etc.)
-	if (err instanceof HttpError) {
-		return res.status(err.status).json({ message: err.message });
-	}
+  // 5️⃣ Errores personalizados (HttpError)
+  if (err instanceof HttpError) {
+    return res.status(err.status).json({ message: err.message });
+  }
 
-	// Default — cualquier otro error
-	return res.status(500).json({
-		message: 'Error interno del servidor',
-		details: err.message,
-	});
+  // 6️⃣ Default — error inesperado
+  return res.status(500).json({
+    message: "Error interno del servidor",
+    details: process.env.NODE_ENV === "development" ? err.message : undefined,
+  });
 }
