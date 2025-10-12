@@ -14,8 +14,10 @@ Content-Type: application/json
 
 @id = {{createDescuento.response.body.data.id}}
 
+###
 GET http://localhost:3000/api/descuentos/{{id}}
 
+###
 POST http://localhost:3000/api/descuentos
 Content-Type: application/json
 
@@ -26,6 +28,7 @@ Content-Type: application/json
   "pedido": 15
 }
 
+###
 POST http://localhost:3000/api/descuentos
 Content-Type: application/json
 
@@ -36,6 +39,7 @@ Content-Type: application/json
   "pedido": 18
 }
 
+###
 POST http://localhost:3000/api/descuentos
 # @name descuentoToDelete
 Content-Type: application/json
@@ -59,6 +63,7 @@ Content-Type: application/json
 
 @idToDelete = {{descuentoToDelete.response.body.data.id}}
 
+###
 PATCH http://localhost:3000/api/descuentos/{{idToDelete}}
 Content-Type: application/json
 
@@ -66,6 +71,6 @@ Content-Type: application/json
   "porcentaje": 12
 }
 
+###
 DELETE http://localhost:3000/api/descuentos/{{idToDelete}}
 Content-Type: application/json
-

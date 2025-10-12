@@ -1,4 +1,11 @@
-import { Cascade, Entity, ManyToOne, Property, Rel } from '@mikro-orm/core';
+import {
+	Cascade,
+	Entity,
+	ManyToOne,
+	OneToMany,
+	Property,
+	Rel,
+} from '@mikro-orm/core';
 import { Mueble } from '../mueble/mueble.entity.mysql.js';
 import { Pedido } from '../pedido/pedido.entity.mysql.js';
 import { BaseEntity } from '../shared/db/baseEntity.entity.mysql.js';
@@ -20,7 +27,7 @@ export class Item extends BaseEntity {
 	@Property({ default: 1 })
 	cantidad!: number;
 
-	@ManyToOne(() => Mueble, { nullable: false, cascade: [Cascade.ALL] })
+	@OneToMany(() => Mueble, (mueble) => mueble.item, {})
 	mueble!: Rel<Mueble>;
 
 	@ManyToOne(() => Pedido, { nullable: false })

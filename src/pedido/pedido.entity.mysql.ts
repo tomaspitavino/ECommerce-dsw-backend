@@ -4,6 +4,7 @@ import {
   Entity,
   ManyToOne,
   OneToMany,
+  OneToOne,
   Property,
   Rel,
 } from "@mikro-orm/core";
@@ -11,6 +12,7 @@ import { Cliente } from "../cliente/cliente.entity.mysql.js";
 import { Descuento } from "../descuento/descuento.entity.mysql.js";
 import { Item } from "../item/item.entity.mysql.js";
 import { BaseEntity } from "../shared/db/baseEntity.entity.mysql.js";
+import { Pago } from "../pago/pago.entity.mysql.js";
 
 @Entity()
 export class Pedido extends BaseEntity {
@@ -37,4 +39,10 @@ export class Pedido extends BaseEntity {
     orphanRemoval: false, // no borra descuentos al eliminar pedido
   })
   descuentos = new Collection<Descuento>(this);
+
+  @OneToOne(() => Pago, (pago) => pago.pedido, {
+    nullable: true,
+    owner: true,
+  })
+  pago?: Rel<Pago>;
 }
