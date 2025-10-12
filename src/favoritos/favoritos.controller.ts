@@ -4,7 +4,7 @@ import { Mueble } from '../mueble/mueble.entity.mysql.js';
 import { orm } from '../shared/db/orm.js';
 import { Favorito } from './favoritos.entity.mysql.js';
 
-const em = orm.em.fork();
+const em = orm.em;
 
 export function sanitizeFavoritoInput(
 	req: Request,
@@ -34,7 +34,7 @@ export async function add(req: Request, res: Response) {
 			mueble: em.getReference(Mueble, muebleId),
 		});
 
-		await em.persistAndFlush(favorito);
+		await em.flush();
 		res.status(201).json({ message: 'Favorito agregado', data: favorito });
 	} catch (error: any) {
 		res

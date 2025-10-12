@@ -1,14 +1,13 @@
-import { EntityManager } from '@mikro-orm/core';
-import { NextFunction, Request, Response } from 'express';
-import { Categoria } from '../categoria/categoria.entity.mysql.js';
-import { Material } from '../material/material.entity.mysql.js';
+import { Request, Response } from 'express';
 import { orm } from '../shared/db/orm.js';
+import { validate } from '../shared/validation/validateRequest.js';
+import { MuebleSchema } from '../shared/validation/zodSchemas.js';
 import { Mueble } from './mueble.entity.mysql.js';
 
 // const em = orm.em;
-const em = orm.em.fork();
+const em = orm.em;
 
-export function sanitizeMuebleInput(
+/* export function sanitizeMuebleInput(
 	req: Request,
 	res: Response,
 	next: NextFunction
@@ -21,7 +20,8 @@ export function sanitizeMuebleInput(
 		imagenes: req.body.imagenes,
 		categoria: req.body.categoria,
 		material: req.body.material,
-		linea: req.body.linea,
+		item: req.body.item,
+		favoritos: req.body.favoritos,
 	};
 
 	Object.keys(req.body.sanitizedInput).forEach((key) => {
@@ -30,15 +30,17 @@ export function sanitizeMuebleInput(
 		}
 	});
 	next();
-}
+} */
 
-function resolveRelations(dto: any, em: EntityManager) {
+/* function resolveRelations(dto: any, em: EntityManager) {
 	return {
 		...dto,
-		categoria: dto.categoria ? em.getReference(Categoria, dto.categoria) : null,
-		material: dto.material ? em.getReference(Material, dto.material) : null,
+		categoria: (dto.categoria = em.getReference(Categoria, dto.categoria)),
+		material: (dto.material = em.getReference(Material, dto.material)),
 	};
-}
+} */
+
+export const sanitizeMuebleInput = validate(MuebleSchema);
 
 export async function findAll(req: Request, res: Response) {
 	try {
@@ -71,10 +73,11 @@ export async function findOne(req: Request, res: Response) {
 
 export async function add(req: Request, res: Response) {
 	try {
-		const dto = req.body.sanitizedInput;
-		const mueble = em.create(Mueble, resolveRelations(dto, em));
+		const dto = req.body.validated;
+		// const mueble = em.create(Mueble, resolveRelations(dto, em));
+		const mueble = em.create(Mueble, dto);
 
-		await em.persistAndFlush(mueble);
+		await em.flush();
 		res.status(200).json({ Message: 'Mueble creado', data: mueble });
 	} catch (error: any) {
 		res.status(500).json({ message: 'Error al crear el mueble' });
@@ -84,10 +87,11 @@ export async function add(req: Request, res: Response) {
 export async function update(req: Request, res: Response) {
 	try {
 		const id = Number.parseInt(req.params.id);
-		const dto = req.body.sanitizedInput;
+		const dto = req.body.validated;
 
 		const mueble = await em.findOneOrFail(Mueble, { id });
-		em.assign(mueble, resolveRelations(dto, em));
+		// em.assign(mueble, resolveRelations(dto, em));
+		em.assign(mueble, dto);
 
 		await em.flush();
 		res.status(200).json({ Message: 'Mueble actualizado', data: mueble });

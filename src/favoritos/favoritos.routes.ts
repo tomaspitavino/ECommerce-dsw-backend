@@ -1,16 +1,14 @@
-import express from 'express';
+import express from "express";
 import {
-	add,
-	findByCliente,
-	remove,
-	sanitizeFavoritoInput,
-} from './favoritos.controller.js';
+  add,
+  findByCliente,
+  remove,
+  sanitizeFavoritoInput,
+} from "./favoritos.controller.js";
 
-const router = express.Router();
+export const favoritosRouter = express.Router();
 
 // CRUD dependiente: /api/clientes/:clienteId/favoritos
-router.get('/:clienteId/favoritos', findByCliente);
-router.post('/:clienteId/favoritos', sanitizeFavoritoInput, add);
-router.delete('/favoritos/:id', remove);
-
-export default router;
+favoritosRouter.get("/:clienteId/favoritos", findByCliente);
+favoritosRouter.post("/:clienteId/favoritos", sanitizeFavoritoInput, add);
+favoritosRouter.delete("/favoritos/:id", remove);
