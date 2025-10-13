@@ -31,7 +31,7 @@ export const sanitizeItemInput = validate(ItemSchema);
 
 export async function findAll(req: Request, res: Response) {
 	try {
-		const items = await em.find(Item, {}, { populate: ['mueble', 'pedido'] });
+		const items = await em.find(Item, {}, { populate: ['muebles', 'pedido'] });
 		res.status(200).json({
 			Message: 'Todas las líneas de pedido encontradas',
 			data: items,
@@ -47,7 +47,7 @@ export async function findOne(req: Request, res: Response) {
 		const item = await em.findOneOrFail(
 			Item,
 			{ id },
-			{ populate: ['mueble', 'pedido'] }
+			{ populate: ['muebles', 'pedido'] }
 		);
 		res.status(200).json({ Message: 'Línea de pedido encontrada', data: item });
 	} catch (error: any) {
