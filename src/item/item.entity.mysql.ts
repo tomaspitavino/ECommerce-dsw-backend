@@ -1,6 +1,7 @@
 import {
-	Cascade,
+	Collection,
 	Entity,
+	Enum,
 	ManyToOne,
 	OneToMany,
 	Property,
@@ -13,22 +14,30 @@ import { BaseEntity } from '../shared/db/baseEntity.entity.mysql.js';
 // Revisar esta entidad en el diagrama de clases, ya que parece ser una entidad de relación entre Mueble y Pedido
 // Voy a implementar como una entidad de relación con atributos
 
+export enum ItemEstado {
+	EN_CARRITO = 'en carrito',
+	PENDIENTE = 'pendiente',
+	EN_PROCESO = 'en proceso',
+	COMPLETADO = 'completado',
+	CANCELADO = 'cancelado',
+}
+
 @Entity()
 export class Item extends BaseEntity {
 	// Valor calculado de item.cantidad * mueble.precioUnitario
 	@Property({ nullable: false })
 	subtotal!: number;
 
-	// Deberia de iniciar con un estado por defecto, como "pendiente" o "en proceso"
-	@Property({ default: 'en carrito' })
-	estado!: string;
+	// Estado del item con valor por defecto
+	@Enum({ items: () => ItemEstado, default: ItemEstado.EN_CARRITO })
+	estado!: ItemEstado;
 
 	// Deberia iniciar con 1 ya que es la cantidad por defecto de un producto en un pedido
 	@Property({ default: 1 })
 	cantidad!: number;
 
-	@OneToMany(() => Mueble, (mueble) => mueble.item, {})
-	mueble!: Rel<Mueble>;
+	@OneToMany(() => Mueble, (mueble) => mueble.item, { nullable: false })
+	muebles = new Collection<Mueble>(this);
 
 	@ManyToOne(() => Pedido, { nullable: false })
 	pedido!: Rel<Pedido>;
