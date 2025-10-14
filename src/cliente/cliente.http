@@ -1,6 +1,15 @@
 ### obtener todos los clientes
 GET http://localhost:3000/api/clientes
 
+### obtener favoritos del cliente
+GET http://localhost:3000/api/clientes/1/favoritos/1
+
+### agregar mueble a favoritos del cliente
+PATCH  http://localhost:3000/api/clientes/1/favoritos/2
+Content-Type: application/json
+
+
+
 ### POST a character
 # @name createCliente
 POST http://localhost:3000/api/clientes
@@ -28,7 +37,7 @@ Content-Type: application/json
     "apellido": "Son",
     "direccion": "Monte Paoz 77",
     "telefono": "1122334455",
-    "dni": "30123456",
+    "dni": "301253456",
     "usuario": "gokuson",
     "email": "goku@kamehouse.com",
     "contrasenia": "kamehameha123",

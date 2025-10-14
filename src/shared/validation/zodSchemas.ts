@@ -19,6 +19,7 @@ export const ClienteSchema = z.object({
 	email: z.email(),
 	contrasenia: z.string().min(8).max(64),
 	fondos: z.number().nonnegative(),
+	favoritos: z.array(z.number().int().nonnegative()).optional(),
 });
 
 export const CategoriaSchema = z.object({
@@ -63,4 +64,9 @@ export const DescuentoSchema = z.object({
 	descripcion: z.string().min(5).max(255).optional(),
 	fechaExpiracion: datetime.optional(), // ISO date string
 	pedido: z.number().int().nonnegative().optional(),
+});
+
+export const favoritoSchema = z.object({
+	clienteId: z.number().int().nonnegative(),
+	muebleId: z.number().int().nonnegative(),
 });
