@@ -1,0 +1,11 @@
+### crear favoritos
+POST http://localhost:3000/api/clientes/1/favoritos
+Content-Type: application/json
+
+{
+  "clienteId": 1,
+  "muebleId": 1
+}
+
+### get favoritos
+GET http://localhost:3000/api/clientes/1/favoritos/
