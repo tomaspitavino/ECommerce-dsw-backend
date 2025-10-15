@@ -5,6 +5,7 @@ import {
 	findOne,
 	remove,
 	sanitizeCategoriaInput,
+	sanitizeCategoriaPatchInput,
 	update,
 } from './categoria.controller.js';
 
@@ -14,7 +15,7 @@ categoriaRouter.get('/', findAll);
 categoriaRouter.get('/:id', findOne);
 categoriaRouter.post('/', sanitizeCategoriaInput, add);
 categoriaRouter.put('/:id', sanitizeCategoriaInput, update);
-categoriaRouter.patch('/:id', sanitizeCategoriaInput, update);
+categoriaRouter.patch('/:id', sanitizeCategoriaPatchInput, update);
 categoriaRouter.delete('/:id', remove);
 
 export { categoriaRouter };

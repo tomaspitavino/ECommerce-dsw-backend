@@ -2,13 +2,21 @@
 GET http://localhost:3000/api/clientes
 
 ### obtener favoritos del cliente
-GET http://localhost:3000/api/clientes/1/favoritos/1
+GET http://localhost:3000/api/clientes/1/favoritos
 
-### agregar mueble a favoritos del cliente
-PATCH  http://localhost:3000/api/clientes/1/favoritos/2
+### obtener favoritos del cliente
+GET http://localhost:3000/api/clientes/2/favoritos
+
+### crear favorito
+POST http://localhost:3000/api/clientes/2/favoritos
 Content-Type: application/json
 
+{
+  "muebleId": 1
+}
 
+### borrar favorito
+DELETE http://localhost:3000/api/clientes/2/favoritos/1
 
 ### POST a character
 # @name createCliente
@@ -53,7 +61,7 @@ Content-Type: application/json
     "apellido": "Saiyan",
     "direccion": "Calle Capsule 12",
     "telefono": "1165432109",
-    "dni": "32109876",
+    "dni": "321409876",
     "usuario": "vegeta_saiyan",
     "email": "vegeta@capsulecorp.jp",
     "contrasenia": "princeofall",
@@ -69,7 +77,7 @@ Content-Type: application/json
   "apellido": "Brief",
   "direccion": "Av. Capsule 01",
   "telefono": "1134567890",
-  "dni": "28900123",
+  "dni": "289010123",
   "usuario": "bulmabrief",
   "email": "bulma@capsulecorp.jp",
   "contrasenia": "genius123",
@@ -85,7 +93,7 @@ Content-Type: application/json
   "apellido": "Ikari",
   "direccion": "Tokyo-3 Block 01",
   "telefono": "1145678912",
-  "dni": "33111222",
+  "dni": "331711222",
   "usuario": "shinjiikari",
   "email": "shinji@nerv.jp",
   "contrasenia": "evaunit01",
