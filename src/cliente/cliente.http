@@ -1,23 +1,6 @@
 ### obtener todos los clientes
 GET http://localhost:3000/api/clientes
 
-### obtener favoritos del cliente
-GET http://localhost:3000/api/clientes/1/favoritos
-
-### obtener favoritos del cliente
-GET http://localhost:3000/api/clientes/2/favoritos
-
-### crear favorito
-POST http://localhost:3000/api/clientes/2/favoritos
-Content-Type: application/json
-
-{
-  "muebleId": 1
-}
-
-### borrar favorito
-DELETE http://localhost:3000/api/clientes/2/favoritos/1
-
 ### POST a character
 # @name createCliente
 POST http://localhost:3000/api/clientes
@@ -83,6 +66,31 @@ Content-Type: application/json
   "contrasenia": "genius123",
   "fondos": 3200
 }
+
+### obtener favoritos del cliente
+GET http://localhost:3000/api/clientes/1/favoritos
+
+### obtener favoritos del cliente 2
+GET http://localhost:3000/api/clientes/2/favoritos
+
+### crear favorito para el cliente 1
+POST http://localhost:3000/api/clientes/1/favoritos
+Content-Type: application/json
+
+{
+  "muebleId": 1
+}
+
+### crear favorito para el cliente 2
+POST http://localhost:3000/api/clientes/2/favoritos
+Content-Type: application/json
+
+{
+  "muebleId": 1
+}
+
+### borrar favorito
+DELETE http://localhost:3000/api/clientes/2/favoritos/1
 
 ### POST a character
 POST http://localhost:3000/api/clientes
