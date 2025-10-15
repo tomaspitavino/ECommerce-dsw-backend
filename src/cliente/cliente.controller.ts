@@ -7,6 +7,7 @@ import { Cliente } from './cliente.entity.mysql.js';
 const em = orm.em;
 
 export const sanitizeClientInput = validate(ClienteSchema);
+export const sanitizeClientPatchInput = validate(ClienteSchema.partial());
 
 export async function findAll(req: Request, res: Response) {
 	try {
