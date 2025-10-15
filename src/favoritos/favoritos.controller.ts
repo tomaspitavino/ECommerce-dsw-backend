@@ -2,20 +2,18 @@ import { NextFunction, Request, Response } from 'express';
 import { Cliente } from '../cliente/cliente.entity.mysql.js';
 import { Mueble } from '../mueble/mueble.entity.mysql.js';
 import { orm } from '../shared/db/orm.js';
-import { validate } from '../shared/validation/validateRequest.js';
-import { favoritoSchema } from '../shared/validation/zodSchemas.js';
 import { Favorito } from './favoritos.entity.mysql.js';
 
 const em = orm.em;
 
-/* export function sanitizeFavoritoInput(
+export function sanitizeFavoritoInput(
 	req: Request,
 	res: Response,
 	next: NextFunction
 ) {
 	req.body.sanitizedInput = {
-		cliente: req.body.id,
-		mueble: req.body.id,
+		cliente: req.params.id,
+		mueble: req.body.muebleId,
 	};
 
 	Object.keys(req.body.sanitizedInput).forEach((key) => {
@@ -25,14 +23,11 @@ const em = orm.em;
 	});
 	next();
 }
- */
 
-export const sanitizeFavoritoInput = validate(favoritoSchema);
-
-export async function add(req: Request, res: Response) {
+export async function addFavorito(req: Request, res: Response) {
 	try {
-		const clienteId = Number.parseInt(req.body.validated);
-		const muebleId = Number.parseInt(req.body.validated);
+		const clienteId = Number.parseInt(req.params.id); // Desde la URL
+		const muebleId = Number.parseInt(req.body.muebleId); // Desde el cuerpo de la solicitud
 
 		const favorito = em.create(Favorito, {
 			cliente: em.getReference(Cliente, clienteId),
@@ -50,11 +45,7 @@ export async function add(req: Request, res: Response) {
 
 export async function findAllFavoritos(req: Request, res: Response) {
 	try {
-		const favoritos = await em.find(
-			Favorito,
-			{},
-			{ populate: ['cliente', 'mueble'] }
-		);
+		const favoritos = await em.find(Favorito, {}, { populate: ['mueble'] });
 		res.status(200).json({ message: 'Lista de favoritos', data: favoritos });
 	} catch (error: any) {
 		res
@@ -63,51 +54,11 @@ export async function findAllFavoritos(req: Request, res: Response) {
 	}
 }
 
-export async function findOneFavorito(req: Request, res: Response) {
-	try {
-		const favoritoId = Number.parseInt(req.params.idMueble);
-		const favorito = await em.findOneOrFail(
-			Favorito,
-			{ id: favoritoId },
-			{ populate: ['cliente', 'mueble'] }
-		);
-		res.status(200).json({ message: 'Favorito encontrado', data: favorito });
-	} catch (error: any) {
-		res
-			.status(500)
-			.json({ message: 'Error al encontrar favorito', error: error.message });
-	}
-}
-
-export async function updateFavorito(req: Request, res: Response) {
+export async function removeFavorito(req: Request, res: Response) {
 	try {
 		const favoritoId = Number.parseInt(req.params.id);
 		const favorito = await em.findOneOrFail(Favorito, { id: favoritoId });
 
-		if (req.body.validated.cliente)
-			favorito.cliente = em.getReference(
-				Cliente,
-				Number.parseInt(req.body.validated.cliente)
-			);
-		if (req.body.validated.mueble)
-			favorito.mueble = em.getReference(
-				Mueble,
-				Number.parseInt(req.body.validated.mueble)
-			);
-
-		await em.flush();
-		res.status(200).json({ message: 'Favorito actualizado', data: favorito });
-	} catch (error: any) {
-		res
-			.status(500)
-			.json({ message: 'Error al actualizar favorito', error: error.message });
-	}
-}
-
-export async function remove(req: Request, res: Response) {
-	try {
-		const favoritoId = Number.parseInt(req.params.id);
-		const favorito = await em.findOneOrFail(Favorito, { id: favoritoId });
 		await em.removeAndFlush(favorito);
 		res.status(200).json({ message: 'Favorito eliminado', data: favorito });
 	} catch (error: any) {
