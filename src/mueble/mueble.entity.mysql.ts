@@ -37,8 +37,10 @@ export class Mueble extends BaseEntity {
 	material!: Rel<Material>;
 
 	// item es una entidad que representa una relacion con atributos
-	@ManyToOne(() => Item, { nullable: true })
-	item?: Rel<Item>;
+	@OneToMany(() => Item, (item) => item.mueble, {
+		cascade: [Cascade.ALL],
+	})
+	items? = new Collection<Item>(this);
 
 	@OneToMany(() => Favorito, (favorito) => favorito.mueble, {
 		cascade: [Cascade.REMOVE],
