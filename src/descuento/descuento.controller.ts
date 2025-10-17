@@ -65,7 +65,6 @@ export async function findOne(req: Request, res: Response) {
 export async function add(req: Request, res: Response) {
 	try {
 		const dto = req.body.validated;
-		// const descuento = em.create(Descuento, resolveRelations(dto, em));
 		const descuento = em.create(Descuento, dto);
 
 		await em.flush();
@@ -85,7 +84,6 @@ export async function update(req: Request, res: Response) {
 		const dto = req.body.validated;
 		const id = Number.parseInt(req.params.id);
 		const descuento = await em.findOneOrFail(Descuento, { id });
-		// em.assign(descuento, resolveRelations(dto, em));
 		em.assign(descuento, dto);
 
 		await em.flush();
