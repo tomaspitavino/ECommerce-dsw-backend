@@ -61,5 +61,5 @@ export const DescuentoSchema = z.object({
 	porcentaje: z.number().min(0).max(100),
 	descripcion: z.string().min(5).max(255).optional(),
 	fechaExpiracion: datetime.optional(), // ISO date string
-	pedido: z.number().int().nonnegative().optional(),
+	pedido: z.number().int().nonnegative(),
 });

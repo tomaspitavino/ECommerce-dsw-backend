@@ -19,8 +19,8 @@ export class Descuento extends BaseEntity {
 	@Property({ type: 'datetime', nullable: true })
 	fechaExpiracion?: Date;
 
-	@ManyToOne(() => Pedido, { nullable: true })
-	pedido?: Rel<Pedido> | null;
+	@ManyToOne(() => Pedido, { nullable: false })
+	pedido!: Rel<Pedido>;
 }
 
 export enum TipoDescuento {
