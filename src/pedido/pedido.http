@@ -1,0 +1,6 @@
+PATCH /api/pedidos/3/estado
+Content-Type: application/json
+
+{
+  "nuevoEstado": "confirmado"
+}
