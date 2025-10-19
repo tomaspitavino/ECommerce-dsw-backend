@@ -4,22 +4,22 @@ import { BaseEntity } from '../shared/db/baseEntity.entity.mysql.js';
 
 @Entity()
 export class Descuento extends BaseEntity {
-	@Property({ nullable: false })
+	@Property()
 	codigo!: string; // Ej: 'PROMO10', 'BLACKFRIDAY'
 
 	@Enum(() => TipoDescuento)
 	tipo!: TipoDescuento; // 'CANTIDAD', 'MONTO'
 
-	@Property({ nullable: false })
+	@Property()
 	porcentaje!: number;
 
-	@Property({ nullable: true })
+	@Property()
 	descripcion?: string;
 
-	@Property({ type: 'datetime', nullable: true })
-	fechaExpiracion?: Date;
+	@Property()
+	fechaExpiracion?: Date = new Date();
 
-	@ManyToOne(() => Pedido, { nullable: false })
+	@ManyToOne(() => Pedido)
 	pedido!: Rel<Pedido>;
 }
 
