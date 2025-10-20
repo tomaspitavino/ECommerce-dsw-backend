@@ -75,13 +75,13 @@ export async function crearPedido(
 	next: NextFunction
 ) {
 	try {
-		const idCliente = Number(req.params.id);
+		const idCliente = Number.parseInt(req.params.id);
 		const cliente = await em.findOneOrFail(Cliente, { id: idCliente });
 
 		// Buscar ítems del carrito del cliente
 		const itemsCarrito = await em.find(
 			Item,
-			{ cliente, estado: 'en_carrito' },
+			{ estado: 'en_carrito' },
 			{ populate: ['mueble'] }
 		);
 
