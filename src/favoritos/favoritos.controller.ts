@@ -45,7 +45,13 @@ export async function addFavorito(req: Request, res: Response) {
 
 export async function findAllFavoritos(req: Request, res: Response) {
 	try {
-		const favoritos = await em.find(Favorito, {}, { populate: ['mueble'] });
+		const idCliente = Number.parseInt(req.params.id);
+		const cliente = await em.findOneOrFail(Cliente, { id: idCliente });
+		const favoritos = await em.find(
+			Favorito,
+			{ cliente },
+			{ populate: ['mueble'] }
+		);
 		res.status(200).json({ message: 'Lista de favoritos', data: favoritos });
 	} catch (error: any) {
 		res
