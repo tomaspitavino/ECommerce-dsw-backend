@@ -2,7 +2,6 @@ import {
 	Cascade,
 	Collection,
 	Entity,
-	Enum,
 	ManyToOne,
 	OneToMany,
 	Property,
@@ -14,14 +13,9 @@ import { Item } from '../item/item.entity.mysql.js';
 import { Pago } from '../pago/pago.entity.mysql.js';
 import { BaseEntity } from '../shared/db/baseEntity.entity.mysql.js';
 
-export enum EstadoPedido {
-	PENDIENTE = 'pendiente',
-	CONFIRMADO = 'confirmado',
-	PAGADO = 'pagado',
-	ENVIADO = 'enviado',
-	ENTREGADO = 'entregado',
-	CANCELADO = 'cancelado',
-}
+/* 
+pendiente → confirmado → pagado → enviado → entregado
+                 ↘ cancelado */
 
 @Entity()
 export class Pedido extends BaseEntity {
@@ -34,14 +28,14 @@ export class Pedido extends BaseEntity {
 	items = new Collection<Item>(this);
 
 	@Property()
-	fechaHora!: Date;
+	fechaHora = new Date();
 
-	@Enum({ items: () => EstadoPedido, default: EstadoPedido.PENDIENTE })
-	estado!: EstadoPedido;
+	@Property({ default: 'pendiente' })
+	estado!: string;
 
 	// Total sin descuentos
 	// Se calcula como la suma de (precio * cantidad) de cada línea
-	@Property({ type: 'decimal', precision: 10, scale: 2 })
+	@Property({ type: 'decimal', precision: 10, scale: 2, default: 0 })
 	total!: number;
 
 	@OneToMany(() => Descuento, (d) => d.pedido, {

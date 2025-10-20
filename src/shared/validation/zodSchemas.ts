@@ -1,5 +1,4 @@
 import { z } from 'zod';
-
 const PasswordSchema = z
 	.string()
 	.min(8, 'La contraseña debe tener al menos 8 caracteres')
@@ -45,9 +44,7 @@ export const MuebleSchema = z.object({
 
 export const ItemSchema = z.object({
 	subtotal: z.number().nonnegative(),
-	estado: z
-		.enum(['en carrito', 'pendiente', 'en proceso', 'completado', 'cancelado'])
-		.default('en carrito'),
+	estado: z.string().default('en carrito'),
 	cantidad: z.number().int().nonnegative(),
 	mueble: z.number().int().nonnegative(),
 	pedido: z.number().int().nonnegative(),
@@ -62,4 +59,15 @@ export const DescuentoSchema = z.object({
 	descripcion: z.string().min(5).max(255).optional(),
 	fechaExpiracion: datetime.optional(), // ISO date string
 	pedido: z.number().int().nonnegative(),
+});
+
+export const EstadoPedidoSchema = z.object({
+	nuevoEstado: z.enum([
+		'pendiente',
+		'confirmado',
+		'pagado',
+		'enviado',
+		'entregado',
+		'cancelado',
+	]),
 });
