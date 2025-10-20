@@ -1,18 +1,6 @@
-import {
-	DateTimeType,
-	Entity,
-	OneToMany,
-	Property,
-	Rel,
-} from '@mikro-orm/core';
+import { Entity, OneToMany, Property, Rel } from '@mikro-orm/core';
 import { Pedido } from '../pedido/pedido.entity.mysql.js';
 import { BaseEntity } from '../shared/db/baseEntity.entity.mysql.js';
-
-/* export enum TipoPago {
-	EFECTIVO = 'efectivo',
-	TARJETA = 'tarjeta',
-	TRANSFERENCIA = 'transferencia',
-} */
 
 @Entity()
 export class Pago extends BaseEntity {

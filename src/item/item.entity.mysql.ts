@@ -1,15 +1,16 @@
 import { Entity, Enum, ManyToOne, Property, Rel } from '@mikro-orm/core';
+import { Cliente } from '../cliente/cliente.entity.mysql.js';
 import { Mueble } from '../mueble/mueble.entity.mysql.js';
 import { Pedido } from '../pedido/pedido.entity.mysql.js';
 import { BaseEntity } from '../shared/db/baseEntity.entity.mysql.js';
 
-export enum ItemEstado {
+/* export enum ItemEstado {
 	EN_CARRITO = 'en carrito',
 	PENDIENTE = 'pendiente',
 	EN_PROCESO = 'en proceso',
 	COMPLETADO = 'completado',
 	CANCELADO = 'cancelado',
-}
+} */
 
 @Entity()
 export class Item extends BaseEntity {
@@ -18,8 +19,8 @@ export class Item extends BaseEntity {
 	subtotal!: number;
 
 	// Estado del item con valor por defecto
-	@Enum({ items: () => ItemEstado, default: ItemEstado.EN_CARRITO })
-	estado!: ItemEstado;
+	@Property({ default: 'en carrito' })
+	estado!: string;
 
 	// Deberia iniciar con 1 ya que es la cantidad por defecto de un producto en un pedido
 	@Property({ default: 1 })
@@ -30,4 +31,7 @@ export class Item extends BaseEntity {
 
 	@ManyToOne(() => Pedido)
 	pedido!: Rel<Pedido>;
+
+	@ManyToOne(() => Cliente)
+	cliente!: Rel<Cliente>;
 }
