@@ -1,5 +1,4 @@
-import { Entity, Enum, ManyToOne, Property, Rel } from '@mikro-orm/core';
-import { Cliente } from '../cliente/cliente.entity.mysql.js';
+import { Entity, ManyToOne, Property, Rel } from '@mikro-orm/core';
 import { Mueble } from '../mueble/mueble.entity.mysql.js';
 import { Pedido } from '../pedido/pedido.entity.mysql.js';
 import { BaseEntity } from '../shared/db/baseEntity.entity.mysql.js';
@@ -30,8 +29,5 @@ export class Item extends BaseEntity {
 	mueble!: Rel<Mueble>;
 
 	@ManyToOne(() => Pedido)
-	pedido!: Rel<Pedido>;
-
-	@ManyToOne(() => Cliente)
-	cliente!: Rel<Cliente>;
+	pedido?: Rel<Pedido>;
 }
