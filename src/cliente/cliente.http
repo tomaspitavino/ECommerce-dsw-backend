@@ -89,6 +89,9 @@ Content-Type: application/json
   "muebleId": 1
 }
 
+### un favorito para cliente 1
+GET http://localhost:3000/api/clientes/1/favoritos/mueble/1
+
 ### borrar favorito
 DELETE http://localhost:3000/api/clientes/2/favoritos/1
 
