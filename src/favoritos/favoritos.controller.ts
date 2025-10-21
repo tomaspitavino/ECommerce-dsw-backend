@@ -12,8 +12,8 @@ export function sanitizeFavoritoInput(
 	next: NextFunction
 ) {
 	req.body.sanitizedInput = {
-		cliente: req.body.cliente,
-		mueble: req.body.mueble,
+		cliente: req.params.id,
+		mueble: req.body.muebleId,
 	};
 
 	Object.keys(req.body.sanitizedInput).forEach((key) => {
@@ -24,10 +24,10 @@ export function sanitizeFavoritoInput(
 	next();
 }
 
-export async function add(req: Request, res: Response) {
+export async function addFavorito(req: Request, res: Response) {
 	try {
-		const clienteId = Number.parseInt(req.params.clienteId);
-		const muebleId = Number.parseInt(req.body.muebleId);
+		const clienteId = Number.parseInt(req.params.id); // Desde la URL
+		const muebleId = Number.parseInt(req.body.muebleId); // Desde el cuerpo de la solicitud
 
 		const favorito = em.create(Favorito, {
 			cliente: em.getReference(Cliente, clienteId),
@@ -43,31 +43,33 @@ export async function add(req: Request, res: Response) {
 	}
 }
 
-export async function remove(req: Request, res: Response) {
+export async function findAllFavoritos(req: Request, res: Response) {
 	try {
-		const id = Number.parseInt(req.params.id);
-		const favorito = await em.findOneOrFail(Favorito, { id });
+		const idCliente = Number.parseInt(req.params.id);
+		const cliente = await em.findOneOrFail(Cliente, { id: idCliente });
+		const favoritos = await em.find(
+			Favorito,
+			{ cliente },
+			{ populate: ['mueble'] }
+		);
+		res.status(200).json({ message: 'Lista de favoritos', data: favoritos });
+	} catch (error: any) {
+		res
+			.status(500)
+			.json({ message: 'Error al listar favoritos', error: error.message });
+	}
+}
+
+export async function removeFavorito(req: Request, res: Response) {
+	try {
+		const favoritoId = Number.parseInt(req.params.id);
+		const favorito = await em.findOneOrFail(Favorito, { id: favoritoId });
+
 		await em.removeAndFlush(favorito);
 		res.status(200).json({ message: 'Favorito eliminado', data: favorito });
 	} catch (error: any) {
 		res
 			.status(500)
 			.json({ message: 'Error al eliminar favorito', error: error.message });
-	}
-}
-
-export async function findByCliente(req: Request, res: Response) {
-	try {
-		const clienteId = Number.parseInt(req.params.clienteId);
-		const favoritos = await em.find(
-			Favorito,
-			{ cliente: clienteId },
-			{ populate: ['mueble'] }
-		);
-		res.status(200).json({ message: 'Favoritos del cliente', data: favoritos });
-	} catch (error: any) {
-		res
-			.status(500)
-			.json({ message: 'Error al listar favoritos', error: error.message });
 	}
 }

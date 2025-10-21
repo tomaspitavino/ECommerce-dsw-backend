@@ -1,25 +1,23 @@
-import {
-	Cascade,
-	Entity,
-	ManyToOne,
-	OneToMany,
-	Property,
-	Rel,
-} from '@mikro-orm/core';
+import { Entity, ManyToOne, Property, Rel } from '@mikro-orm/core';
 import { Mueble } from '../mueble/mueble.entity.mysql.js';
 import { Pedido } from '../pedido/pedido.entity.mysql.js';
 import { BaseEntity } from '../shared/db/baseEntity.entity.mysql.js';
 
-// Revisar esta entidad en el diagrama de clases, ya que parece ser una entidad de relación entre Mueble y Pedido
-// Voy a implementar como una entidad de relación con atributos
+/* export enum ItemEstado {
+	EN_CARRITO = 'en carrito',
+	PENDIENTE = 'pendiente',
+	EN_PROCESO = 'en proceso',
+	COMPLETADO = 'completado',
+	CANCELADO = 'cancelado',
+} */
 
 @Entity()
 export class Item extends BaseEntity {
 	// Valor calculado de item.cantidad * mueble.precioUnitario
-	@Property({ nullable: false })
+	@Property({ type: 'decimal', precision: 10, scale: 2 })
 	subtotal!: number;
 
-	// Deberia de iniciar con un estado por defecto, como "pendiente" o "en proceso"
+	// Estado del item con valor por defecto
 	@Property({ default: 'en carrito' })
 	estado!: string;
 
@@ -27,9 +25,9 @@ export class Item extends BaseEntity {
 	@Property({ default: 1 })
 	cantidad!: number;
 
-	@OneToMany(() => Mueble, (mueble) => mueble.item, {})
+	@ManyToOne(() => Mueble)
 	mueble!: Rel<Mueble>;
 
-	@ManyToOne(() => Pedido, { nullable: false })
-	pedido!: Rel<Pedido>;
+	@ManyToOne(() => Pedido)
+	pedido?: Rel<Pedido>;
 }

@@ -15,30 +15,32 @@ import { BaseEntity } from '../shared/db/baseEntity.entity.mysql.js';
 
 @Entity()
 export class Mueble extends BaseEntity {
-	@Property({ nullable: false })
+	@Property()
 	descripcion!: string;
 
-	@Property({ nullable: false })
+	@Property()
 	stock!: number;
 
-	@Property({ nullable: false })
+	@Property()
 	etiqueta!: string;
 
-	@Property({ nullable: false })
+	@Property({ type: 'decimal', precision: 10, scale: 2 })
 	precioUnitario!: number;
 
-	@Property({ nullable: false })
+	@Property()
 	imagenes!: string[]; // Array of image URLs or file paths
 
-	@ManyToOne(() => Categoria, { nullable: false })
+	@ManyToOne(() => Categoria)
 	categoria!: Rel<Categoria>;
 
-	@ManyToOne(() => Material, { nullable: false })
+	@ManyToOne(() => Material)
 	material!: Rel<Material>;
 
 	// item es una entidad que representa una relacion con atributos
-	@ManyToOne(() => Item, { nullable: true })
-	item?: Rel<Item>;
+	@OneToMany(() => Item, (item) => item.mueble, {
+		cascade: [Cascade.ALL],
+	})
+	items? = new Collection<Item>(this);
 
 	@OneToMany(() => Favorito, (favorito) => favorito.mueble, {
 		cascade: [Cascade.REMOVE],

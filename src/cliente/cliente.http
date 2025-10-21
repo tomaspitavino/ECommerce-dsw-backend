@@ -1,6 +1,23 @@
 ### obtener todos los clientes
 GET http://localhost:3000/api/clientes
 
+### crear cliente administrador
+POST http://localhost:3000/api/clientes
+Content-Type: application/json
+
+{
+    "nombre": "Administrador",
+    "apellido": "General",
+    "direccion": "Calle Central 100",
+    "telefono": "1122334455",
+    "dni": "273456789",
+    "usuario": "admin",
+    "email": "admin@muebleria.com",
+    "contrasenia": "123", 
+    "rol": "admin",
+    "fondos": 100000 
+}
+
 ### POST a character
 # @name createCliente
 POST http://localhost:3000/api/clientes
@@ -28,7 +45,7 @@ Content-Type: application/json
     "apellido": "Son",
     "direccion": "Monte Paoz 77",
     "telefono": "1122334455",
-    "dni": "30123456",
+    "dni": "301253456",
     "usuario": "gokuson",
     "email": "goku@kamehouse.com",
     "contrasenia": "kamehameha123",
@@ -44,7 +61,7 @@ Content-Type: application/json
     "apellido": "Saiyan",
     "direccion": "Calle Capsule 12",
     "telefono": "1165432109",
-    "dni": "32109876",
+    "dni": "321409876",
     "usuario": "vegeta_saiyan",
     "email": "vegeta@capsulecorp.jp",
     "contrasenia": "princeofall",
@@ -60,12 +77,40 @@ Content-Type: application/json
   "apellido": "Brief",
   "direccion": "Av. Capsule 01",
   "telefono": "1134567890",
-  "dni": "28900123",
+  "dni": "289010123",
   "usuario": "bulmabrief",
   "email": "bulma@capsulecorp.jp",
   "contrasenia": "genius123",
   "fondos": 3200
 }
+
+### obtener favoritos del cliente
+GET http://localhost:3000/api/clientes/1/favoritos
+
+### obtener favoritos del cliente 2
+GET http://localhost:3000/api/clientes/2/favoritos
+
+### crear favorito para el cliente 1
+POST http://localhost:3000/api/clientes/1/favoritos
+Content-Type: application/json
+
+{
+  "muebleId": 1
+}
+
+### crear favorito para el cliente 2
+POST http://localhost:3000/api/clientes/2/favoritos
+Content-Type: application/json
+
+{
+  "muebleId": 1
+}
+
+### un favorito para cliente 1
+GET http://localhost:3000/api/clientes/1/favoritos/mueble/1
+
+### borrar favorito
+DELETE http://localhost:3000/api/clientes/2/favoritos/1
 
 ### POST a character
 POST http://localhost:3000/api/clientes
@@ -76,7 +121,7 @@ Content-Type: application/json
   "apellido": "Ikari",
   "direccion": "Tokyo-3 Block 01",
   "telefono": "1145678912",
-  "dni": "33111222",
+  "dni": "337114222",
   "usuario": "shinjiikari",
   "email": "shinji@nerv.jp",
   "contrasenia": "evaunit01",

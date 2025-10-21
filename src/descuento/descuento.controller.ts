@@ -8,35 +8,6 @@ import { Descuento } from './descuento.entity.mysql.js';
 
 const em = orm.em;
 
-/* function resolveRelations(dto: any, em: EntityManager) {
-	return {
-		...dto,
-		pedido: dto.pedido ? em.getReference(Pedido, dto.pedido) : null,
-	};
-} */
-
-/* export function sanitizeDescuentoInput(
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) {
-  req.body.sanitizedInput = {
-    codigo: req.body.codigo,
-    tipo: req.body.tipo,
-    porcentaje: req.body.porcentaje,
-    descripcion: req.body.descripcion,
-    fechaExpiracion: req.body.fechaExpiracion,
-    pedido: req.body.pedido,
-  };
-
-  Object.keys(req.body.sanitizedInput).forEach((key) => {
-    if (req.body.sanitizedInput[key] === undefined) {
-      delete req.body.sanitizedInput[key];
-    }
-  });
-  next();
-} */
-
 export const sanitizeDescuentoInput = validate(DescuentoSchema);
 
 export async function findAll(req: Request, res: Response) {
@@ -65,7 +36,6 @@ export async function findOne(req: Request, res: Response) {
 export async function add(req: Request, res: Response) {
 	try {
 		const dto = req.body.validated;
-		// const descuento = em.create(Descuento, resolveRelations(dto, em));
 		const descuento = em.create(Descuento, dto);
 
 		await em.flush();
@@ -85,7 +55,6 @@ export async function update(req: Request, res: Response) {
 		const dto = req.body.validated;
 		const id = Number.parseInt(req.params.id);
 		const descuento = await em.findOneOrFail(Descuento, { id });
-		// em.assign(descuento, resolveRelations(dto, em));
 		em.assign(descuento, dto);
 
 		await em.flush();
