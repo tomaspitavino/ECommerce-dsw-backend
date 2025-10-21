@@ -1,18 +1,20 @@
 {
   "name": "muebleria-api",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "type": "module",
   "description": "API para e-commerce de mueblería",
   "scripts": {
     "build": "tsc -p ./tsconfig.json",
-    "start:dev": "tsc-watch --noClear -p ./tsconfig.json --onSuccess \"node ./dist/app.js\""
+    "start:dev": "tsc-watch --noClear -p ./tsconfig.json --onSuccess \"node ./dist/app.js\"",
+    "seed": "npx mikro-orm seeder:run"
   },
   "keywords": [],
   "author": "utane",
   "license": "ISC",
   "dependencies": {
-    "@mikro-orm/core": "~5.8.10",
+    "@mikro-orm/core": "5.8.10",
     "@mikro-orm/mysql": "~5.8.10",
+    "@mikro-orm/seeder": "5.8.10",
     "@mikro-orm/sql-highlighter": "1.0.1",
     "biguint-format": "^1.0.2",
     "cors": "2.8.5",
@@ -23,6 +25,7 @@
     "zod": "^4.1.12"
   },
   "devDependencies": {
+    "@mikro-orm/cli": "5.8.10",
     "@types/cors": "2.8.19",
     "@types/express": "~4.17.23",
     "@types/node": "22.15.21",
