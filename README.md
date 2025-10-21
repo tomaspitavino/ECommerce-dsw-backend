@@ -1,6 +1,25 @@
 # Documentación
 
-Tenemos dos formas de correr esto en el backend.
+A la hora de correr esto, lo primero que hay que hacer es instalar todas las
+dependencias.
+
+Con pnpm
+
+```js
+
+pnpm i
+
+```
+
+Con npm
+
+```js
+
+npm i
+
+```
+
+Ahora tenemos dos formas de correr esto en el backend.
 
 ## Método 1
 
@@ -21,13 +40,13 @@ docker run -d --name mysql-desarollo \
 
 ```
 
-> [!HINT] Reemplazando el usuario y el path dependiendo de si estás en Linux o Windows.
+> [!NOTE] Reemplazando el usuario y el path dependiendo de si estás en Linux o Windows.
 
-> [!HINT] Si el puerto que aparece primero no se puede utilizar por alguna
+> [!NOTE] Si el puerto que aparece primero no se puede utilizar por alguna
 > razón, se puede cambiar a cualquier otro puerto. El que no se debería cambiar
 > es el segundo, porque MySQL siempre lo asigna a 3306.
 
-> [!HINT] Asegurarse de tener los permisos necesarios de docker (i.e asignar un
+> [!NOTE] Asegurarse de tener los permisos necesarios de docker (i.e asignar un
 > usuario al grupo docker en Linux) para poder darle persistencia a la base de
 > datos y no tener que correr el comando de docker cada vez
 
@@ -39,6 +58,25 @@ La segunda forma consiste en correr esto en una conexión en mysql workbench.
 Utilizaremos los parámetros de MYSQL_USER y MYSQL_PASSWORD (ambos son **dsw**) a
 la hora de crear la conexión. El nombre de la base de datos debería seguir
 siendo "muebleria".
+
+# Variables de entorno
+
+Es conveniente crear un archivo .env en el directorio raíz que sea como el siguiente:
+
+## Configuración general
+
+CORS_ORIGIN=<URL del frontend o lista separada por comas>
+DB_URL=<cadena de conexión a la base de datos>
+DB_NAME=<nombre de la base de datos>
+NODE_ENV=development
+
+## Configuración del seeder
+
+SEEDER_PATH=dist/src/seeders
+SEEDER_PATH_TS=src/seeders
+DEFAULT_SEEDER=DatabaseSeeder
+
+> [!INFO] Para más información sobre variables de entorno de MikroORM, consultar [en la documentación de MikroORM versión 5.9](https://mikro-orm.io/docs/5.9/seeding), que es la versión que se usa en este proyecto.
 
 # Populate database
 
