@@ -1,53 +1,56 @@
 import {
-  Cascade,
-  Collection,
-  Entity,
-  OneToMany,
-  Property,
-} from "@mikro-orm/core";
-import { Favorito } from "../favoritos/favoritos.entity.mysql.js";
-import { Pedido } from "../pedido/pedido.entity.mysql.js";
-import { BaseEntity } from "../shared/db/baseEntity.entity.mysql.js";
+	Cascade,
+	Collection,
+	Entity,
+	OneToMany,
+	Property,
+} from '@mikro-orm/core';
+import { Favorito } from '../favoritos/favoritos.entity.mysql.js';
+import { Pedido } from '../pedido/pedido.entity.mysql.js';
+import { BaseEntity } from '../shared/db/baseEntity.entity.mysql.js';
 
 @Entity()
 export class Cliente extends BaseEntity {
-  @Property()
-  nombre!: string;
+	@Property()
+	nombre!: string;
 
-  @Property()
-  apellido!: string;
+	@Property()
+	apellido!: string;
 
-  @Property({ unique: true })
-  direccion!: string;
+	@Property({ unique: true })
+	direccion!: string;
 
-  @Property({ unique: true })
-  telefono!: string;
+	@Property({ unique: true })
+	telefono!: string;
 
-  @Property({ unique: true })
-  dni!: string;
+	@Property({ unique: true })
+	dni!: string;
 
-  @Property({ unique: true })
-  usuario!: string;
+	@Property({ unique: true })
+	usuario!: string;
 
-  @Property({ unique: true })
-  email!: string;
+	@Property({ unique: true })
+	email!: string;
 
-  @Property()
-  contrasenia!: string;
+	@Property()
+	contrasenia!: string;
 
-  // @Property()
-  // puntos: number = 0; // no se va a usar para el MVP
+	@Property({ default: 'user' })
+	rol!: string; // admin o user
 
-  @Property()
-  fondos: number = 0;
+	// @Property()
+	// puntos: number = 0; // no se va a usar para el MVP
 
-  @OneToMany(() => Pedido, (pedidos) => pedidos.cliente, {
-    cascade: [Cascade.ALL],
-  })
-  pedidos = new Collection<Pedido>(this);
+	@Property()
+	fondos: number = 0;
 
-  @OneToMany(() => Favorito, (favoritos) => favoritos.cliente, {
-    cascade: [Cascade.ALL],
-  })
-  favoritos = new Collection<Favorito>(this);
+	@OneToMany(() => Pedido, (pedidos) => pedidos.cliente, {
+		cascade: [Cascade.ALL],
+	})
+	pedidos = new Collection<Pedido>(this);
+
+	@OneToMany(() => Favorito, (favoritos) => favoritos.cliente, {
+		cascade: [Cascade.ALL],
+	})
+	favoritos = new Collection<Favorito>(this);
 }

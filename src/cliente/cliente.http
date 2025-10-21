@@ -1,6 +1,23 @@
 ### obtener todos los clientes
 GET http://localhost:3000/api/clientes
 
+### crear cliente administrador
+POST http://localhost:3000/api/clientes
+Content-Type: application/json
+
+{
+    "nombre": "Administrador",
+    "apellido": "General",
+    "direccion": "Calle Central 100",
+    "telefono": "1122334455",
+    "dni": "273456789",
+    "usuario": "admin",
+    "email": "admin@muebleria.com",
+    "contrasenia": "123", 
+    "rol": "admin",
+    "fondos": 100000 
+}
+
 ### POST a character
 # @name createCliente
 POST http://localhost:3000/api/clientes

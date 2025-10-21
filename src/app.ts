@@ -49,7 +49,7 @@ app.use('/api/descuentos', descuentoRouter);
 app.use('/api/items', itemRouter);
 // Montar favoritos bajo /api/clientes (clienteId se maneja en el router)
 
-// await syncSchema(); // never in production
+await syncSchema(); // never in production
 
 app.listen(port, () => {
 	console.log(`Listening on http://localhost:${port}/`);

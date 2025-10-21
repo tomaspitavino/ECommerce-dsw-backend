@@ -13,17 +13,18 @@ export const ClienteSchema = z.object({
 	apellido: z.string().min(2),
 	direccion: z.string(),
 	telefono: z.string().min(8),
-	dni: z.string().min(9),
+	dni: z.string().min(8),
 	usuario: z.string().min(3),
 	email: z.email(),
 	contrasenia: z.string().min(8).max(64),
+	rol: z.enum(['user', 'admin']).default('user'),
 	fondos: z.number().nonnegative(),
 });
 
 export const CategoriaSchema = z.object({
 	nombre: z.string().min(2),
 	descripcion: z.string().min(5).max(255),
-	imagen: z.url(),
+	imagen: z.url().optional(),
 });
 
 export const MaterialSchema = z.object({
