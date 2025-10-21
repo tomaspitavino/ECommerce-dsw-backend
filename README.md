@@ -63,18 +63,20 @@ siendo "muebleria".
 
 Es conveniente crear un archivo .env en el directorio raíz que sea como el siguiente:
 
-## Configuración general
+```env
 
+## Configuración general
 CORS_ORIGIN=<URL del frontend o lista separada por comas>
 DB_URL=<cadena de conexión a la base de datos>
 DB_NAME=<nombre de la base de datos>
 NODE_ENV=development
 
 ## Configuración del seeder
-
 SEEDER_PATH=dist/src/seeders
 SEEDER_PATH_TS=src/seeders
 DEFAULT_SEEDER=DatabaseSeeder
+
+```
 
 > [!INFO] Para más información sobre variables de entorno de MikroORM, consultar [en la documentación de MikroORM versión 5.9](https://mikro-orm.io/docs/5.9/seeding), que es la versión que se usa en este proyecto.
 
