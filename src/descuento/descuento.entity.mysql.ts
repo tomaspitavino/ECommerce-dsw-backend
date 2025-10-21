@@ -1,4 +1,4 @@
-import { Entity, Enum, ManyToOne, Property, Rel } from '@mikro-orm/core';
+import { Entity, ManyToOne, Property, Rel } from '@mikro-orm/core';
 import { Pedido } from '../pedido/pedido.entity.mysql.js';
 import { BaseEntity } from '../shared/db/baseEntity.entity.mysql.js';
 
@@ -7,8 +7,8 @@ export class Descuento extends BaseEntity {
 	@Property()
 	codigo!: string; // Ej: 'PROMO10', 'BLACKFRIDAY'
 
-	@Enum(() => TipoDescuento)
-	tipo!: TipoDescuento; // 'CANTIDAD', 'MONTO'
+	@Property()
+	tipo!: string; // 'CANTIDAD', 'MONTO'
 
 	@Property()
 	porcentaje!: number;
@@ -23,7 +23,7 @@ export class Descuento extends BaseEntity {
 	pedido!: Rel<Pedido>;
 }
 
-export enum TipoDescuento {
+/* export enum TipoDescuento {
 	Cantidad = 'Cantidad',
 	Monto = 'Monto',
-}
+} */

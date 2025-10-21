@@ -5,7 +5,7 @@
   "description": "API para e-commerce de mueblería",
   "scripts": {
     "build": "tsc -p ./tsconfig.json",
-    "start:dev": "tsc-watch --noClear -p ./tsconfig.json --onSuccess \"node ./dist/app.js\"",
+    "start:dev": "tsc-watch --noClear -p ./tsconfig.json --onSuccess \"node ./dist/src/app.js\"",
     "seed": "npx mikro-orm seeder:run"
   },
   "keywords": [],
