@@ -120,6 +120,18 @@ GET http://localhost:3000/api/clientes/2/favoritos/mueble/1
 ### borrar favorito
 DELETE http://localhost:3000/api/clientes/2/favoritos/1
 
+### conseguir todos los pedidos de un cliente
+GET http://localhost:3000/api/clientes/2/pedidos
+
+### crear pedido
+POST http://localhost:3000/api/clientes/2/pedidos
+Content-Type: application/json
+
+{
+"items": [1,2],
+"descuentos": [1]
+}
+
 ### POST a character
 POST http://localhost:3000/api/clientes
 Content-Type: application/json

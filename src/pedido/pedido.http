@@ -1,8 +1,0 @@
-GET http://localhost:3000/api/pedidos
-
-PATCH /api/pedidos/3/estado
-Content-Type: application/json
-
-{
-  "nuevoEstado": "confirmado"
-}

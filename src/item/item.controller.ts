@@ -58,7 +58,9 @@ export async function add(req: Request, res: Response) {
 			id: req.body.sanitizedInput.mueble,
 		});
 
+		// Calcular el subtotal
 		const subtotal = mueble.precioUnitario * req.body.sanitizedInput.cantidad;
+
 		const item = em.create(Item, {
 			...req.body.sanitizedInput,
 			subtotal,

@@ -6,7 +6,28 @@ import { Pedido } from './pedido.entity.mysql.js';
 
 const em = orm.em;
 
-export async function findPedidosByCliente(req: Request, res: Response) {
+export function sanitizePedidoInput(
+	req: Request,
+	res: Response,
+	next: NextFunction
+) {
+	req.body.sanitizedInput = {
+		cliente: req.params.id,
+		items: req.body.items,
+		estado: req.body.estado,
+		descuentos: req.body.descuentos,
+		pago: req.body.pago,
+	};
+
+	Object.keys(req.body.sanitizedInput).forEach((key) => {
+		if (req.body.sanitizedInput[key] === undefined) {
+			delete req.body.sanitizedInput[key];
+		}
+	});
+	next();
+}
+
+export async function findAllPedidos(req: Request, res: Response) {
 	try {
 		const idCliente = Number.parseInt(req.params.id);
 		const cliente = await em.findOneOrFail(Cliente, { id: idCliente });
@@ -26,6 +47,50 @@ export async function findPedidosByCliente(req: Request, res: Response) {
 			message: 'Error al obtener los pedidos del cliente',
 			error: error.message,
 		});
+	}
+}
+
+export async function crearPedido(
+	req: Request,
+	res: Response,
+	next: NextFunction
+) {
+	try {
+		// Buscar ítems del carrito del cliente
+		const itemsCarrito = await em.find(
+			Item,
+			{ estado: 'en_carrito' },
+			{ populate: ['mueble'] }
+		);
+
+		if (itemsCarrito.length === 0) {
+			return res.status(400).json({ message: 'El carrito está vacío.' });
+		}
+
+		// Calcular total
+		const total = itemsCarrito.reduce((acc, i) => acc + i.subtotal, 0);
+
+		// Crear pedido
+		const pedido = em.create(Pedido, {
+			...req.body.sanitizedInput,
+			total,
+		});
+
+		// Asociar ítems al pedido
+		for (const item of itemsCarrito) {
+			item.pedido = pedido;
+			item.estado = 'pendiente';
+			pedido.items.add(item);
+		}
+
+		await em.flush();
+
+		res.status(201).json({
+			message: 'Pedido creado correctamente',
+			data: pedido,
+		});
+	} catch (error: any) {
+		next(error);
 	}
 }
 
@@ -66,55 +131,6 @@ export async function updateEstadoPedido(req: Request, res: Response) {
 			message: 'Error al actualizar el estado del pedido',
 			error: error.message,
 		});
-	}
-}
-
-export async function crearPedido(
-	req: Request,
-	res: Response,
-	next: NextFunction
-) {
-	try {
-		const idCliente = Number.parseInt(req.params.id);
-		const cliente = await em.findOneOrFail(Cliente, { id: idCliente });
-
-		// Buscar ítems del carrito del cliente
-		const itemsCarrito = await em.find(
-			Item,
-			{ estado: 'en_carrito' },
-			{ populate: ['mueble'] }
-		);
-
-		if (itemsCarrito.length === 0) {
-			return res.status(400).json({ message: 'El carrito está vacío.' });
-		}
-
-		// Calcular total
-		const total = itemsCarrito.reduce((acc, i) => acc + i.subtotal, 0);
-
-		// Crear pedido
-		const pedido = em.create(Pedido, {
-			cliente,
-			estado: 'pendiente',
-			total: total,
-			fechaHora: new Date(),
-		});
-
-		// Asociar ítems al pedido
-		for (const item of itemsCarrito) {
-			item.pedido = pedido;
-			item.estado = 'pendiente';
-			pedido.items.add(item);
-		}
-
-		await em.persistAndFlush(pedido);
-
-		res.status(201).json({
-			message: 'Pedido creado correctamente',
-			data: pedido,
-		});
-	} catch (error: any) {
-		next(error);
 	}
 }
 

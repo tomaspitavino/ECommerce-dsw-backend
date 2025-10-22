@@ -1,6 +1,4 @@
-import { EntityManager } from '@mikro-orm/core';
-import { NextFunction, Request, Response } from 'express';
-import { Pedido } from '../pedido/pedido.entity.mysql.js';
+import { Request, Response } from 'express';
 import { orm } from '../shared/db/orm.js';
 import { validate } from '../shared/validation/validateRequest.js';
 import { DescuentoSchema } from '../shared/validation/zodSchemas.js';
