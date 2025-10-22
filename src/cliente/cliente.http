@@ -85,18 +85,10 @@ Content-Type: application/json
 }
 
 ### obtener favoritos del cliente
-GET http://localhost:3000/api/clientes/1/favoritos
-
-### obtener favoritos del cliente 2
 GET http://localhost:3000/api/clientes/2/favoritos
 
-### crear favorito para el cliente 1
-POST http://localhost:3000/api/clientes/1/favoritos
-Content-Type: application/json
-
-{
-  "muebleId": 1
-}
+### obtener favoritos del cliente 2
+GET http://localhost:3000/api/clientes/3/favoritos
 
 ### crear favorito para el cliente 2
 POST http://localhost:3000/api/clientes/2/favoritos
@@ -106,251 +98,27 @@ Content-Type: application/json
   "muebleId": 1
 }
 
+### crear otro favorito para el cliente 2
+POST http://localhost:3000/api/clientes/2/favoritos
+Content-Type: application/json
+
+{
+  "muebleId": 4
+}
+
+### crear favorito para el cliente 3
+POST http://localhost:3000/api/clientes/3/favoritos
+Content-Type: application/json
+
+{
+  "muebleId": 2
+}
+
 ### un favorito para cliente 1
-GET http://localhost:3000/api/clientes/1/favoritos/mueble/1
+GET http://localhost:3000/api/clientes/2/favoritos/mueble/1
 
 ### borrar favorito
 DELETE http://localhost:3000/api/clientes/2/favoritos/1
-
-### POST a character
-POST http://localhost:3000/api/clientes
-Content-Type: application/json
-
-{
-  "nombre": "Shinji",
-  "apellido": "Ikari",
-  "direccion": "Tokyo-3 Block 01",
-  "telefono": "1145678912",
-  "dni": "337114222",
-  "usuario": "shinjiikari",
-  "email": "shinji@nerv.jp",
-  "contrasenia": "evaunit01",
-  "fondos": 700
-}
-
-### POST a character
-POST http://localhost:3000/api/clientes
-Content-Type: application/json
-
-{
-  "nombre": "Asuka",
-  "apellido": "Soryu",
-  "direccion": "Tokyo-3 Block 02",
-  "telefono": "1145682233",
-  "dni": "33222333",
-  "usuario": "asukasoryu",
-  "email": "asuka@nerv.jp",
-  "contrasenia": "redpilot",
-  "fondos": 950
-}
-
-### POST a character
-POST http://localhost:3000/api/clientes
-Content-Type: application/json
-
-{
-  "nombre": "Rei",
-  "apellido": "Ayanami",
-  "direccion": "Tokyo-3 Block 00",
-  "telefono": "1145693344",
-  "dni": "33333444",
-  "usuario": "reiayanami",
-  "email": "rei@nerv.jp",
-  "contrasenia": "silentblue",
-  "fondos": 1200
-}
-
-### POST a character
-POST http://localhost:3000/api/clientes
-Content-Type: application/json
-
-{
-  "nombre": "Naruto",
-  "apellido": "Uzumaki",
-  "direccion": "Konoha 123",
-  "telefono": "1156789090",
-  "dni": "34444555",
-  "usuario": "narutouzumaki",
-  "email": "naruto@konoha.jp",
-  "contrasenia": "ramenlover",
-  "fondos": 900
-}
-
-### POST a character
-POST http://localhost:3000/api/clientes
-Content-Type: application/json
-
-{
-  "nombre": "Sasuke",
-  "apellido": "Uchiha",
-  "direccion": "Clan Uchiha 9",
-  "telefono": "1156789988",
-  "dni": "34555666",
-  "usuario": "sasukeuchiha",
-  "email": "sasuke@konoha.jp",
-  "contrasenia": "chidori999",
-  "fondos": 1400
-}
-
-### POST a character
-POST http://localhost:3000/api/clientes
-Content-Type: application/json
-
-{
-  "nombre": "Sakura",
-  "apellido": "Haruno",
-  "direccion": "Konoha 45",
-  "telefono": "1156798877",
-  "dni": "34666777",
-  "usuario": "sakuraharuno",
-  "email": "sakura@konoha.jp",
-  "contrasenia": "mednin123",
-  "fondos": 1300
-}
-
-### POST a character
-POST http://localhost:3000/api/clientes
-Content-Type: application/json
-
-{
-  "nombre": "Kenshin",
-  "apellido": "Himura",
-  "direccion": "Kyoto 187",
-  "telefono": "1167008899",
-  "dni": "35677888",
-  "usuario": "kenshinhimura",
-  "email": "kenshin@meiji.jp",
-  "contrasenia": "hitokiriX",
-  "fondos": 800
-}
-
-### POST a character
-POST http://localhost:3000/api/clientes
-Content-Type: application/json
-
-{
-  "nombre": "Spike",
-  "apellido": "Spiegel",
-  "direccion": "Bebop Dock 7",
-  "telefono": "1167019988",
-  "dni": "35788999",
-  "usuario": "spikespiegel",
-  "email": "spike@bebop.net",
-  "contrasenia": "seeYouSpaceCowboy",
-  "fondos": 1100
-}
-
-### POST a character
-POST http://localhost:3000/api/clientes
-Content-Type: application/json
-
-{
-  "nombre": "Faye",
-  "apellido": "Valentine",
-  "direccion": "Bebop Dock 8",
-  "telefono": "1167027788",
-  "dni": "35899000",
-  "usuario": "fayevalentine",
-  "email": "faye@bebop.net",
-  "contrasenia": "casinoqueen",
-  "fondos": 2300
-}
-
-### POST a character
-POST http://localhost:3000/api/clientes
-Content-Type: application/json
-
-{
-  "nombre": "Edward",
-  "apellido": "Wong",
-  "direccion": "Internet Galaxy 5",
-  "telefono": "1167036677",
-  "dni": "35910111",
-  "usuario": "edwardwong",
-  "email": "ed@bebop.net",
-  "contrasenia": "superhacker",
-  "fondos": 400
-}
-
-### POST a character
-POST http://localhost:3000/api/clientes
-Content-Type: application/json
-
-{
-  "nombre": "Seiya",
-  "apellido": "Pegaso",
-  "direccion": "Santuario 01",
-  "telefono": "1178001234",
-  "dni": "36789123",
-  "usuario": "seiyapegaso",
-  "email": "seiya@saint.jp",
-  "contrasenia": "athenaprotect",
-  "fondos": 1600
-}
-
-### POST a character
-POST http://localhost:3000/api/clientes
-Content-Type: application/json
-
-{
-  "nombre": "Shiryu",
-  "apellido": "Dragón",
-  "direccion": "Santuario 02",
-  "telefono": "1178005678",
-  "dni": "36890234",
-  "usuario": "shiryudragon",
-  "email": "shiryu@saint.jp",
-  "contrasenia": "risingdragon",
-  "fondos": 1450
-}
-
-### POST a character
-POST http://localhost:3000/api/clientes
-Content-Type: application/json
-
-{
-  "nombre": "Hyoga",
-  "apellido": "Cisne",
-  "direccion": "Santuario 03",
-  "telefono": "1178012345",
-  "dni": "36901345",
-  "usuario": "hyogacisne",
-  "email": "hyoga@saint.jp",
-  "contrasenia": "diamonddust",
-  "fondos": 1350
-}
-
-### POST a character
-POST http://localhost:3000/api/clientes
-Content-Type: application/json
-
-{
-  "nombre": "Shun",
-  "apellido": "Andrómeda",
-  "direccion": "Santuario 04",
-  "telefono": "1178016789",
-  "dni": "36912456",
-  "usuario": "shunandromeda",
-  "email": "shun@saint.jp",
-  "contrasenia": "nebularchain",
-  "fondos": 1100
-}
-
-### POST a character
-POST http://localhost:3000/api/clientes
-Content-Type: application/json
-
-{
-  "nombre": "Ikki",
-  "apellido": "Fénix",
-  "direccion": "Santuario 05",
-  "telefono": "1178023456",
-  "dni": "36923567",
-  "usuario": "ikkifenix",
-  "email": "ikki@saint.jp",
-  "contrasenia": "rebirthfire",
-  "fondos": 1550
-}
 
 ### POST a character
 POST http://localhost:3000/api/clientes
