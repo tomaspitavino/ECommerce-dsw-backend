@@ -1,0 +1,54 @@
+### obtener items
+GET http://localhost:3000/api/items
+
+### crear item
+POST http://localhost:3000/api/items
+Content-Type: application/json
+
+{
+"estado": "en carrito",
+"cantidad": 1,
+"mueble": 1
+}
+
+### crear otro item
+POST http://localhost:3000/api/items
+Content-Type: application/json
+
+{
+  "estado": "pendiente",
+  "cantidad": 2,
+  "mueble": 3
+}
+
+### otro mas
+POST http://localhost:3000/api/items
+Content-Type: application/json
+
+{
+  "estado": "en proceso",
+  "cantidad": 3,
+  "mueble": 4
+}
+
+### item completado
+POST http://localhost:3000/api/items
+Content-Type: application/json
+
+{
+  "estado": "completado",
+  "cantidad": 5,
+  "mueble": 2,
+  "pedido": 1
+}
+
+### item cancelado
+POST http://localhost:3000/api/items
+Content-Type: application/json
+
+{
+  "estado": "cancelado",
+  "cantidad": 2,
+  "mueble": 5,
+  "pedido": 1
+}
