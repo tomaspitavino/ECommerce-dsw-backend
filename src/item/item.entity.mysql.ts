@@ -28,6 +28,6 @@ export class Item extends BaseEntity {
 	@ManyToOne(() => Mueble)
 	mueble!: Rel<Mueble>;
 
-	@ManyToOne(() => Pedido)
+	@ManyToOne(() => Pedido, { nullable: true })
 	pedido?: Rel<Pedido>;
 }

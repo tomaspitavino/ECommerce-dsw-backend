@@ -40,15 +40,6 @@ export const MuebleSchema = z.object({
 	imagenes: z.array(z.url()).min(1),
 	categoria: z.number().int().nonnegative(),
 	material: z.number().int().nonnegative(),
-	item: z.number().int().nonnegative().optional(),
-});
-
-export const ItemSchema = z.object({
-	subtotal: z.number().nonnegative(),
-	estado: z.string().default('en carrito'),
-	cantidad: z.number().int().nonnegative(),
-	mueble: z.number().int().nonnegative(),
-	pedido: z.number().int().nonnegative(),
 });
 
 const datetime = z.iso.datetime();

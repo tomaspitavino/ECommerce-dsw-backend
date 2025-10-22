@@ -4,7 +4,6 @@ import { validate } from '../shared/validation/validateRequest.js';
 import { MuebleSchema } from '../shared/validation/zodSchemas.js';
 import { Mueble } from './mueble.entity.mysql.js';
 
-// const em = orm.em;
 const em = orm.em;
 
 export const sanitizeMuebleInput = validate(MuebleSchema);
@@ -41,7 +40,6 @@ export async function findOne(req: Request, res: Response) {
 export async function add(req: Request, res: Response) {
 	try {
 		const dto = req.body.validated;
-		// const mueble = em.create(Mueble, resolveRelations(dto, em));
 		const mueble = em.create(Mueble, dto);
 
 		await em.flush();
@@ -57,7 +55,6 @@ export async function update(req: Request, res: Response) {
 		const dto = req.body.validated;
 
 		const mueble = await em.findOneOrFail(Mueble, { id });
-		// em.assign(mueble, resolveRelations(dto, em));
 		em.assign(mueble, dto);
 
 		await em.flush();
@@ -71,6 +68,7 @@ export async function remove(req: Request, res: Response) {
 	try {
 		const id = Number.parseInt(req.params.id);
 		const mueble = await em.findOneOrFail(Mueble, { id });
+
 		await em.removeAndFlush(mueble);
 		res.status(200).json({ Message: 'Mueble eliminado', data: mueble });
 	} catch (error: any) {
