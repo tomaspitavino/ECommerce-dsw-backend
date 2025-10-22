@@ -44,6 +44,6 @@ export class Pedido extends BaseEntity {
 	})
 	descuentos = new Collection<Descuento>(this);
 
-	@ManyToOne(() => Pago)
+	@ManyToOne(() => Pago, { nullable: true })
 	pago?: Rel<Pago>;
 }

@@ -38,8 +38,6 @@ export const MuebleSchema = z.object({
 	etiqueta: z.string().min(2).max(50),
 	precioUnitario: z.number().nonnegative(),
 	imagenes: z.array(z.url()).min(1),
-	categoria: z.number().int().nonnegative(),
-	material: z.number().int().nonnegative(),
 });
 
 const datetime = z.iso.datetime();
@@ -50,16 +48,4 @@ export const DescuentoSchema = z.object({
 	porcentaje: z.number().min(0).max(100),
 	descripcion: z.string().min(5).max(255).optional(),
 	fechaExpiracion: datetime.optional(), // ISO date string
-	pedido: z.number().int().nonnegative(),
-});
-
-export const EstadoPedidoSchema = z.object({
-	nuevoEstado: z.enum([
-		'pendiente',
-		'confirmado',
-		'pagado',
-		'enviado',
-		'entregado',
-		'cancelado',
-	]),
 });
