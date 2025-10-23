@@ -17,8 +17,10 @@ import {
 	findAll,
 	findOne,
 	remove,
+	login,
 	sanitizeClientInput,
 	sanitizeClientPatchInput,
+	sanitizeLoginInput,
 	update,
 } from './cliente.controller.js';
 
@@ -45,3 +47,6 @@ clienteRouter.get('/:id/pedidos/', findAllPedidos);
 clienteRouter.post('/:id/pedidos/', sanitizePedidoInput, crearPedido);
 // Actualizar estado de un pedido
 clienteRouter.patch('/:id/estado', sanitizePedidoInput, updateEstadoPedido);
+
+// Login
+clienteRouter.post('/login', sanitizeLoginInput, login);
