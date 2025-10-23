@@ -21,6 +21,11 @@ export const ClienteSchema = z.object({
 	fondos: z.number().nonnegative(),
 });
 
+export const LoginSchema = z.object({
+  email: z.email(),
+  contrasenia: z.string().min(8).max(64),
+});
+
 export const CategoriaSchema = z.object({
 	nombre: z.string().min(2),
 	descripcion: z.string().min(5).max(255),
