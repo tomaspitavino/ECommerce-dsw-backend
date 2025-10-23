@@ -1,13 +1,20 @@
 import { Request, Response } from 'express';
 import { orm } from '../shared/db/orm.js';
 import { validate } from '../shared/validation/validateRequest.js';
-import { ClienteSchema } from '../shared/validation/zodSchemas.js';
+import { ClienteSchema, LoginSchema } from '../shared/validation/zodSchemas.js';
 import { Cliente } from './cliente.entity.mysql.js';
 
 const em = orm.em;
 
 export const sanitizeClientInput = validate(ClienteSchema);
 export const sanitizeClientPatchInput = validate(ClienteSchema.partial());
+export const sanitizeLoginInput = validate(LoginSchema);
+
+// Función para eliminar campos sensibles antes de enviar la respuesta
+export function sanitizeCliente(cliente: any) {
+  const { contrasenia, ...safeData } = cliente;
+  return safeData;
+}
 
 export async function findAll(req: Request, res: Response) {
 	try {
@@ -82,4 +89,28 @@ export async function remove(req: Request, res: Response) {
 			message: error.message,
 		});
 	}
+}
+
+export async function login(req: Request, res: Response)	{ 
+	try {
+    const email = req.body.email;
+	const cliente = await em.findOne(Cliente, { email });
+
+	if (!cliente) {
+	  return res.status(401).json({ message: 'Email o contraseña incorrecta' });
+	}
+
+	const contrasenia = req.body.contrasenia;
+		const esCorrecta = (contrasenia === cliente.contrasenia)? true : false;
+    /* const esCorrecta = await bcrypt.compare(contrasenia, cliente.contrasenia);  por ahora es comparacion directa, cuando usemos hash hay que cambiarlo*/
+
+		if (!esCorrecta) {
+      return res.status(401).json({ message: 'Email o contraseña incorrecta' });
+    }
+
+    const sanitizedResponse = sanitizeCliente(cliente);
+    res.status(200).json({ message: '¡Inicio de sesión exitoso!', data: sanitizedResponse });
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
+  }
 }
