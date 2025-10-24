@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
 import { Mueble } from '../mueble/mueble.entity.mysql.js';
-import { Pedido } from '../pedido/pedido.entity.mysql.js';
 import { orm } from '../shared/db/orm.js';
 import { Item } from './item.entity.mysql.js';
 
@@ -73,12 +72,35 @@ export async function add(req: Request, res: Response) {
 	}
 }
 
-export async function update(req: Request, res: Response) {
+export async function updateCantidad(req: Request, res: Response) {
 	try {
 		const id = Number.parseInt(req.params.id);
-		const item = await em.findOneOrFail(Item, { id });
-		em.assign(item, req.body.sanitizedInput);
+		const item = await em.findOneOrFail(Item, { id }, { populate: ['mueble'] });
+
+		// Validar que se haya enviado cantidad
+		if (req.body.sanitizedInput.cantidad === undefined) {
+			return res.status(400).json({ message: 'Debe especificar una cantidad' });
+		}
+
+		const nuevaCantidad = req.body.sanitizedInput.cantidad;
+
+		// Validar que la cantidad sea válida (> 0)
+		if (nuevaCantidad <= 0) {
+			return res
+				.status(400)
+				.json({ message: 'La cantidad debe ser mayor que cero' });
+		}
+
+		// Calcular el subtotal
+		const subtotal = item.mueble.precioUnitario * nuevaCantidad;
+
+		em.assign(item, {
+			cantidad: nuevaCantidad,
+			subtotal,
+		});
+
 		await em.flush();
+
 		res.status(200).json({ Message: 'Item actualizado', data: item });
 	} catch (error: any) {
 		res.status(500).json({ message: 'Error al actualizar el item' });

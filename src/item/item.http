@@ -6,9 +6,9 @@ POST http://localhost:3000/api/items
 Content-Type: application/json
 
 {
-"estado": "en carrito",
-"cantidad": 1,
-"mueble": 1
+  "estado": "en carrito",
+  "cantidad": 1,
+  "mueble": 1
 }
 
 ### crear otro item
@@ -29,6 +29,14 @@ Content-Type: application/json
   "estado": "en proceso",
   "cantidad": 3,
   "mueble": 4
+}
+
+### aumentar cantidad del item 1 en 3 unidades 75000 * 4
+PATCH http://localhost:3000/api/items/1
+Content-Type: application/json
+
+{
+  "cantidad": 4
 }
 
 ### item completado
