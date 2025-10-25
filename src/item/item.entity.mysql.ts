@@ -29,5 +29,5 @@ export class Item extends BaseEntity {
 	mueble!: Rel<Mueble>;
 
 	@ManyToOne(() => Pedido, { nullable: true })
-	pedido?: Rel<Pedido>;
+	pedido!: Rel<Pedido>;
 }

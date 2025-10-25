@@ -59,7 +59,7 @@ export async function crearPedido(
 		// Buscar ítems del carrito del cliente
 		const itemsCarrito = await em.find(
 			Item,
-			{ estado: 'en_carrito' },
+			{ estado: 'en carrito' },
 			{ populate: ['mueble'] }
 		);
 
