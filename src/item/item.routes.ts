@@ -16,6 +16,3 @@ itemRouter.post('/', sanitizeItemInput, add);
 itemRouter.put('/:id', sanitizeItemInput, updateCantidad);
 itemRouter.patch('/:id', sanitizeItemInput, updateCantidad);
 itemRouter.delete('/:id', remove);
-
-// Nueva ruta: obtener todos los items de un pedido
-// itemRouter.get("/pedido/:pedidoId", findByPedido);

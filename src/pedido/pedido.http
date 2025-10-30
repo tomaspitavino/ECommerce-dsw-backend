@@ -1,0 +1,8 @@
+### crear pedido
+POST http://localhost:3000/api/pedidos
+Content-Type: application/json
+
+{
+  "estado": "pendiente",
+  
+}
