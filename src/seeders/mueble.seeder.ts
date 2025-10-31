@@ -33,7 +33,7 @@ export class MuebleSeeder extends Seeder {
         material:
           materiales.find((m) => m.nombre.includes("Madera")) || materiales[0],
         imagenes: [
-          "https://images.unsplash.com/photo-1626425262231-9419b7abcc98?w=800",
+          "https://plus.unsplash.com/premium_photo-1681245768600-d84542af04a7?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1374",
         ],
       },
       {
@@ -46,7 +46,8 @@ export class MuebleSeeder extends Seeder {
         material:
           materiales.find((m) => m.nombre.includes("Madera")) || materiales[0],
         imagenes: [
-          "https://images.unsplash.com/photo-1588854337115-1c9a9f5e91e4?w=800",
+          "https://images.unsplash.com/photo-1729603369774-23019dbf6c9c?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=869",
+          "https://images.unsplash.com/photo-1665005255783-3298cabef5aa?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=464",
         ],
       },
       {
@@ -60,7 +61,7 @@ export class MuebleSeeder extends Seeder {
           materiales.find((m) => m.nombre.includes("Plástico")) ||
           materiales[1],
         imagenes: [
-          "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800",
+          "https://plus.unsplash.com/premium_photo-1734029815108-169d085ca9aa?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=387",
         ],
       },
       {
@@ -74,7 +75,7 @@ export class MuebleSeeder extends Seeder {
         material:
           materiales.find((m) => m.nombre.includes("Madera")) || materiales[0],
         imagenes: [
-          "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800",
+          "https://plus.unsplash.com/premium_photo-1681487121780-8ce9769b4896?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=870",
         ],
       },
       {
@@ -88,7 +89,8 @@ export class MuebleSeeder extends Seeder {
         material:
           materiales.find((m) => m.nombre.includes("Cuero")) || materiales[0],
         imagenes: [
-          "https://images.unsplash.com/photo-1578894381163-e72c17f2e295?w=800",
+          "https://plus.unsplash.com/premium_photo-1681449856301-2446332b2ce4?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=870",
+          "https://images.unsplash.com/photo-1742569272187-1a5f769d79cf?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=400",
         ],
       },
       {
@@ -102,7 +104,7 @@ export class MuebleSeeder extends Seeder {
         material:
           materiales.find((m) => m.nombre.includes("Metal")) || materiales[0],
         imagenes: [
-          "https://images.unsplash.com/photo-1616628182506-8a9621a5d3b0?w=800",
+          "https://images.unsplash.com/photo-1640169124017-ac05b8fc399f?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=348",
         ],
       },
     ];
