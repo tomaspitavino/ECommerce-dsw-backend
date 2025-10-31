@@ -106,6 +106,23 @@ export async function findAllPedidos(req: Request, res: Response) {
   }
 }
 
+export async function findPedidoById(req: Request, res: Response) {
+  try {
+    const idPedido = Number.parseInt(req.params.id);
+    const pedido = await em.findOneOrFail(Pedido, { id: idPedido });
+
+    res.status(200).json({
+      message: `Pedido ${idPedido}`,
+      data: pedido,
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      message: "Error al obtener el pedido",
+      error: error.message,
+    });
+  }
+}
+
 export async function updateEstadoPedido(req: Request, res: Response) {
   try {
     const idPedido = Number(req.params.id);

@@ -31,7 +31,6 @@ const port = 3000;
 // Revisar paths
 app.use("/api/clientes", clienteRouter);
 app.use("/api/clientes/:id/favoritos", clienteRouter); // para favoritos
-// app.use("/api/clientes/:id/pedidos", clienteRouter); // para pedidos
 
 app.use("api/pedidos", pedidoRouter); // para pedidos
 app.use("/api/categorias", categoriaRouter);
