@@ -13,9 +13,9 @@ Content-Type: application/json
     "dni": "273456789",
     "usuario": "admin",
     "email": "admin@muebleria.com",
-    "contrasenia": "123", 
+    "contrasenia": "123",
     "rol": "admin",
-    "fondos": 100000 
+    "fondos": 100000
 }
 
 ### POST a character
@@ -122,15 +122,6 @@ DELETE http://localhost:3000/api/clientes/2/favoritos/1
 
 ### conseguir todos los pedidos de un cliente
 GET http://localhost:3000/api/clientes/2/pedidos
-
-### crear pedido
-POST http://localhost:3000/api/clientes/2/pedidos
-Content-Type: application/json
-
-{
-"items": [1,2],
-"descuentos": [1]
-}
 
 ### POST a character
 POST http://localhost:3000/api/clientes
