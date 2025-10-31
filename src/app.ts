@@ -21,7 +21,7 @@ app.use((req, res, next) => {
 
 const CORS_OPTIONS = {
   origin: process.env.CORS_ORIGIN,
-  credentials: true,
+  credentials: false,
 };
 
 app.use(cors(CORS_OPTIONS));
