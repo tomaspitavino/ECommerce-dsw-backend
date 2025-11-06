@@ -1,8 +1,19 @@
-### crear pedido
+GET http://localhost:3000/api/pedidos/2
+
 POST http://localhost:3000/api/pedidos
 Content-Type: application/json
 
 {
-  "estado": "pendiente",
-  
+  "cliente": 2,
+  "items": [
+    {
+      "mueble": 1,
+      "cantidad": 1
+    },
+    {
+      "mueble": 2,
+      "cantidad": 1
+    }
+  ],
+  "descuentos": 1
 }
