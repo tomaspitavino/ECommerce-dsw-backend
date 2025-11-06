@@ -13,7 +13,7 @@ export function sanitizePedidoInput(
   next: NextFunction,
 ) {
   req.body.sanitizedInput = {
-    cliente: req.body.id,
+    cliente: req.body.cliente,
     items: req.body.items,
     estado: req.body.estado,
     descuentos: req.body.descuentos,
@@ -57,12 +57,12 @@ export async function crearPedido(
 
     for (const i of items) {
       const mueble = await em.findOneOrFail(Mueble, { id: i.mueble });
-      const cantidad = Number.parseInt(i.cantidad);
-      const subtotal = mueble.precioUnitario * cantidad;
+      // const cantidad = Number.parseInt(i.cantidad);
+      const subtotal = mueble.precioUnitario * i.cantidad;
 
       const item = em.create(Item, {
         mueble,
-        cantidad,
+        cantidad: i.cantidad,
         subtotal,
         pedido,
         estado: "pendiente",
@@ -72,6 +72,7 @@ export async function crearPedido(
       totalPedido += subtotal;
     }
 
+    pedido.total = totalPedido;
     await em.persistAndFlush(pedido);
 
     res.status(201).json({
@@ -85,7 +86,7 @@ export async function crearPedido(
 
 export async function findAllPedidos(req: Request, res: Response) {
   try {
-    const idCliente = Number.parseInt(req.params.id);
+    const idCliente = Number.parseInt(req.params.clienteId);
     const cliente = await em.findOneOrFail(Cliente, { id: idCliente });
 
     const pedidos = await em.find(
@@ -108,7 +109,7 @@ export async function findAllPedidos(req: Request, res: Response) {
 
 export async function findPedidoById(req: Request, res: Response) {
   try {
-    const idPedido = Number.parseInt(req.params.id);
+    const idPedido = Number.parseInt(req.params.pedidoId);
     const pedido = await em.findOneOrFail(Pedido, { id: idPedido });
 
     res.status(200).json({
@@ -125,7 +126,7 @@ export async function findPedidoById(req: Request, res: Response) {
 
 export async function updateEstadoPedido(req: Request, res: Response) {
   try {
-    const idPedido = Number(req.params.id);
+    const idPedido = Number(req.params.pedidoId);
     const { nuevoEstado } = req.body;
 
     const pedido = await em.findOneOrFail(Pedido, { id: idPedido });
