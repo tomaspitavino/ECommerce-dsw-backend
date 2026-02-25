@@ -1,12 +1,17 @@
 import { z } from 'zod';
+
 const PasswordSchema = z
 	.string()
 	.min(8, 'La contraseña debe tener al menos 8 caracteres')
 	.max(64, 'Se ha excedido el número máximo de caracteres')
-	.regex(/[A-Z]/, 'Debe contener al menos una mayúscula')
+	// .regex(/[A-Z]/, 'Debe contener al menos una mayúscula')
 	.regex(/[a-z]/, 'Debe contener al menos una minúscula')
-	.regex(/[0-9]/, 'Debe contener al menos un número')
-	.regex(/[^A-Za-z0-9]/, 'Debe contener al menos un símbolo');
+	.regex(/[0-9]/, 'Debe contener al menos un número');
+// .regex(/[^A-Za-z0-9]/, 'Debe contener al menos un símbolo');
+
+const RolSchema = z.enum(['user', 'admin']).default('user');
+
+export type Rol = z.infer<typeof RolSchema>;
 
 export const ClienteSchema = z.object({
 	nombre: z.string().min(2),
@@ -16,14 +21,14 @@ export const ClienteSchema = z.object({
 	dni: z.string().min(8),
 	usuario: z.string().min(3),
 	email: z.email(),
-	contrasenia: z.string().min(8).max(64),
-	rol: z.enum(['user', 'admin']).default('user'),
+	contrasenia: PasswordSchema,
+	rol: RolSchema,
 	fondos: z.number().nonnegative(),
 });
 
 export const LoginSchema = z.object({
-  email: z.email(),
-  contrasenia: z.string().min(8).max(64),
+	email: z.email(),
+	contrasenia: PasswordSchema,
 });
 
 export const CategoriaSchema = z.object({

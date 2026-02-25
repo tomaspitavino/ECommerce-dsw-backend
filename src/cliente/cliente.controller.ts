@@ -12,8 +12,8 @@ export const sanitizeLoginInput = validate(LoginSchema);
 
 // Función para eliminar campos sensibles antes de enviar la respuesta
 export function sanitizeCliente(cliente: any) {
-  const { contrasenia, ...safeData } = cliente;
-  return safeData;
+	const { contrasenia, ...safeData } = cliente;
+	return safeData;
 }
 
 export async function findAll(req: Request, res: Response) {
@@ -91,26 +91,30 @@ export async function remove(req: Request, res: Response) {
 	}
 }
 
-export async function login(req: Request, res: Response)	{ 
+// logica de login
+// aun sin el token jwt
+export async function login(req: Request, res: Response) {
 	try {
-    const email = req.body.email;
-	const cliente = await em.findOne(Cliente, { email });
+		const email = req.body.email;
+		const cliente = await em.findOne(Cliente, { email });
 
-	if (!cliente) {
-	  return res.status(401).json({ message: 'Email o contraseña incorrecta' });
-	}
+		if (!cliente) {
+			return res.status(401).json({ message: 'Email o contraseña incorrecta' });
+		}
 
-	const contrasenia = req.body.contrasenia;
-		const esCorrecta = (contrasenia === cliente.contrasenia)? true : false;
-    /* const esCorrecta = await bcrypt.compare(contrasenia, cliente.contrasenia);  por ahora es comparacion directa, cuando usemos hash hay que cambiarlo*/
+		const contrasenia = req.body.contrasenia;
+		const esCorrecta = contrasenia === cliente.contrasenia ? true : false;
+		/* const esCorrecta = await bcrypt.compare(contrasenia, cliente.contrasenia);  por ahora es comparacion directa, cuando usemos hash hay que cambiarlo*/
 
 		if (!esCorrecta) {
-      return res.status(401).json({ message: 'Email o contraseña incorrecta' });
-    }
+			return res.status(401).json({ message: 'Email o contraseña incorrecta' });
+		}
 
-    const sanitizedResponse = sanitizeCliente(cliente);
-    res.status(200).json({ message: '¡Inicio de sesión exitoso!', data: sanitizedResponse });
-  } catch (error: any) {
-    res.status(500).json({ message: error.message });
-  }
+		const sanitizedResponse = sanitizeCliente(cliente);
+		res
+			.status(200)
+			.json({ message: '¡Inicio de sesión exitoso!', data: sanitizedResponse });
+	} catch (error: any) {
+		res.status(500).json({ message: error.message });
+	}
 }
