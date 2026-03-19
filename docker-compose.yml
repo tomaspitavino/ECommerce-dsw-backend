@@ -1,0 +1,13 @@
+services:
+  mysql-desarollo:
+    image: mysql:9.3.0
+    environment:
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+      MYSQL_PASSWORD: dsw
+      MYSQL_USER: dsw
+      MYSQL_DATABASE: muebleria
+    ports:
+      - "3320:3306"
+    volumes:
+      - ./data:/var/lib/mysql
