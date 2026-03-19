@@ -19,25 +19,29 @@ npm i
 
 ```
 
-Ahora tenemos dos formas de correr esto en el backend.
+Ahora tenemos tres formas de correr esto en el backend.
 
-## Método 1
+## Método 1 (recomendado)
+
+Instalar docker-compose y correr el siguiente comando en el directorio raíz (no src):
+
+docker-compose up -d
+
+## Método 2
 
 La primera consiste en tener docker instalado y correr algo similar a este
 comando en la terminal.
 
-```docker
-
+```sh
 docker run -d --name mysql-desarollo \
- -v /home/tu-usuario/docker-volumes/mysql-muebleria/:/var/lib/mysql \
+ -v ./data:/var/lib/mysql/data \
  -e MYSQL_ROOT_HOST='%' \
  -e MYSQL_ALLOW_EMPTY_PASSWORD="yes" \
  -e MYSQL_PASSWORD="dsw" \
  -e MYSQL_USER="dsw" \
  -e MYSQL_DATABASE='muebleria' \
- -p 3306:3306 \
+ -p 3320:3306 \
  mysql:9.3.0
-
 ```
 
 > [!NOTE] Reemplazando el usuario y el path dependiendo de si estás en Linux o Windows.
@@ -52,7 +56,7 @@ docker run -d --name mysql-desarollo \
 
 Recomiendo no cambiar los demás parámetros.
 
-## Método 2
+## Método 3
 
 La segunda forma consiste en correr esto en una conexión en mysql workbench.
 Utilizaremos los parámetros de MYSQL_USER y MYSQL_PASSWORD (ambos son **dsw**) a
