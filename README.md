@@ -25,7 +25,15 @@ Ahora tenemos tres formas de correr esto en el backend.
 
 Instalar docker-compose y correr el siguiente comando en el directorio raíz (no src):
 
-docker-compose up -d
+docker compose up -d
+
+Para detener y destruir completamente el contenedor y todos sus recursos asociados:
+
+docker compose down -v
+
+Para solo detener el contenedor:
+
+docker stop nombre_contenedor
 
 ## Método 2
 
