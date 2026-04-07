@@ -11,10 +11,8 @@ import {
   findAll,
   findOne,
   remove,
-  login,
   sanitizeClientInput,
   sanitizeClientPatchInput,
-  sanitizeLoginInput,
   update,
 } from "./cliente.controller.js";
 
@@ -37,4 +35,4 @@ clienteRouter.patch("/:id", sanitizeClientPatchInput, update);
 clienteRouter.delete("/:id", remove);
 
 // Login
-clienteRouter.post("/login", sanitizeLoginInput, login);
+// clienteRouter.post("/login", sanitizeLoginInput, login);
