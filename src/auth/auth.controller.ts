@@ -1,45 +1,38 @@
-/*
-import bcrypt from 'bcrypt';
-import { Request, Response } from 'express';
-import jwt from 'jsonwebtoken';
-import { Cliente } from '../cliente/cliente.entity.js';
-import { orm } from '../shared/db/orm.js';
-import { RolSchema } from './auth.schema.js';
+import { Request, Response } from "express";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import { orm } from "../shared/db/orm.js";
+import { Cliente } from "../cliente/cliente.entity.mysql.js";
+import { validate } from "../shared/validation/validateRequest.js";
+import { LoginSchema } from "../shared/validation/zodSchemas.js";
+export const sanitizeLoginInput = validate(LoginSchema);
+
+const em = orm.em;
 
 export async function login(req: Request, res: Response) {
-    const { email, password } = req.body;
-
-    const em = orm.em.fork();
+  try {
+    const { email, contrasenia } = req.body.validated;
 
     const cliente = await em.findOne(Cliente, { email });
+    if (!cliente) {
+      return res.status(401).json({ message: "Email o contraseña incorrecta" });
+    }
 
-    if (!cliente)
-        return res.status(401).json({ message: 'Credenciales inválidas' });
-
-    const validPassword = await bcrypt.compare(password, cliente.passwordHash);
-
-    if (!validPassword)
-        return res.status(401).json({ message: 'Credenciales inválidas' });
-
-    // ✅ valida rol desde DB
-    const rol = RolSchema.parse(cliente.rol);
+    const esCorrecta = await bcrypt.compare(contrasenia, cliente.passwordHash);
+    if (!esCorrecta) {
+      return res.status(401).json({ message: "Email o contraseña incorrecta" });
+    }
 
     const token = jwt.sign(
-        {
-            clienteId: cliente.id,
-            rol,
-        },
-        process.env.JWT_SECRET!,
-        { expiresIn: '1h' }
+      { id: cliente.id, rol: cliente.rol },
+      process.env.JWT_SECRET!,
+      { expiresIn: process.env.JWT_EXPIRES_IN ?? "8h" },
     );
 
-    res.json({
-        token,
-        cliente: {
-            id: cliente.id,
-            email: cliente.email,
-            rol,
-        },
-    });
+    return res
+      .status(200)
+      .json({ message: "¡Inicio de sesión exitoso!", token });
+  } catch (error: any) {
+    return res.status(500).json({ message: error.message });
+  }
 }
-*/
