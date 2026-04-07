@@ -11,6 +11,7 @@ import { materialRouter } from "./material/material.routes.js";
 import { muebleRouter } from "./mueble/mueble.routes.js";
 import { pedidoRouter } from "./pedido/pedido.routes.js";
 import { orm, syncSchema } from "./shared/db/orm.js";
+import { authRouter } from "./auth/auth.router.js";
 
 const app = express();
 app.use(express.json());
@@ -31,6 +32,8 @@ const port = 3000;
 // Revisar paths
 app.use("/api/clientes", clienteRouter);
 app.use("/api/clientes/:id/favoritos", clienteRouter); // para favoritos
+
+app.use("/api/auth", authRouter); // login
 
 app.use("/api/pedidos", pedidoRouter); // para pedidos
 app.use("/api/categorias", categoriaRouter);
