@@ -1,61 +1,59 @@
-import { z } from 'zod';
+import { z } from "zod";
 
 const PasswordSchema = z
-	.string()
-	.min(8, 'La contraseña debe tener al menos 8 caracteres')
-	.max(64, 'Se ha excedido el número máximo de caracteres')
-	// .regex(/[A-Z]/, 'Debe contener al menos una mayúscula')
-	.regex(/[a-z]/, 'Debe contener al menos una minúscula')
-	.regex(/[0-9]/, 'Debe contener al menos un número');
-// .regex(/[^A-Za-z0-9]/, 'Debe contener al menos un símbolo');
+  .string()
+  .min(8, "La contraseña debe tener al menos 8 caracteres")
+  .max(64, "Se ha excedido el número máximo de caracteres")
+  .regex(/[a-z]/, "Debe contener al menos una minúscula")
+  .regex(/[0-9]/, "Debe contener al menos un número");
 
-const RolSchema = z.enum(['user', 'admin']).default('user');
+const RolSchema = z.enum(["user", "admin"]).default("user");
 
 export type Rol = z.infer<typeof RolSchema>;
 
 export const ClienteSchema = z.object({
-	nombre: z.string().min(2),
-	apellido: z.string().min(2),
-	direccion: z.string(),
-	telefono: z.string().min(8),
-	dni: z.string().min(8),
-	usuario: z.string().min(3),
-	email: z.email(),
-	contrasenia: PasswordSchema,
-	rol: RolSchema,
-	fondos: z.number().nonnegative(),
+  nombre: z.string().min(2),
+  apellido: z.string().min(2),
+  direccion: z.string(),
+  telefono: z.string().min(8),
+  dni: z.string().min(8),
+  usuario: z.string().min(3),
+  email: z.email(),
+  contrasenia: PasswordSchema,
+  rol: RolSchema,
+  fondos: z.number().nonnegative(),
 });
 
 export const LoginSchema = z.object({
-	email: z.email(),
-	contrasenia: PasswordSchema,
+  email: z.email(),
+  contrasenia: PasswordSchema,
 });
 
 export const CategoriaSchema = z.object({
-	nombre: z.string().min(2),
-	descripcion: z.string().min(5).max(255),
-	imagen: z.url().optional(),
+  nombre: z.string().min(2),
+  descripcion: z.string().min(5).max(255),
+  imagen: z.url().optional(),
 });
 
 export const MaterialSchema = z.object({
-	nroMaterial: z.string().min(1),
-	nombre: z.string().min(2),
+  nroMaterial: z.string().min(1),
+  nombre: z.string().min(2),
 });
 
 export const MuebleSchema = z.object({
-	descripcion: z.string().min(10).max(500),
-	stock: z.number().int().nonnegative(),
-	etiqueta: z.string().min(2).max(50),
-	precioUnitario: z.number().nonnegative(),
-	imagenes: z.array(z.url()).min(1),
+  descripcion: z.string().min(10).max(500),
+  stock: z.number().int().nonnegative(),
+  etiqueta: z.string().min(2).max(50),
+  precioUnitario: z.number().nonnegative(),
+  imagenes: z.array(z.url()).min(1),
 });
 
 const datetime = z.iso.datetime();
 
 export const DescuentoSchema = z.object({
-	codigo: z.string().min(2),
-	tipo: z.enum(['Cantidad', 'Monto']),
-	porcentaje: z.number().min(0).max(100),
-	descripcion: z.string().min(5).max(255).optional(),
-	fechaExpiracion: datetime.optional(), // ISO date string
+  codigo: z.string().min(2),
+  tipo: z.enum(["Cantidad", "Monto"]),
+  porcentaje: z.number().min(0).max(100),
+  descripcion: z.string().min(5).max(255).optional(),
+  fechaExpiracion: datetime.optional(), // ISO date string
 });
