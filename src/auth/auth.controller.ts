@@ -26,7 +26,7 @@ export async function login(req: Request, res: Response) {
     const token = jwt.sign(
       { id: cliente.id, rol: cliente.rol },
       process.env.JWT_SECRET!,
-      { expiresIn: process.env.JWT_EXPIRES_IN ?? "8h" },
+      { expiresIn: process.env.JWT_EXPIRES_IN ?? "8h" } as jwt.SignOptions,
     );
 
     return res
