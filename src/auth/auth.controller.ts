@@ -18,6 +18,7 @@ export async function login(req: Request, res: Response) {
       return res.status(401).json({ message: "Email o contraseña incorrecta" });
     }
 
+    // recordar que en este punnto el cliente ya está creado
     const esCorrecta = await bcrypt.compare(contrasenia, cliente.passwordHash);
     if (!esCorrecta) {
       return res.status(401).json({ message: "Email o contraseña incorrecta" });

@@ -6,18 +6,6 @@ export class ClienteSeeder extends Seeder {
   async run(em: EntityManager): Promise<void> {
     const clientesData = [
       {
-        nombre: "Administrador",
-        apellido: "General",
-        direccion: "Calle Central 100",
-        telefono: "1122334455",
-        dni: "273456789",
-        usuario: "admin",
-        email: "admin@muebleria.com",
-        passwordHash: "admin1234",
-        rol: "admin",
-        fondos: 100000,
-      },
-      {
         nombre: "Juan",
         apellido: "Pérez",
         direccion: "Calle Falsa 123",
@@ -40,18 +28,6 @@ export class ClienteSeeder extends Seeder {
         passwordHash: "gomuGomu123",
         rol: "user",
         fondos: 2100,
-      },
-      {
-        nombre: "Goku",
-        apellido: "Son",
-        direccion: "Monte Paoz 77",
-        telefono: "1199988877",
-        dni: "30125456",
-        usuario: "gokuson",
-        email: "goku@kamehouse.com",
-        passwordHash: "kamehameha123",
-        rol: "user",
-        fondos: 1500,
       },
       {
         nombre: "Vegeta",

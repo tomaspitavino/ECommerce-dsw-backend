@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import { orm } from "../shared/db/orm.js";
 import { validate } from "../shared/validation/validateRequest.js";
-import { ClienteSchema, LoginSchema } from "../shared/validation/zodSchemas.js";
+import { ClienteSchema } from "../shared/validation/zodSchemas.js";
 import { Cliente } from "./cliente.entity.mysql.js";
 
 const em = orm.em;
@@ -17,7 +17,8 @@ export async function findAll(req: Request, res: Response) {
       {},
       { populate: ["pedidos", "favoritos"] },
     );
-    res.status(200).json({ message: "find all clientes", data: clientes });
+    const safeClientes = clientes.map(({ passwordHash: _, ...rest }) => rest);
+    res.status(200).json({ message: "find all clientes", data: safeClientes });
   } catch (error: any) {
     res.status(500).json({
       message: error.message,
@@ -33,7 +34,8 @@ export async function findOne(req: Request, res: Response) {
       { id },
       { populate: ["pedidos", "favoritos"] },
     );
-    res.status(200).json({ message: "find one cliente", data: cliente });
+    const { passwordHash: _, ...safeData } = cliente;
+    res.status(200).json({ message: "find one cliente", data: safeData });
   } catch (error: any) {
     res.status(500).json({
       message: error.message,
@@ -43,10 +45,10 @@ export async function findOne(req: Request, res: Response) {
 
 export async function add(req: Request, res: Response) {
   try {
-    const { contrasenia, ...rest } = req.body.validated;
-    const passwordHash = await bcrypt.hash(contrasenia, 10);
+    const { contrasenia, ...rest } = req.body.validated; // no le pasa la contra en texto plano
+    const passwordHash = await bcrypt.hash(contrasenia, 10); // encripta la misma contra
 
-    const cliente = em.create(Cliente, { ...rest, passwordHash }); // encriptar contraseña con bcrypt
+    const cliente = em.create(Cliente, { ...rest, passwordHash }); // añade la contra hasheada al cliente
     await em.flush();
 
     const { passwordHash: _, ...safeData } = cliente;
@@ -101,31 +103,3 @@ export async function remove(req: Request, res: Response) {
     });
   }
 }
-
-// logica de login
-// aun sin el token jwt
-// export async function login(req: Request, res: Response) {
-//   try {
-//     const email = req.body.email;
-//     const cliente = await em.findOne(Cliente, { email });
-//
-//     if (!cliente) {
-//       return res.status(401).json({ message: "Email o contraseña incorrecta" });
-//     }
-//
-//     const contrasenia = req.body.contrasenia;
-//     const esCorrecta = contrasenia === cliente.passwordHash ? true : false;
-//     /* const esCorrecta = await bcrypt.compare(contrasenia, cliente.contrasenia);  por ahora es comparacion directa, cuando usemos hash hay que cambiarlo*/
-//
-//     if (!esCorrecta) {
-//       return res.status(401).json({ message: "Email o contraseña incorrecta" });
-//     }
-//
-//     const sanitizedResponse = sanitizeCliente(cliente);
-//     res
-//       .status(200)
-//       .json({ message: "¡Inicio de sesión exitoso!", data: sanitizedResponse });
-//   } catch (error: any) {
-//     res.status(500).json({ message: error.message });
-//   }
-// }
