@@ -12,6 +12,7 @@ import { muebleRouter } from "./mueble/mueble.routes.js";
 import { pedidoRouter } from "./pedido/pedido.routes.js";
 import { orm, syncSchema } from "./shared/db/orm.js";
 import { authRouter } from "./auth/auth.router.js";
+import rateLimit from "express-rate-limit";
 
 const app = express();
 app.use(express.json());
@@ -26,6 +27,14 @@ const CORS_OPTIONS = {
 };
 
 app.use(cors(CORS_OPTIONS));
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutos
+  max: 100, // max request por IP
+  message: { message: "Demasiadas solicitudes, intenta más tarde" },
+});
+
+app.use(limiter);
 
 const port = 3000;
 
