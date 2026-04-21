@@ -10,7 +10,7 @@ import { Pedido } from "../pedido/pedido.entity.mysql.js";
 import { BaseEntity } from "../shared/db/baseEntity.entity.mysql.js";
 
 @Entity()
-export class Cliente extends BaseEntity {
+export class Usuario extends BaseEntity {
   @Property()
   nombre!: string;
 
@@ -35,8 +35,8 @@ export class Cliente extends BaseEntity {
   @Property()
   passwordHash!: string;
 
-  @Property({ default: "user" })
-  rol!: string; // admin o user
+  @Property({ default: "cliente" })
+  rol!: string; // admin o cliente
 
   // @Property()
   // puntos: number = 0; // no se va a usar para el MVP
@@ -44,12 +44,12 @@ export class Cliente extends BaseEntity {
   @Property()
   fondos: number = 0;
 
-  @OneToMany(() => Pedido, (pedidos) => pedidos.cliente, {
+  @OneToMany(() => Pedido, (pedidos) => pedidos.usuario, {
     cascade: [Cascade.ALL],
   })
   pedidos = new Collection<Pedido>(this);
 
-  @OneToMany(() => Favorito, (favoritos) => favoritos.cliente, {
+  @OneToMany(() => Favorito, (favoritos) => favoritos.usuario, {
     cascade: [Cascade.ALL],
   })
   favoritos = new Collection<Favorito>(this);
