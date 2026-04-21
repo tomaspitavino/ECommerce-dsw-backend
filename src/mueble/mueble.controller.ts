@@ -19,7 +19,9 @@ export async function findAll(req: Request, res: Response) {
       .status(200)
       .json({ Message: "Todos los muebles encontrados", data: muebles });
   } catch (error: any) {
-    res.status(500).json({ message: "Error al cargar muebles", error: error });
+    res
+      .status(500)
+      .json({ message: "Error al cargar muebles", error: error.name });
   }
 }
 
@@ -35,7 +37,7 @@ export async function findOne(req: Request, res: Response) {
   } catch (error: any) {
     res
       .status(500)
-      .json({ message: "Error al cargar el mueble", error: error });
+      .json({ message: "Error al cargar el mueble", error: error.name });
   }
 }
 
@@ -66,7 +68,7 @@ export async function update(req: Request, res: Response) {
   } catch (error: any) {
     res
       .status(500)
-      .json({ message: "Error al actualizar el mueble", error: error });
+      .json({ message: "Error al actualizar el mueble", error: error.name });
   }
 }
 
@@ -80,6 +82,6 @@ export async function remove(req: Request, res: Response) {
   } catch (error: any) {
     res
       .status(500)
-      .json({ message: "Error al eliminar el mueble", error: error });
+      .json({ message: "Error al eliminar el mueble", error: error.name });
   }
 }

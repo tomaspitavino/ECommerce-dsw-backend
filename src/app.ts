@@ -5,7 +5,7 @@ import express from "express";
 import "express-async-errors";
 import "reflect-metadata";
 import { categoriaRouter } from "./categoria/categoria.routes.js";
-import { clienteRouter } from "./cliente/cliente.routes.js";
+import { usuarioRouter } from "./usuario/usuario.routes.js";
 import { descuentoRouter } from "./descuento/descuento.routes.js";
 import { materialRouter } from "./material/material.routes.js";
 import { muebleRouter } from "./mueble/mueble.routes.js";
@@ -39,8 +39,8 @@ app.use(limiter);
 const port = 3000;
 
 // Revisar paths
-app.use("/api/clientes", clienteRouter);
-app.use("/api/clientes/:id/favoritos", clienteRouter); // para favoritos
+app.use("/api/clientes", usuarioRouter);
+app.use("/api/clientes/:id/favoritos", usuarioRouter); // para favoritos
 
 app.use("/api/auth", authRouter); // login
 

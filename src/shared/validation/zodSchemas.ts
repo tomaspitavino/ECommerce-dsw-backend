@@ -7,11 +7,11 @@ const PasswordSchema = z
   .regex(/[a-z]/, "Debe contener al menos una minúscula")
   .regex(/[0-9]/, "Debe contener al menos un número");
 
-const RolSchema = z.enum(["user", "admin"]).default("user");
+const RolSchema = z.enum(["cliente", "admin"]).default("cliente");
 
 export type Rol = z.infer<typeof RolSchema>;
 
-export const ClienteSchema = z.object({
+export const UsuarioSchema = z.object({
   nombre: z.string().min(2),
   apellido: z.string().min(2),
   direccion: z.string(),
