@@ -1,16 +1,25 @@
-import { Router } from 'express';
+import { Router } from "express";
 import {
-	crearPedido,
-	findAllPedidos,
-	findPedidoById,
-	sanitizePedidoInput,
-	updateEstadoPedido,
-} from './pedido.controller.js';
+  crearPedido,
+  findAllPedidos,
+  findPedidoById,
+  sanitizePedidoInput,
+  updateEstadoPedido,
+} from "./pedido.controller.js";
+import { requireRole, verifyToken } from "../auth/auth.middleware.js";
 
 export const pedidoRouter = Router();
 
-pedidoRouter.post('/', sanitizePedidoInput, crearPedido);
+// solo el usuario autenticado puede crear pedido
+pedidoRouter.post("/", verifyToken, sanitizePedidoInput, crearPedido);
+pedidoRouter.get("/:clienteId", verifyToken, findAllPedidos);
+pedidoRouter.get("/:clienteId/pedido/:id", verifyToken, findPedidoById);
 
-pedidoRouter.get('/:clienteId', findAllPedidos);
-pedidoRouter.get('/:clienteId/pedido/:id', findPedidoById);
-pedidoRouter.patch('/:pedidoId/estado', updateEstadoPedido);
+// admin
+pedidoRouter.patch(
+  "/:pedidoId/estado",
+  verifyToken,
+  requireRole("admin"),
+  updateEstadoPedido,
+);
+

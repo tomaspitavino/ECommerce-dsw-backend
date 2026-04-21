@@ -1,22 +1,10 @@
 import { EntityManager } from "@mikro-orm/core";
 import { Seeder } from "@mikro-orm/seeder";
-import { Cliente } from "../cliente/cliente.entity.mysql.js";
+import { Usuario } from "../usuario/usuario.entity.mysql.js";
 
-export class ClienteSeeder extends Seeder {
+export class UsuarioSeeder extends Seeder {
   async run(em: EntityManager): Promise<void> {
-    const clientesData = [
-      {
-        nombre: "Administrador",
-        apellido: "General",
-        direccion: "Calle Central 100",
-        telefono: "1122334455",
-        dni: "273456789",
-        usuario: "admin",
-        email: "admin@muebleria.com",
-        passwordHash: "admin1234",
-        rol: "admin",
-        fondos: 100000,
-      },
+    const usuariosData = [
       {
         nombre: "Juan",
         apellido: "Pérez",
@@ -26,7 +14,7 @@ export class ClienteSeeder extends Seeder {
         usuario: "juanperez",
         email: "juanp@mail.com",
         passwordHash: "usuario123",
-        rol: "user",
+        rol: "cliente",
         fondos: 5000,
       },
       {
@@ -38,20 +26,8 @@ export class ClienteSeeder extends Seeder {
         usuario: "luffy",
         email: "luffy@onepiece.jp",
         passwordHash: "gomuGomu123",
-        rol: "user",
+        rol: "cliente",
         fondos: 2100,
-      },
-      {
-        nombre: "Goku",
-        apellido: "Son",
-        direccion: "Monte Paoz 77",
-        telefono: "1199988877",
-        dni: "30125456",
-        usuario: "gokuson",
-        email: "goku@kamehouse.com",
-        passwordHash: "kamehameha123",
-        rol: "user",
-        fondos: 1500,
       },
       {
         nombre: "Vegeta",
@@ -62,18 +38,18 @@ export class ClienteSeeder extends Seeder {
         usuario: "vegeta_saiyan",
         email: "vegeta@capsulecorp.jp",
         passwordHash: "princeofall",
-        rol: "user",
+        rol: "cliente",
         fondos: 1800,
       },
     ];
 
     // 📦 Inserción masiva
-    for (const data of clientesData) {
-      em.create(Cliente, data);
+    for (const data of usuariosData) {
+      em.create(Usuario, data);
     }
 
     await em.flush();
 
-    console.log("✅ Clientes creados exitosamente.");
+    console.log("✅ Usuarios creados exitosamente.");
   }
 }

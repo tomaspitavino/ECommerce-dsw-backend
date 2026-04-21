@@ -5,13 +5,14 @@ import express from "express";
 import "express-async-errors";
 import "reflect-metadata";
 import { categoriaRouter } from "./categoria/categoria.routes.js";
-import { clienteRouter } from "./cliente/cliente.routes.js";
+import { usuarioRouter } from "./usuario/usuario.routes.js";
 import { descuentoRouter } from "./descuento/descuento.routes.js";
 import { materialRouter } from "./material/material.routes.js";
 import { muebleRouter } from "./mueble/mueble.routes.js";
 import { pedidoRouter } from "./pedido/pedido.routes.js";
 import { orm, syncSchema } from "./shared/db/orm.js";
 import { authRouter } from "./auth/auth.router.js";
+import rateLimit from "express-rate-limit";
 
 const app = express();
 app.use(express.json());
@@ -27,11 +28,19 @@ const CORS_OPTIONS = {
 
 app.use(cors(CORS_OPTIONS));
 
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutos
+  max: 100, // max request por IP
+  message: { message: "Demasiadas solicitudes, intenta más tarde" },
+});
+
+app.use(limiter);
+
 const port = 3000;
 
 // Revisar paths
-app.use("/api/clientes", clienteRouter);
-app.use("/api/clientes/:id/favoritos", clienteRouter); // para favoritos
+app.use("/api/clientes", usuarioRouter);
+app.use("/api/clientes/:id/favoritos", usuarioRouter); // para favoritos
 
 app.use("/api/auth", authRouter); // login
 
