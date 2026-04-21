@@ -46,6 +46,8 @@ export const MuebleSchema = z.object({
   etiqueta: z.string().min(2).max(50),
   precioUnitario: z.number().nonnegative(),
   imagenes: z.array(z.url()).min(1),
+  categoria: z.number().int().positive(),
+  material: z.number().int().positive(),
 });
 
 const datetime = z.iso.datetime();
