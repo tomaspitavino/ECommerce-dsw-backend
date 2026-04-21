@@ -1,10 +1,10 @@
 import { EntityManager } from "@mikro-orm/core";
 import { Seeder } from "@mikro-orm/seeder";
-import { Cliente } from "../cliente/cliente.entity.mysql.js";
+import { Usuario } from "../usuario/usuario.entity.mysql.js";
 
-export class ClienteSeeder extends Seeder {
+export class UsuarioSeeder extends Seeder {
   async run(em: EntityManager): Promise<void> {
-    const clientesData = [
+    const usuariosData = [
       {
         nombre: "Juan",
         apellido: "Pérez",
@@ -14,7 +14,7 @@ export class ClienteSeeder extends Seeder {
         usuario: "juanperez",
         email: "juanp@mail.com",
         passwordHash: "usuario123",
-        rol: "user",
+        rol: "cliente",
         fondos: 5000,
       },
       {
@@ -26,7 +26,7 @@ export class ClienteSeeder extends Seeder {
         usuario: "luffy",
         email: "luffy@onepiece.jp",
         passwordHash: "gomuGomu123",
-        rol: "user",
+        rol: "cliente",
         fondos: 2100,
       },
       {
@@ -38,18 +38,18 @@ export class ClienteSeeder extends Seeder {
         usuario: "vegeta_saiyan",
         email: "vegeta@capsulecorp.jp",
         passwordHash: "princeofall",
-        rol: "user",
+        rol: "cliente",
         fondos: 1800,
       },
     ];
 
     // 📦 Inserción masiva
-    for (const data of clientesData) {
-      em.create(Cliente, data);
+    for (const data of usuariosData) {
+      em.create(Usuario, data);
     }
 
     await em.flush();
 
-    console.log("✅ Clientes creados exitosamente.");
+    console.log("✅ Usuarios creados exitosamente.");
   }
 }

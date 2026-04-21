@@ -31,7 +31,7 @@ curl -s -X POST http://"$API_URL"/api/clientes \
     "usuario": "gokuson",
     "email": "goku@kamehouse.com",
     "contrasenia": "kamehameha123a",
-    "rol": "user",
+    "rol": "cliente",
     "fondos": 1500
   }'
 
