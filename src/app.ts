@@ -13,6 +13,7 @@ import { pedidoRouter } from "./pedido/pedido.routes.js";
 import { orm, syncSchema } from "./shared/db/orm.js";
 import { authRouter } from "./auth/auth.router.js";
 import rateLimit from "express-rate-limit";
+import cookieParser from "cookie-parser";
 
 const app = express();
 app.use(express.json());
@@ -35,6 +36,8 @@ const limiter = rateLimit({
 });
 
 app.use(limiter);
+
+app.use(cookieParser());
 
 const port = 3000;
 
