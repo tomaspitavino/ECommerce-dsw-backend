@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { Cliente } from "../cliente/cliente.entity.mysql.js";
+import { Usuario } from "../usuario/usuario.entity.mysql.js";
 import { Item } from "../item/item.entity.mysql.js";
 import { orm } from "../shared/db/orm.js";
 import { Mueble } from "../mueble/mueble.entity.mysql.js";
@@ -13,7 +13,7 @@ export function sanitizePedidoInput(
   next: NextFunction,
 ) {
   req.body.sanitizedInput = {
-    cliente: req.body.cliente,
+    usuario: req.body.usuario,
     items: req.body.items,
     estado: req.body.estado,
     descuentos: req.body.descuentos,
@@ -34,20 +34,20 @@ export async function crearPedido(
   next: NextFunction,
 ) {
   try {
-    const { cliente, items } = req.body.sanitizedInput;
+    const { usuario, items } = req.body.sanitizedInput;
 
-    if (!cliente || items.length === 0) {
+    if (!usuario || items.length === 0) {
       return res
         .status(400)
-        .json({ message: "Debe enviar un cliente y al menos un item." });
+        .json({ message: "Debe enviar un usuario y al menos un item." });
     }
 
     // Buscar el cliente
-    const clienteEntity = await em.findOneOrFail(Cliente, { id: cliente });
+    const usuarioEntity = await em.findOneOrFail(Usuario, { id: usuario });
 
     // Crear el pedido base
     const pedido = em.create(Pedido, {
-      cliente: clienteEntity,
+      usuario: usuarioEntity,
       estado: "pendiente",
       fechaHora: new Date(),
       total: 0,
@@ -86,17 +86,17 @@ export async function crearPedido(
 
 export async function findAllPedidos(req: Request, res: Response) {
   try {
-    const idCliente = Number.parseInt(req.params.clienteId);
-    const cliente = await em.findOneOrFail(Cliente, { id: idCliente });
+    const idUsuario = Number.parseInt(req.params.usuarioId);
+    const usuario = await em.findOneOrFail(Usuario, { id: idUsuario });
 
     const pedidos = await em.find(
       Pedido,
-      { cliente },
+      { usuario: usuario },
       { populate: ["items.mueble", "pago"], orderBy: { fechaHora: "desc" } },
     );
 
     res.status(200).json({
-      message: `Pedidos del cliente ${idCliente}`,
+      message: `Pedidos del cliente ${idUsuario}`,
       data: pedidos,
     });
   } catch (error: any) {
