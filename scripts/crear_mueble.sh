@@ -28,9 +28,9 @@ response=$(
 )
 
 # Extraer el accessToken del JSON
-access_token=$(echo $response | grep -o '"token":"[^"]*"' | cut -d'"' -f4)
+access_token=$(echo "$response" | grep -o '"token":"[^"]*"' | cut -d'"' -f4)
 
-echo "\nToken: $access_token\n"
+printf "\nToken: %s \n" "$access_token"
 
 echo "Prueba para crear un mueble con admin"
 curl -s -X POST http://"$API_URL"/api/muebles \
@@ -68,7 +68,7 @@ user_response=$(
 		-d '{"email": "goku@kamehouse.com", "contrasenia": "kamehameha123a"}'
 )
 
-user_token=$(echo $user_response | grep -o '"token":"[^"]*"' | cut -d'"' -f4)
+user_token=$(echo "$user_response" | grep -o '"token":"[^"]*"' | cut -d'"' -f4)
 
 curl -s -X POST http://"$API_URL"/api/muebles \
 	-H "Content-Type: application/json" \
