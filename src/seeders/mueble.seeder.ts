@@ -3,6 +3,8 @@ import { Seeder } from "@mikro-orm/seeder";
 import { Categoria } from "../categoria/categoria.entity.mysql.js";
 import { Material } from "../material/material.entity.mysql.js";
 import { Mueble } from "../mueble/mueble.entity.mysql.js";
+import { MuebleSchema } from "../shared/validation/zodSchemas.js";
+import { ZodError } from "zod";
 
 export class MuebleSeeder extends Seeder {
   async run(em: EntityManager): Promise<void> {
@@ -109,7 +111,28 @@ export class MuebleSeeder extends Seeder {
       },
     ];
 
-    muebles.forEach((m) => em.create(Mueble, m));
+    muebles.forEach((m) => {
+      try {
+        // Extraer IDs de las entidades relacionadas
+        const dataToValidate = {
+          descripcion: m.descripcion,
+          stock: m.stock,
+          etiqueta: m.etiqueta,
+          precioUnitario: m.precioUnitario,
+          categoria: m.categoria.id,
+          material: m.material.id,
+          imagenes: m.imagenes,
+        };
+        const validatedData = MuebleSchema.parse(dataToValidate);
+        em.create(Mueble, { ...validatedData, categoria: m.categoria, material: m.material });
+      } catch (error) {
+        if (error instanceof ZodError) {
+          console.error(`❌ Error validando mueble ${m.etiqueta}:`, error.issues);
+          throw error;
+        }
+        throw error;
+      }
+    });
     await em.flush();
     console.log("✅ Muebles creados.");
   }
