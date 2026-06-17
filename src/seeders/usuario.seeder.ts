@@ -1,6 +1,8 @@
 import { EntityManager } from "@mikro-orm/core";
 import { Seeder } from "@mikro-orm/seeder";
 import { Usuario } from "../usuario/usuario.entity.mysql.js";
+import { UsuarioSchema } from "../shared/validation/zodSchemas.js";
+import { ZodError } from "zod";
 
 export class UsuarioSeeder extends Seeder {
   async run(em: EntityManager): Promise<void> {
@@ -13,7 +15,7 @@ export class UsuarioSeeder extends Seeder {
         dni: "34567890",
         usuario: "juanperez",
         email: "juanp@mail.com",
-        passwordHash: "usuario123",
+        contrasenia: "usuario123",
         rol: "cliente",
         fondos: 5000,
       },
@@ -25,7 +27,7 @@ export class UsuarioSeeder extends Seeder {
         dni: "37112238",
         usuario: "luffy",
         email: "luffy@onepiece.jp",
-        passwordHash: "gomuGomu123",
+        contrasenia: "gomuGomu123",
         rol: "cliente",
         fondos: 2100,
       },
@@ -37,15 +39,24 @@ export class UsuarioSeeder extends Seeder {
         dni: "32148976",
         usuario: "vegeta_saiyan",
         email: "vegeta@capsulecorp.jp",
-        passwordHash: "princeofall",
+        contrasenia: "princeofall123",
         rol: "cliente",
         fondos: 1800,
       },
     ];
 
-    // 📦 Inserción masiva
+    // 📦 Inserción masiva con validación Zod
     for (const data of usuariosData) {
-      em.create(Usuario, data);
+      try {
+        const validatedData = UsuarioSchema.parse(data);
+        em.create(Usuario, { ...validatedData, passwordHash: validatedData.contrasenia });
+      } catch (error) {
+        if (error instanceof ZodError) {
+          console.error(`❌ Error validando usuario ${data.usuario}:`, error.issues);
+          throw error;
+        }
+        throw error;
+      }
     }
 
     await em.flush();

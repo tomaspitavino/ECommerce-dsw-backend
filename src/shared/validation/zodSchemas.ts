@@ -50,7 +50,7 @@ export const MuebleSchema = z.object({
   material: z.number().int().positive(),
 });
 
-const datetime = z.iso.datetime();
+const datetime = z.string().datetime();
 
 export const DescuentoSchema = z.object({
   codigo: z.string().min(2),
