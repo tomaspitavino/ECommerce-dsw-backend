@@ -9,6 +9,30 @@ export class UsuarioSeeder extends Seeder {
   async run(em: EntityManager): Promise<void> {
     const usuariosData = [
       {
+        nombre: "Administrador",
+        apellido: "General",
+        direccion: "Calle Central 100",
+        telefono: "1122334455",
+        dni: "273456789",
+        usuario: "admin",
+        email: "admin@muebleria.com",
+        contrasenia: "admin1234a",
+        rol: "admin",
+        fondos: 100000,
+      },
+      {
+        nombre: "Goku",
+        apellido: "Son",
+        direccion: "Monte Paoz 77",
+        telefono: "1199988877",
+        dni: "30125456",
+        usuario: "gokuson",
+        email: "goku@kamehouse.com",
+        contrasenia: "kamehameha123a",
+        rol: "cliente",
+        fondos: 1500,
+      },
+      {
         nombre: "Juan",
         apellido: "Pérez",
         direccion: "Calle Falsa 123",
@@ -52,10 +76,13 @@ export class UsuarioSeeder extends Seeder {
         const validatedData = UsuarioSchema.parse(data);
         const { contrasenia, ...rest } = validatedData;
         const passwordHash = await bcrypt.hash(contrasenia, 10);
-        em.create(Usuario, {...rest, passwordHash, });
+        em.create(Usuario, { ...rest, passwordHash });
       } catch (error) {
         if (error instanceof ZodError) {
-          console.error(`❌ Error validando usuario ${data.usuario}:`, error.issues);
+          console.error(
+            `❌ Error validando usuario ${data.usuario}:`,
+            error.issues,
+          );
           throw error;
         }
         throw error;
