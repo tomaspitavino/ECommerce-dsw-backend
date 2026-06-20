@@ -14,6 +14,9 @@ import { orm, syncSchema } from "./shared/db/orm.js";
 import { authRouter } from "./auth/auth.router.js";
 import rateLimit from "express-rate-limit";
 import cookieParser from "cookie-parser";
+import helmet from "helmet";
+import { logger } from "./shared/logger.js";
+import { error } from "winston";
 
 const app = express();
 app.use(express.json());
@@ -39,6 +42,8 @@ app.use(limiter);
 
 app.use(cookieParser());
 
+app.use(helmet());
+
 const port = 3000;
 
 // Revisar paths
@@ -55,6 +60,11 @@ app.use("/api/descuentos", descuentoRouter);
 
 await syncSchema(); // never in production
 
-app.listen(port, () => {
-  console.log(`Listening on http://localhost:${port}/`);
-});
+app
+  .listen(port, () => {
+    logger.info(`Listening on http://localhost:${port}/`);
+  })
+  .on("error", (error) => {
+    logger.error("Error al iniciar el servidor", error);
+  });
+
