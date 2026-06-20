@@ -3,6 +3,7 @@ import { Seeder } from "@mikro-orm/seeder";
 import { Usuario } from "../usuario/usuario.entity.mysql.js";
 import { UsuarioSchema } from "../shared/validation/zodSchemas.js";
 import { ZodError } from "zod";
+import bcrypt from "bcrypt";
 
 export class UsuarioSeeder extends Seeder {
   async run(em: EntityManager): Promise<void> {
@@ -45,11 +46,13 @@ export class UsuarioSeeder extends Seeder {
       },
     ];
 
-    // 📦 Inserción masiva con validación Zod
+    //Inserción masiva con validación Zod y hash de contraseñas
     for (const data of usuariosData) {
       try {
         const validatedData = UsuarioSchema.parse(data);
-        em.create(Usuario, { ...validatedData, passwordHash: validatedData.contrasenia });
+        const { contrasenia, ...rest } = validatedData;
+        const passwordHash = await bcrypt.hash(contrasenia, 10);
+        em.create(Usuario, {...rest, passwordHash, });
       } catch (error) {
         if (error instanceof ZodError) {
           console.error(`❌ Error validando usuario ${data.usuario}:`, error.issues);
