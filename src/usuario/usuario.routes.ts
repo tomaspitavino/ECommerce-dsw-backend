@@ -14,6 +14,7 @@ import {
   remove,
   sanitizeClientInput,
   sanitizeClientPatchInput,
+  perfil,
   update,
 } from "./usuario.controller.js";
 
@@ -41,6 +42,7 @@ usuarioRouter.delete("/:id/favoritos/:muebleId", verifyToken, removeFavorito);
 // CRUD — registro público, resto protegido
 usuarioRouter.post("/", sanitizeClientInput, add); // público: registro
 usuarioRouter.get("/", verifyToken, requireRole("admin"), findAll); // solo admin
+usuarioRouter.get("/perfil", verifyToken, perfil);
 usuarioRouter.get("/:id", verifyToken, findOne); // autenticado
 usuarioRouter.put("/:id", verifyToken, sanitizeClientInput, update); // autenticado
 usuarioRouter.patch("/:id", verifyToken, sanitizeClientPatchInput, update); // autenticado

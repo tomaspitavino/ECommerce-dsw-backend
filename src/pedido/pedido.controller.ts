@@ -34,16 +34,18 @@ export async function crearPedido(
   next: NextFunction,
 ) {
   try {
-    const { usuario, items } = req.body.sanitizedInput;
+    const { items } = req.body.sanitizedInput;
 
-    if (!usuario || items.length === 0) {
-      return res
-        .status(400)
-        .json({ message: "Debe enviar un usuario y al menos un item." });
+    if (!items || items.length === 0) {
+      return res.status(400).json({
+        message: "Debe enviar al menos un item.",
+      });
     }
 
     // Buscar el cliente
-    const usuarioEntity = await em.findOneOrFail(Usuario, { id: usuario });
+    const usuarioEntity = await em.findOneOrFail(Usuario, {
+      id: req.user!.id,
+    });
 
     // Crear el pedido base
     const pedido = em.create(Pedido, {
@@ -85,26 +87,18 @@ export async function crearPedido(
 }
 
 export async function findAllPedidos(req: Request, res: Response) {
-  try {
-    const idUsuario = Number.parseInt(req.params.usuarioId);
-    const usuario = await em.findOneOrFail(Usuario, { id: idUsuario });
+  const usuario = await em.findOneOrFail(Usuario, { id: req.user!.id });
 
-    const pedidos = await em.find(
-      Pedido,
-      { usuario: usuario },
-      { populate: ["items.mueble", "pago"], orderBy: { fechaHora: "desc" } },
-    );
+  const pedidos = await em.find(
+    Pedido,
+    { usuario },
+    {
+      populate: ["items.mueble", "pago"],
+      orderBy: { fechaHora: "desc" },
+    },
+  );
 
-    res.status(200).json({
-      message: `Pedidos del cliente ${idUsuario}`,
-      data: pedidos,
-    });
-  } catch (error: any) {
-    res.status(500).json({
-      message: "Error al obtener los pedidos del cliente",
-      error: error.message,
-    });
-  }
+  res.json({ data: pedidos });
 }
 
 export async function findPedidoById(req: Request, res: Response) {
