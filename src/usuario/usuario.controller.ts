@@ -103,3 +103,24 @@ export async function remove(req: Request, res: Response) {
     });
   }
 }
+
+export async function perfil(req: Request, res: Response) {
+  try {
+    const usuario = await em.findOneOrFail(
+      Usuario,
+      { id: req.user!.id },
+      { populate: ["pedidos", "favoritos"] },
+    );
+
+    const { passwordHash: _, ...safeData } = usuario;
+
+    res.status(200).json({
+      message: "Perfil obtenido",
+      data: safeData,
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+}
