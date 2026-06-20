@@ -6,6 +6,9 @@ data
 # coverage reports
 coverage
 
+# logs folder
+logs
+
 # API keys and secrets
 .env
 
