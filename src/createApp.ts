@@ -12,10 +12,15 @@ import { muebleRouter } from "./mueble/mueble.routes.js";
 import { pedidoRouter } from "./pedido/pedido.routes.js";
 import { orm } from "./shared/db/orm.js";
 import { usuarioRouter } from "./usuario/usuario.routes.js";
+import { MercadoPagoConfig, Preference } from "mercadopago";
 
 export function createApp() {
   const app = express();
   app.use(express.json());
+
+  const client = new MercadoPagoConfig({
+    accessToken: process.env.MP_ACCESS_TOKEN!,
+  });
 
   app.use((req, res, next) => {
     RequestContext.create(orm.em, next);
