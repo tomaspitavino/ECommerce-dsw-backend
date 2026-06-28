@@ -8,6 +8,16 @@ const PasswordSchema = z
   .regex(/[0-9]/, "Debe contener al menos un número");
 
 const RolSchema = z.enum(["cliente", "admin"]).default("cliente");
+const EstadoPedidoSchema = z
+  .enum([
+    "pendiente",
+    "confirmado",
+    "pagado",
+    "enviado",
+    "entregado",
+    "cancelado",
+  ])
+  .default("pendiente");
 
 export type Rol = z.infer<typeof RolSchema>;
 
@@ -50,7 +60,7 @@ export const MuebleSchema = z.object({
   material: z.number().int().positive(),
 });
 
-const datetime = z.iso.datetime();
+const datetime = z.date();
 
 export const DescuentoSchema = z.object({
   codigo: z.string().min(2),
@@ -58,4 +68,15 @@ export const DescuentoSchema = z.object({
   porcentaje: z.number().min(0).max(100),
   descripcion: z.string().min(5).max(255).optional(),
   fechaExpiracion: datetime.optional(), // ISO date string
+});
+
+export const ItemInputSchema = z.object({
+  mueble: z.number().int().positive(),
+  cantidad: z.number().int().positive(),
+});
+
+export const PedidoSchema = z.object({
+  estado: EstadoPedidoSchema,
+  items: z.array(ItemInputSchema).min(1, "Debe haber al menos un item"),
+  pago: z.number().int().positive().optional(),
 });
