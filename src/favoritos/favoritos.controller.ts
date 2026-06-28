@@ -1,33 +1,19 @@
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 import { Usuario } from "../usuario/usuario.entity.mysql.js";
 import { Mueble } from "../mueble/mueble.entity.mysql.js";
 import { orm } from "../shared/db/orm.js";
 import { Favorito } from "./favoritos.entity.mysql.js";
+import { validate } from "../shared/validation/validateRequest.js";
+import { FavoritoSchema } from "../shared/validation/zodSchemas.js";
 
 const em = orm.em;
 
-export function sanitizeFavoritoInput(
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) {
-  req.body.sanitizedInput = {
-    usuario: req.params.id,
-    mueble: req.body.muebleId,
-  };
-
-  Object.keys(req.body.sanitizedInput).forEach((key) => {
-    if (req.body.sanitizedInput[key] === undefined) {
-      delete req.body.sanitizedInput[key];
-    }
-  });
-  next();
-}
+export const sanitizeFavoritoInput = validate(FavoritoSchema);
 
 export async function addFavorito(req: Request, res: Response) {
   try {
-    const usuarioId = Number.parseInt(req.params.id); // Desde la URL
-    const muebleId = Number.parseInt(req.body.muebleId); // Desde el cuerpo de la solicitud
+    const usuarioId = req.user!.id;
+    const muebleId = Number.parseInt(req.body.validated.muebleId);
 
     const favorito = em.create(Favorito, {
       usuario: em.getReference(Usuario, usuarioId),
@@ -62,11 +48,16 @@ export async function findAllFavoritos(req: Request, res: Response) {
 
 export async function removeFavorito(req: Request, res: Response) {
   try {
-    const favoritoId = Number.parseInt(req.params.id);
-    const favorito = await em.findOneOrFail(Favorito, { id: favoritoId });
+    const usuarioId = Number.parseInt(req.params.id);
+    const muebleId = Number.parseInt(req.params.muebleId);
+
+    const favorito = await em.findOneOrFail(Favorito, {
+      usuario: usuarioId,
+      mueble: muebleId,
+    });
 
     await em.removeAndFlush(favorito);
-    res.status(200).json({ message: "Favorito eliminado", data: favorito });
+    res.status(200).json({ message: "Favorito eliminado" });
   } catch (error: any) {
     res
       .status(500)

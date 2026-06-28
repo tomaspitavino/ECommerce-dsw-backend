@@ -70,6 +70,10 @@ export const DescuentoSchema = z.object({
   fechaExpiracion: datetime.optional(), // ISO date string
 });
 
+export const FavoritoSchema = z.object({
+  mueble: z.number().int().positive(),
+});
+
 export const ItemInputSchema = z.object({
   mueble: z.number().int().positive(),
   cantidad: z.number().int().positive(),
