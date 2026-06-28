@@ -22,4 +22,3 @@ pedidoRouter.patch(
   requireRole("admin"),
   updateEstadoPedido,
 );
-

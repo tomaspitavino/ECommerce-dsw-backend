@@ -4,29 +4,12 @@ import { Item } from "../item/item.entity.mysql.js";
 import { orm } from "../shared/db/orm.js";
 import { Mueble } from "../mueble/mueble.entity.mysql.js";
 import { Pedido } from "./pedido.entity.mysql.js";
+import { validate } from "../shared/validation/validateRequest.js";
+import { PedidoSchema } from "../shared/validation/zodSchemas.js";
 
 const em = orm.em;
 
-export function sanitizePedidoInput(
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) {
-  req.body.sanitizedInput = {
-    usuario: req.body.usuario,
-    items: req.body.items,
-    estado: req.body.estado,
-    descuentos: req.body.descuentos,
-    pago: req.body.pago,
-  };
-
-  Object.keys(req.body.sanitizedInput).forEach((key) => {
-    if (req.body.sanitizedInput[key] === undefined) {
-      delete req.body.sanitizedInput[key];
-    }
-  });
-  next();
-}
+export const sanitizePedidoInput = validate(PedidoSchema);
 
 export async function crearPedido(
   req: Request,
@@ -34,30 +17,25 @@ export async function crearPedido(
   next: NextFunction,
 ) {
   try {
-    const { usuario, items } = req.body.sanitizedInput;
-
-    if (!usuario || items.length === 0) {
-      return res
-        .status(400)
-        .json({ message: "Debe enviar un usuario y al menos un item." });
-    }
+    const { items } = req.body.validated;
 
     // Buscar el cliente
-    const usuarioEntity = await em.findOneOrFail(Usuario, { id: usuario });
+    const cliente = await em.findOneOrFail(Usuario, {
+      id: req.user!.id,
+    });
 
     // Crear el pedido base
     const pedido = em.create(Pedido, {
-      usuario: usuarioEntity,
+      usuario: cliente,
       estado: "pendiente",
       fechaHora: new Date(),
       total: 0,
     });
 
-    let totalPedido = 0;
+    let total = 0;
 
     for (const i of items) {
       const mueble = await em.findOneOrFail(Mueble, { id: i.mueble });
-      // const cantidad = Number.parseInt(i.cantidad);
       const subtotal = mueble.precioUnitario * i.cantidad;
 
       const item = em.create(Item, {
@@ -69,10 +47,10 @@ export async function crearPedido(
       });
 
       pedido.items.add(item);
-      totalPedido += subtotal;
+      total += subtotal;
     }
 
-    pedido.total = totalPedido;
+    pedido.total = total;
     await em.persistAndFlush(pedido);
 
     res.status(201).json({
@@ -85,35 +63,35 @@ export async function crearPedido(
 }
 
 export async function findAllPedidos(req: Request, res: Response) {
-  try {
-    const idUsuario = Number.parseInt(req.params.usuarioId);
-    const usuario = await em.findOneOrFail(Usuario, { id: idUsuario });
+  const usuario = await em.findOneOrFail(Usuario, { id: req.user!.id });
 
+  try {
     const pedidos = await em.find(
       Pedido,
-      { usuario: usuario },
-      { populate: ["items.mueble", "pago"], orderBy: { fechaHora: "desc" } },
+      { usuario },
+      {
+        populate: ["items.mueble", "pago"],
+        orderBy: { fechaHora: "desc" },
+      },
     );
 
-    res.status(200).json({
-      message: `Pedidos del cliente ${idUsuario}`,
-      data: pedidos,
-    });
+    res.status(200).json({ data: pedidos });
   } catch (error: any) {
-    res.status(500).json({
-      message: "Error al obtener los pedidos del cliente",
-      error: error.message,
-    });
+    res.status(500).json({ message: error.message });
   }
 }
 
 export async function findPedidoById(req: Request, res: Response) {
   try {
-    const idPedido = Number.parseInt(req.params.pedidoId);
-    const pedido = await em.findOneOrFail(Pedido, { id: idPedido });
+    const id = Number.parseInt(req.params.pedidoId);
+    const pedido = await em.findOneOrFail(
+      Pedido,
+      { id },
+      { populate: ["items.mueble", "pago"] },
+    );
 
     res.status(200).json({
-      message: `Pedido ${idPedido}`,
+      message: `Pedido ${id}`,
       data: pedido,
     });
   } catch (error: any) {
@@ -126,12 +104,11 @@ export async function findPedidoById(req: Request, res: Response) {
 
 export async function updateEstadoPedido(req: Request, res: Response) {
   try {
-    const idPedido = Number(req.params.pedidoId);
+    const id = Number(req.params.pedidoId);
     const { nuevoEstado } = req.body;
 
-    const pedido = await em.findOneOrFail(Pedido, { id: idPedido });
+    const pedido = await em.findOneOrFail(Pedido, { id });
 
-    // Transiciones válidas
     const transiciones: Record<string, string[]> = {
       pendiente: ["confirmado", "cancelado"],
       confirmado: ["pagado", "cancelado"],
@@ -141,13 +118,13 @@ export async function updateEstadoPedido(req: Request, res: Response) {
       cancelado: [],
     };
 
-    const permitidos = transiciones[pedido.estado] ?? [];
+    // const permitidos = transiciones[pedido.estado] ?? [];
 
-    if (!permitidos.includes(nuevoEstado)) {
-      return res.status(400).json({
-        message: `No se puede pasar de '${pedido.estado}' a '${nuevoEstado}'.`,
-      });
-    }
+    // if (!permitidos.includes(nuevoEstado)) {
+    //   return res.status(400).json({
+    //     message: `No se puede pasar de '${pedido.estado}' a '${nuevoEstado}'.`,
+    //   });
+    // }
 
     pedido.estado = nuevoEstado;
     await em.flush();
