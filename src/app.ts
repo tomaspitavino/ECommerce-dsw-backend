@@ -17,4 +17,3 @@ app
   .on("error", (error) => {
     logger.error("Error al iniciar el servidor", error);
   });
-
