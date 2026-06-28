@@ -115,4 +115,4 @@ pnpm seed
 
 Con esto, tendremos suficientes datos para mostrar en el frontend.
 
-Test de integrantes
+# Test de integrantes
