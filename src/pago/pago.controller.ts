@@ -29,11 +29,11 @@ export async function crearPreferencia(req: Request, res: Response) {
           unit_price: Number(item.mueble.precioUnitario),
         })),
         back_urls: {
-          success: "http://localhost:5173/pagos",
+          success: "http://localhost:5173/pedidos",
           failure: "http://localhost:5173/carrito",
           pending: "http://localhost:5173/pedidos",
         },
-        auto_return: "approved",
+        // auto_return: "approved",
         external_reference: String(pedidoId),
       },
     });
@@ -54,6 +54,7 @@ export async function crearPreferencia(req: Request, res: Response) {
     });
   } catch (error: any) {
     res.status(500).json({ message: error.message });
+    console.error("Error MP:", error?.cause ?? error);
   }
 }
 
