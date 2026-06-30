@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from "express";
+import { FilterQuery } from "@mikro-orm/core";
 import { Usuario } from "../usuario/usuario.entity.mysql.js";
 import { Item } from "../item/item.entity.mysql.js";
 import { orm } from "../shared/db/orm.js";
@@ -74,6 +75,38 @@ export async function findAllPedidos(req: Request, res: Response) {
         orderBy: { fechaHora: "desc" },
       },
     );
+
+    res.status(200).json({ data: pedidos });
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
+  }
+}
+
+export async function findAllPedidosAdmin(req: Request, res: Response) {
+  try {
+    const { fechaDesde, fechaHasta, estado } = req.query;
+    const where: FilterQuery<Pedido> = {};
+
+    if (typeof estado === "string" && estado.length > 0) {
+      where.estado = estado as Pedido["estado"];
+    }
+
+    if (typeof fechaDesde === "string" || typeof fechaHasta === "string") {
+      where.fechaHora = {};
+      if (typeof fechaDesde === "string" && fechaDesde.length > 0) {
+        where.fechaHora.$gte = new Date(fechaDesde);
+      }
+      if (typeof fechaHasta === "string" && fechaHasta.length > 0) {
+        const hasta = new Date(fechaHasta);
+        hasta.setHours(23, 59, 59, 999);
+        where.fechaHora.$lte = hasta;
+      }
+    }
+
+    const pedidos = await em.find(Pedido, where, {
+      populate: ["items.mueble", "pago", "usuario"],
+      orderBy: { fechaHora: "desc" },
+    });
 
     res.status(200).json({ data: pedidos });
   } catch (error: any) {
