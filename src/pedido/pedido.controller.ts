@@ -197,7 +197,7 @@ export async function findPedidoById(req: Request, res: Response) {
 export async function updateEstadoPedido(req: Request, res: Response) {
   try {
     const id = Number(req.params.pedidoId);
-    const { nuevoEstado } = req.body;
+    const nuevoEstado = req.body.estado;
 
     const pedido = await em.findOneOrFail(Pedido, { id });
 
