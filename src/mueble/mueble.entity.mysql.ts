@@ -30,6 +30,9 @@ export class Mueble extends BaseEntity {
 	@Property()
 	imagenes!: string[]; // Array of image URLs or file paths
 
+	@Property({ default: true })
+	activo: boolean = true;
+
 	@ManyToOne(() => Categoria)
 	categoria!: Rel<Categoria>;
 

@@ -12,7 +12,7 @@ export async function findAll(req: Request, res: Response) {
   try {
     const muebles = await em.find(
       Mueble,
-      {},
+      { activo: true },
       { populate: ["categoria", "material"] },
     );
     res
@@ -28,11 +28,16 @@ export async function findAll(req: Request, res: Response) {
 export async function findOne(req: Request, res: Response) {
   try {
     const id = Number.parseInt(req.params.id);
-    const mueble = await em.findOneOrFail(
+    const mueble = await em.findOne(
       Mueble,
-      { id },
+      { id, activo: true },
       { populate: ["categoria", "material"] },
     );
+
+    if (!mueble) {
+      return res.status(404).json({ message: "Mueble no encontrado" });
+    }
+
     res.status(200).json({ Message: "Mueble encontrado", data: mueble });
   } catch (error: any) {
     res
@@ -44,7 +49,7 @@ export async function findOne(req: Request, res: Response) {
 export async function add(req: Request, res: Response) {
   try {
     const dto = req.body.validated;
-    const mueble = em.create(Mueble, dto);
+    const mueble = em.create(Mueble, { ...dto, activo: true });
 
     await em.flush();
     res.status(200).json({ Message: "Mueble creado", data: mueble });
@@ -60,10 +65,15 @@ export async function update(req: Request, res: Response) {
     const id = Number.parseInt(req.params.id);
     const dto = req.body.validated;
 
-    const mueble = await em.findOneOrFail(Mueble, { id });
+    const mueble = await em.findOneOrFail(
+      Mueble,
+      { id },
+      { populate: ["categoria", "material"] },
+    );
     em.assign(mueble, dto);
 
     await em.flush();
+    await em.populate(mueble, ["categoria", "material"]);
     res.status(200).json({ Message: "Mueble actualizado", data: mueble });
   } catch (error: any) {
     res
@@ -77,11 +87,16 @@ export async function remove(req: Request, res: Response) {
     const id = Number.parseInt(req.params.id);
     const mueble = await em.findOneOrFail(Mueble, { id });
 
-    await em.removeAndFlush(mueble);
-    res.status(200).json({ Message: "Mueble eliminado", data: mueble });
+    mueble.activo = false;
+    await em.flush();
+
+    res.status(200).json({
+      Message: "Mueble dado de baja",
+      data: mueble,
+    });
   } catch (error: any) {
     res
       .status(500)
-      .json({ message: "Error al eliminar el mueble", error: error.name });
+      .json({ message: "Error al dar de baja el mueble", error: error.name });
   }
 }

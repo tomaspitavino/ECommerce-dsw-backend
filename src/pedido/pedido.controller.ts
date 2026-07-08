@@ -88,7 +88,12 @@ export async function crearPedido(
     let total = 0;
 
     for (const i of items) {
-      const mueble = await em.findOneOrFail(Mueble, { id: i.mueble });
+      const mueble = await em.findOne(Mueble, { id: i.mueble, activo: true });
+      if (!mueble) {
+        return res.status(400).json({
+          message: "Uno o más productos no están disponibles",
+        });
+      }
       const subtotal = mueble.precioUnitario * i.cantidad;
 
       const item = em.create(Item, {
