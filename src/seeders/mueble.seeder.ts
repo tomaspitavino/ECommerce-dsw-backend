@@ -124,7 +124,7 @@ export class MuebleSeeder extends Seeder {
           imagenes: m.imagenes,
         };
         const validatedData = MuebleSchema.parse(dataToValidate);
-        em.create(Mueble, { ...validatedData, categoria: m.categoria, material: m.material });
+        em.create(Mueble, { ...validatedData,activo: true, categoria: m.categoria, material: m.material });
       } catch (error) {
         if (error instanceof ZodError) {
           console.error(`❌ Error validando mueble ${m.etiqueta}:`, error.issues);
