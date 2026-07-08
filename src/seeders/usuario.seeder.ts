@@ -64,7 +64,7 @@ export class UsuarioSeeder extends Seeder {
         dni: "32148976",
         usuario: "vegeta_saiyan",
         email: "vegeta@capsulecorp.jp",
-        contrasenia: "princeofall123",
+        contrasenia: "conmiBulmaNO777",
         rol: "cliente",
         fondos: 1800,
       },
