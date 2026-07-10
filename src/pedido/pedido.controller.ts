@@ -8,7 +8,6 @@ import { validate } from "../shared/validation/validateRequest.js";
 import { PedidoSchema } from "../shared/validation/zodSchemas.js";
 import { FilterQuery } from "@mikro-orm/core";
 
-
 function parseDateStart(value: string): Date {
   const [year, month, day] = value.split("-").map(Number);
   // month - 1 porque en JS los meses van de 0 a 11, no de 1 a 12
@@ -215,14 +214,6 @@ export async function updateEstadoPedido(req: Request, res: Response) {
       cancelado: [],
     };
 
-    // const permitidos = transiciones[pedido.estado] ?? [];
-
-    // if (!permitidos.includes(nuevoEstado)) {
-    //   return res.status(400).json({
-    //     message: `No se puede pasar de '${pedido.estado}' a '${nuevoEstado}'.`,
-    //   });
-    // }
-
     pedido.estado = nuevoEstado;
     await em.flush();
 
@@ -235,5 +226,42 @@ export async function updateEstadoPedido(req: Request, res: Response) {
       message: "Error al actualizar el estado del pedido",
       error: error.message,
     });
+  }
+}
+
+export async function cancelarPedido(req: Request, res: Response) {
+  try {
+    const id = Number(req.params.pedidoId);
+    const pedido = await em.findOneOrFail(
+      Pedido,
+      { id },
+      { populate: ["items.mueble"] },
+    );
+
+    // Solo el propio usuario puede cancelar
+    if (pedido.usuario.id !== req.user!.id) {
+      return res
+        .status(403)
+        .json({ message: "No podés cancelar un pedido ajeno" });
+    }
+
+    const cancelables = ["pendiente", "confirmado"];
+    if (!cancelables.includes(pedido.estado)) {
+      return res.status(400).json({
+        message: `No se puede cancelar un pedido en estado '${pedido.estado}'`,
+      });
+    }
+
+    // Devolver stock al cancelar
+    for (const item of pedido.items.getItems()) {
+      item.mueble.stock += item.cantidad;
+    }
+
+    pedido.estado = "cancelado";
+    await em.flush();
+
+    res.status(200).json({ message: "Pedido cancelado", data: pedido });
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
   }
 }
