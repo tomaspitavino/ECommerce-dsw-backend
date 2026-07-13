@@ -13,7 +13,7 @@ export const sanitizeFavoritoInput = validate(FavoritoSchema);
 export async function addFavorito(req: Request, res: Response) {
   try {
     const usuarioId = req.user!.id;
-    const muebleId = Number.parseInt(req.body.validated.muebleId);
+    const muebleId = Number.parseInt(req.body.validated.mueble);
 
     const favorito = em.create(Favorito, {
       usuario: em.getReference(Usuario, usuarioId),
