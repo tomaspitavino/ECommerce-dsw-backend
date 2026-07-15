@@ -10,14 +10,16 @@ export const sanitizeMuebleInput = validate(MuebleSchema);
 
 export async function findAll(req: Request, res: Response) {
   try {
-    const muebles = await em.find(
-      Mueble,
-      { activo: true },
-      { populate: ["categoria", "material"] },
-    );
+    const mostrarTodos = req.query.inactivos === "true";
+    const filtro = mostrarTodos ? {} : { activo: true };
+
+    const muebles = await em.find(Mueble, filtro, {
+      populate: ["categoria", "material"],
+    });
+
     res
       .status(200)
-      .json({ Message: "Todos los muebles encontrados", data: muebles });
+      .json({ message: "Todos los muebles encontrados", data: muebles });
   } catch (error: any) {
     res
       .status(500)
