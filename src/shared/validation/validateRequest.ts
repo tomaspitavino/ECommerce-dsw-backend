@@ -12,7 +12,7 @@ export function validate(schema: ZodSchema<any>) {
     if (!result.success) {
       return res
         .status(400)
-        .json({ message: "Entrada inválida", errors: result.error });
+        .json({ message: "Entrada inválida", errors: result.error.issues });
     }
     req.body.validated = result.data;
     next();

@@ -68,6 +68,18 @@ export class UsuarioSeeder extends Seeder {
         rol: "cliente",
         fondos: 1800,
       },
+      {
+        nombre: "Sebastian",
+        apellido: "Mileto",
+        direccion: "Zeballos 309",
+        telefono: "341667401",
+        dni: "10473321",
+        usuario: "sobasAtNait",
+        email: "sobas@epidata.com",
+        contrasenia: "sobchad41",
+        rol: "admin",
+        fondos: 20000,
+      },
     ];
 
     //Inserción masiva con validación Zod y hash de contraseñas

@@ -17,10 +17,10 @@ export class Usuario extends BaseEntity {
   @Property()
   apellido!: string;
 
-  @Property({ unique: true })
+  @Property()
   direccion!: string;
 
-  @Property({ unique: true })
+  @Property()
   telefono!: string;
 
   @Property({ unique: true })
@@ -37,9 +37,6 @@ export class Usuario extends BaseEntity {
 
   @Property({ default: "cliente" })
   rol!: string; // admin o cliente
-
-  // @Property()
-  // puntos: number = 0; // no se va a usar para el MVP
 
   @Property()
   fondos: number = 0;
