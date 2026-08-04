@@ -30,6 +30,8 @@
     "jsonwebtoken": "^9.0.3",
     "mercadopago": "^3.1.0",
     "reflect-metadata": "0.2.2",
+    "swagger-jsdoc": "^6.3.0",
+    "swagger-ui-express": "^5.0.1",
     "winston": "^3.19.0",
     "zod": "^4.1.12"
   },
@@ -44,6 +46,8 @@
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "22.15.21",
     "@types/supertest": "^7.2.0",
+    "@types/swagger-jsdoc": "^6.0.4",
+    "@types/swagger-ui-express": "^4.1.8",
     "eslint": "^10.2.0",
     "globals": "^17.4.0",
     "jiti": "^2.6.1",

@@ -1,7 +1,9 @@
 import { RequestContext } from "@mikro-orm/core";
+import express from "express";
+import swaggerUi from "swagger-ui-express";
+import swaggerJsDoc from "swagger-jsdoc";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import express from "express";
 import rateLimit from "express-rate-limit";
 import helmet from "helmet";
 import { authRouter } from "./auth/auth.router.js";
@@ -39,6 +41,27 @@ export function createApp() {
 
   app.use(cookieParser());
   app.use(helmet());
+
+  const swaggerOptions = {
+    definition: {
+      openapi: "3.0.0",
+      info: {
+        title: "API de Mi Proyecto",
+        version: "1.0.0",
+        description: "Documentación interactiva de la API",
+      },
+      servers: [
+        {
+          url: "http://localhost:3000",
+          description: "Servidor Local",
+        },
+      ],
+    },
+    apis: ["./**/*.routes.js", "./createApp.js"],
+  };
+
+  const swaggerDocs = swaggerJsDoc(swaggerOptions);
+  app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
   app.use("/api/clientes", usuarioRouter);
   app.use("/api/clientes/:id/favoritos", usuarioRouter);
