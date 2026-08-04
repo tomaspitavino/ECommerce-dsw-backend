@@ -93,6 +93,13 @@ export async function crearPedido(
           message: "Uno o más productos no están disponibles",
         });
       }
+
+      if (i.cantidad > mueble.stock) {
+        return res.status(400).json({
+          message: `Stock insuficiente para "${mueble.etiqueta}". Stock disponible: ${mueble.stock}`,
+        });
+      }
+
       const subtotal = mueble.precioUnitario * i.cantidad;
 
       const item = em.create(Item, {
