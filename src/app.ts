@@ -8,7 +8,7 @@ import { logger } from "./shared/logger.js";
 const app = createApp();
 const port = 3000;
 
-await syncSchema(); // never in production
+// await syncSchema(); // never in production
 
 app
   .listen(port, () => {

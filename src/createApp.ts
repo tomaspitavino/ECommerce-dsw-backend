@@ -46,9 +46,12 @@ export function createApp() {
     definition: {
       openapi: "3.0.0",
       info: {
-        title: "API de Mi Proyecto",
+        title: "Mueblería Ecommerce API",
         version: "1.0.0",
-        description: "Documentación interactiva de la API",
+        description: "Documentación de la API de Mueblería",
+      },
+      contact: {
+        name: "La Mueblería DSW",
       },
       servers: [
         {
@@ -56,8 +59,18 @@ export function createApp() {
           description: "Servidor Local",
         },
       ],
+      components: {
+        securitySchemes: {
+          bearerAuth: {
+            type: "http",
+            scheme: "bearer",
+            bearerFormat: "JWT",
+          },
+        },
+      },
+      security: [{ bearerAuth: [] }],
     },
-    apis: ["./**/*.routes.js", "./createApp.js"],
+    apis: ["./dist/src/**/*.routes.js"],
   };
 
   const swaggerDocs = swaggerJsDoc(swaggerOptions);
