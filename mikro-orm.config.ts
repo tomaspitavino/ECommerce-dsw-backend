@@ -3,6 +3,8 @@ import { SqlHighlighter } from "@mikro-orm/sql-highlighter";
 import dotenv from "dotenv";
 dotenv.config();
 
+const isProduction = process.env.NODE_ENV === "production";
+
 export default defineConfig({
   entities: ["dist/**/*.entity.mysql.js"],
   entitiesTs: ["src/**/*.entity.mysql.ts"],
@@ -10,10 +12,9 @@ export default defineConfig({
   type: "mysql",
   clientUrl: process.env.DB_URL, // Ej: mysql://user:pass@host:port/db
   highlighter: new SqlHighlighter(),
-  debug: process.env.NODE_ENV !== "production",
+  debug: !isProduction,
   schemaGenerator: {
-    // never use in production
-    disableForeignKeys: true,
+    disableForeignKeys: !isProduction, // solo activa en produccion
     createForeignKeyConstraints: true,
     ignoreSchema: [],
   },

@@ -45,3 +45,23 @@ export function requireRole(...roles: string[]) {
     next();
   };
 }
+
+export function requireSelfOrAdmin(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
+  if (!req.user) {
+    return res.status(401).json({ message: "No autenticado" });
+  }
+
+  const targetId = Number(req.params.id);
+  const isSelf = req.user && req.user.id === targetId;
+  const isAdmin = req.user && req.user.rol === "admin";
+
+  if (isSelf || isAdmin) {
+    return next();
+  }
+
+  res.status(403).json({ error: "Acceso denegado" });
+}

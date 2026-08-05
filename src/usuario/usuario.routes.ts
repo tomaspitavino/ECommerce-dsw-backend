@@ -1,5 +1,9 @@
 import { Router } from "express";
-import { requireRole, verifyToken } from "../auth/auth.middleware.js";
+import {
+  requireRole,
+  requireSelfOrAdmin,
+  verifyToken,
+} from "../auth/auth.middleware.js";
 import {
   addFavorito,
   findAllFavoritos,
@@ -333,7 +337,19 @@ usuarioRouter.delete("/:id/favoritos/:muebleId", verifyToken, removeFavorito);
 usuarioRouter.post("/", sanitizeClientInput, add); // público: registro
 usuarioRouter.get("/", verifyToken, requireRole("admin"), findAll); // solo admin
 usuarioRouter.get("/perfil", verifyToken, perfil);
-usuarioRouter.get("/:id", verifyToken, findOne); // autenticado
-usuarioRouter.put("/:id", verifyToken, sanitizeClientInput, update); // autenticado
-usuarioRouter.patch("/:id", verifyToken, sanitizeClientPatchInput, update); // autenticado
+usuarioRouter.get("/:id", verifyToken, requireSelfOrAdmin, findOne); // autenticado
+usuarioRouter.put(
+  "/:id",
+  verifyToken,
+  requireSelfOrAdmin,
+  sanitizeClientInput,
+  update,
+); // autenticado
+usuarioRouter.patch(
+  "/:id",
+  verifyToken,
+  requireSelfOrAdmin,
+  sanitizeClientPatchInput,
+  update,
+); // autenticado
 usuarioRouter.delete("/:id", verifyToken, requireRole("admin"), remove);
