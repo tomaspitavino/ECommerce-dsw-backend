@@ -318,15 +318,22 @@ export const usuarioRouter = Router();
  *         description: Token requerido
  */
 
-usuarioRouter.get("/:id/favoritos/", verifyToken, findAllFavoritos);
+usuarioRouter.get(
+  "/:id/favoritos/",
+  verifyToken,
+  requireSelfOrAdmin,
+  findAllFavoritos,
+);
 usuarioRouter.get(
   "/:id/favoritos/mueble/:idMueble",
   verifyToken,
+  requireSelfOrAdmin,
   findOneMueble,
 );
 usuarioRouter.post(
   "/:id/favoritos/",
   verifyToken,
+  requireSelfOrAdmin,
   sanitizeFavoritoInput,
   addFavorito,
 );
