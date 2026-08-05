@@ -42,7 +42,6 @@ export const LoginSchema = z.object({
 export const CategoriaSchema = z.object({
   nombre: z.string().min(2),
   descripcion: z.string().min(5).max(255),
-  imagen: z.url().optional(),
 });
 
 export const MaterialSchema = z.object({
