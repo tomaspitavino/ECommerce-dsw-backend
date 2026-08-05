@@ -6,7 +6,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import rateLimit from "express-rate-limit";
 import helmet from "helmet";
-import { authRouter } from "./auth/auth.router.js";
+import { authRouter } from "./auth/auth.routes.js";
 import { categoriaRouter } from "./categoria/categoria.routes.js";
 import { descuentoRouter } from "./descuento/descuento.routes.js";
 import { materialRouter } from "./material/material.routes.js";
