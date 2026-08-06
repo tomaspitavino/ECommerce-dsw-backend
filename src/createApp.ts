@@ -82,7 +82,6 @@ export function createApp() {
   app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
   app.use("/api/clientes", usuarioRouter);
-  app.use("/api/clientes/:id/favoritos", usuarioRouter);
   app.use("/api/auth", authRouter);
   app.use("/api/pedidos", pedidoRouter);
   app.use("/api/categorias", categoriaRouter);

@@ -10,11 +10,15 @@ export const sanitizeLoginInput = validate(LoginSchema);
 const em = orm.em;
 
 const REFRESH_COOKIE = "refreshToken";
+
 const COOKIE_OPTIONS = {
   httpOnly: true,
-  secure: process.env.NODE_ENV === "production", // solo HTTPS en prod
-  sameSite: "strict" as const,
-  maxAge: 7 * 24 * 60 * 60 * 1000, // 7 días en ms
+  secure: process.env.NODE_ENV === "production",
+  sameSite:
+    process.env.NODE_ENV === "production" // logramos que el refresh token lo tomen en produccion
+      ? ("none" as const)
+      : ("strict" as const),
+  maxAge: 7 * 24 * 60 * 60 * 1000,
 };
 
 export async function login(req: Request, res: Response) {
