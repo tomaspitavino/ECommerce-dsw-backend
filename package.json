@@ -7,7 +7,6 @@
   "scripts": {
     "build": "tsc -p ./tsconfig.json",
     "start": "node dist/src/app.js",
-    "db:deploy": "mikro-orm migration:up && mikro-orm seeder:run",
     "start:dev": "tsc-watch --noClear -p ./tsconfig.json --onSuccess \"node ./dist/src/app.js\"",
     "migration:up": "npx mikro-orm migration:up",
     "seed": "npx mikro-orm seeder:run",
