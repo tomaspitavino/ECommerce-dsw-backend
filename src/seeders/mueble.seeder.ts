@@ -39,7 +39,7 @@ export class MuebleSeeder extends Seeder {
         ],
       },
       {
-        descripcion: "Mesa de comedor de roble macizo para 6 personas.",
+        descripcion: "Mesa de comedor de roble macizo para 6 personas",
         etiqueta: "Comedor",
         stock: 8,
         precioUnitario: 95000,
@@ -53,7 +53,7 @@ export class MuebleSeeder extends Seeder {
         ],
       },
       {
-        descripcion: "Silla ergonómica tapizada con soporte lumbar ajustable.",
+        descripcion: "Silla ergonómica tapizada con soporte lumbar ajustable",
         etiqueta: "Oficina",
         stock: 20,
         precioUnitario: 42000,
@@ -67,7 +67,7 @@ export class MuebleSeeder extends Seeder {
         ],
       },
       {
-        descripcion: "Biblioteca modular adaptable a distintos espacios.",
+        descripcion: "Biblioteca modular adaptable a distintos espacios",
         etiqueta: "Almacenamiento",
         stock: 5,
         precioUnitario: 74000,
@@ -82,7 +82,7 @@ export class MuebleSeeder extends Seeder {
       },
       {
         descripcion:
-          "Sillón reclinable de cuero sintético con apoyapiés extensible.",
+          "Sillón reclinable de cuero sintético con apoyapiés extensible",
         etiqueta: "Living",
         stock: 4,
         precioUnitario: 123000,
@@ -96,7 +96,7 @@ export class MuebleSeeder extends Seeder {
         ],
       },
       {
-        descripcion: "Lámpara de pie con base metálica y pantalla de tela.",
+        descripcion: "Lámpara de pie con base metálica y pantalla de tela",
         etiqueta: "Iluminación",
         stock: 10,
         precioUnitario: 27000,
@@ -110,7 +110,7 @@ export class MuebleSeeder extends Seeder {
         ],
       },
       {
-        descripcion: "Mesa de jardín redonda resistente a la intemperie.",
+        descripcion: "Mesa de jardín redonda resistente a la intemperie",
         stock: 6,
         etiqueta: "Exterior",
         precioUnitario: 58000,
@@ -124,7 +124,7 @@ export class MuebleSeeder extends Seeder {
         ],
       },
       {
-        descripcion: "Silla plegable de acero inoxidable para exterior.",
+        descripcion: "Silla plegable de acero inoxidable para exterior",
         stock: 12,
         etiqueta: "Exterior",
         precioUnitario: 22000,
@@ -138,7 +138,7 @@ export class MuebleSeeder extends Seeder {
         ],
       },
       {
-        descripcion: "Escritorio infantil con cajones y superficie amplia.",
+        descripcion: "Escritorio infantil con cajones y superficie amplia",
         stock: 7,
         etiqueta: "Infantil",
         precioUnitario: 35000,
@@ -153,7 +153,7 @@ export class MuebleSeeder extends Seeder {
       },
       {
         descripcion:
-          "Cama infantil con barandas de seguridad y cajón integrado.",
+          "Cama infantil con barandas de seguridad y cajón integrado",
         stock: 4,
         etiqueta: "Infantil",
         precioUnitario: 68000,
@@ -168,7 +168,7 @@ export class MuebleSeeder extends Seeder {
       },
       {
         descripcion:
-          "Sofá de tres cuerpos tapizado en tela gris antideslizante.",
+          "Sofá de tres cuerpos tapizado en tela gris antideslizante",
         stock: 3,
         etiqueta: "Living",
         precioUnitario: 185000,
@@ -181,7 +181,7 @@ export class MuebleSeeder extends Seeder {
         ],
       },
       {
-        descripcion: "Estantería flotante de MDF lacado blanco para living.",
+        descripcion: "Estantería flotante de MDF lacado blanco para living",
         stock: 15,
         etiqueta: "Almacenamiento",
         precioUnitario: 18000,
@@ -195,7 +195,7 @@ export class MuebleSeeder extends Seeder {
         ],
       },
       {
-        descripcion: "Mesa de vidrio templado con base de acero inoxidable.",
+        descripcion: "Mesa de vidrio templado con base de acero inoxidable",
         stock: 5,
         etiqueta: "Mesas",
         precioUnitario: 112000,
@@ -209,7 +209,7 @@ export class MuebleSeeder extends Seeder {
       },
       {
         descripcion:
-          "Silla de comedor tapizada en tela con patas de metal cromado.",
+          "Silla de comedor tapizada en tela con patas de metal cromado",
         stock: 16,
         etiqueta: "Sillas",
         precioUnitario: 31000,
@@ -222,7 +222,7 @@ export class MuebleSeeder extends Seeder {
         ],
       },
       {
-        descripcion: "Hamaca de ratán sintético para jardín o terraza.",
+        descripcion: "Hamaca de ratán sintético para jardín o terraza",
         stock: 3,
         etiqueta: "Exterior",
         precioUnitario: 47000,
@@ -236,7 +236,7 @@ export class MuebleSeeder extends Seeder {
         ],
       },
       {
-        descripcion: "Armario infantil de dos puertas con estantes internos.",
+        descripcion: "Armario infantil de dos puertas con estantes internos",
         stock: 5,
         etiqueta: "Infantil",
         precioUnitario: 92000,
