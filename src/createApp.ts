@@ -26,7 +26,10 @@ export function createApp() {
 
   app.use(
     cors({
-      origin: ["https://tu-sitio.netlify.app", "http://localhost:5173"],
+      origin: [
+        "https://muebleria-ecommerce-dsw.netlify.app",
+        "http://localhost:5173",
+      ],
       methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
       allowedHeaders: ["Content-Type", "Authorization"],
       credentials: true,
