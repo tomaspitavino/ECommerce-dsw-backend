@@ -8,6 +8,12 @@ const isProduction = process.env.NODE_ENV === "production";
 export default defineConfig({
   entities: ["dist/**/*.entity.mysql.js"],
   entitiesTs: ["src/**/*.entity.mysql.ts"],
+
+  migrations: {
+    path: "dist/migrations",
+    pathTs: "src/migrations",
+  },
+
   dbName: process.env.DB_NAME,
   type: "mysql",
   clientUrl: process.env.DB_URL, // Ej: mysql://user:pass@host:port/db
