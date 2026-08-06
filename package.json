@@ -3,6 +3,7 @@
   "version": "2.0",
   "type": "module",
   "description": "API para e-commerce de mueblería",
+  "main": "dist/src/app.js",
   "scripts": {
     "build": "tsc -p ./tsconfig.json",
     "start": "node dist/src/app.js",
