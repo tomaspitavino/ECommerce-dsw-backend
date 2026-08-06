@@ -251,37 +251,38 @@ export class MuebleSeeder extends Seeder {
       },
     ];
 
-    muebles.forEach((m) => {
+    for (const m of muebles) {
       try {
-        // Extraer IDs de las entidades relacionadas
-        const dataToValidate = {
-          descripcion: m.descripcion,
-          stock: m.stock,
-          etiqueta: m.etiqueta,
-          precioUnitario: m.precioUnitario,
-          categoria: m.categoria.id,
-          material: m.material.id,
-          imagenes: m.imagenes,
-        };
-        const validatedData = MuebleSchema.parse(dataToValidate);
-        em.create(Mueble, {
-          ...validatedData,
-          activo: true,
-          categoria: m.categoria,
-          material: m.material,
-        });
+        const existe = await em.findOne(Mueble, { descripcion: m.descripcion });
+
+        if (!existe) {
+          // Extraer IDs de las entidades relacionadas
+          const dataToValidate = {
+            descripcion: m.descripcion,
+            stock: m.stock,
+            etiqueta: m.etiqueta,
+            precioUnitario: m.precioUnitario,
+            categoria: m.categoria.id,
+            material: m.material.id,
+            imagenes: m.imagenes,
+          };
+          const validatedData = MuebleSchema.parse(dataToValidate);
+          em.create(Mueble, {
+            ...validatedData,
+            activo: true,
+            categoria: m.categoria,
+            material: m.material,
+          });
+        }
       } catch (error) {
         if (error instanceof ZodError) {
-          console.error(
-            `❌ Error validando mueble ${m.etiqueta}:`,
-            error.issues,
-          );
+          console.error(`Error validando mueble ${m.etiqueta}:`, error.issues);
           throw error;
         }
         throw error;
       }
-    });
+    }
     await em.flush();
-    console.log("✅ Muebles creados.");
+    console.log("Muebles creados.");
   }
 }

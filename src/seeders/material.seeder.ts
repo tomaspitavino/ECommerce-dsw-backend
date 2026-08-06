@@ -16,22 +16,28 @@ export class MaterialSeeder extends Seeder {
       { nroMaterial: "M007", nombre: "Tela tapizada" },
     ];
 
-    materiales.forEach((m) => {
+    for (const m of materiales) {
       try {
-        const validatedData = MaterialSchema.parse(m);
-        em.create(Material, validatedData);
+        const existe = await em.findOne(Material, {
+          nroMaterial: m.nroMaterial,
+        });
+
+        if (!existe) {
+          const validatedData = MaterialSchema.parse(m);
+          em.create(Material, validatedData);
+        }
       } catch (error) {
         if (error instanceof ZodError) {
           console.error(
-            `❌ Error validando material ${m.nroMaterial}:`,
+            `Error validando material ${m.nroMaterial}:`,
             error.issues,
           );
           throw error;
         }
         throw error;
       }
-    });
+    }
     await em.flush();
-    console.log("✅ Materiales creados.");
+    console.log("Materiales creados.");
   }
 }

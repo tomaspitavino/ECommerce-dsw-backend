@@ -38,22 +38,23 @@ export class CategoriaSeeder extends Seeder {
       },
     ];
 
-    categorias.forEach((c) => {
+    for (const c of categorias) {
       try {
-        const validatedData = CategoriaSchema.parse(c);
-        em.create(Categoria, validatedData);
+        const existe = await em.findOne(Categoria, { nombre: c.nombre });
+
+        if (!existe) {
+          const validatedData = CategoriaSchema.parse(c);
+          em.create(Categoria, validatedData);
+        }
       } catch (error) {
         if (error instanceof ZodError) {
-          console.error(
-            `❌ Error validando categoría ${c.nombre}:`,
-            error.issues,
-          );
+          console.error(`Error validando categoría ${c.nombre}:`, error.issues);
           throw error;
         }
         throw error;
       }
-    });
+    }
     await em.flush();
-    console.log("✅ Categorías creadas.");
+    console.log("Categorías creadas.");
   }
 }

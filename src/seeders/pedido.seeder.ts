@@ -88,27 +88,36 @@ export class PedidoSeeder extends Seeder {
       },
     ] as const;
 
-    for (const data of pedidos) {
-      const usuario = usuarios.find((u) => u.usuario === data.usuario);
+    for (const p of pedidos) {
+      const usuario = usuarios.find((u) => u.usuario === p.usuario);
 
       if (!usuario) {
-        throw new Error(`❌ No existe el usuario ${data.usuario}`);
+        throw new Error(`No existe el usuario ${p.usuario}`);
+      }
+
+      const existe = await em.findOne(Pedido, {
+        usuario: usuario.id,
+        fechaHora: p.fechaHora,
+      });
+
+      if (existe) {
+        continue;
       }
 
       const pedido = new Pedido();
 
       pedido.usuario = usuario;
-      pedido.estado = data.estado;
-      pedido.fechaHora = data.fechaHora;
+      pedido.estado = p.estado;
+      pedido.fechaHora = p.fechaHora;
 
       let total = 0;
 
       // Crear items y calcular el total del pedido sin zod
-      for (const itemData of data.items) {
+      for (const itemData of p.items) {
         const mueble = muebles.find((m) => m.descripcion === itemData.mueble);
 
         if (!mueble) {
-          throw new Error(`❌ No existe el mueble ${itemData.mueble}`);
+          throw new Error(`No existe el mueble ${itemData.mueble}`);
         }
 
         const subtotal = itemData.cantidad * mueble.precioUnitario;
@@ -133,6 +142,6 @@ export class PedidoSeeder extends Seeder {
 
     await em.flush();
 
-    console.log("✅ Pedidos creados.");
+    console.log("Pedidos creados.");
   }
 }

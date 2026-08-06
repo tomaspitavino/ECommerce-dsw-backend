@@ -7,7 +7,7 @@ import bcrypt from "bcrypt";
 
 export class UsuarioSeeder extends Seeder {
   async run(em: EntityManager): Promise<void> {
-    const usuariosData = [
+    const usuarios = [
       {
         nombre: "Administrador",
         apellido: "General",
@@ -83,18 +83,21 @@ export class UsuarioSeeder extends Seeder {
     ];
 
     //Inserción masiva con validación Zod y hash de contraseñas
-    for (const data of usuariosData) {
+    for (const u of usuarios) {
       try {
-        const validatedData = UsuarioSchema.parse(data);
-        const { contrasenia, ...rest } = validatedData;
-        const passwordHash = await bcrypt.hash(contrasenia, 10);
-        em.create(Usuario, { ...rest, passwordHash });
+        const existe = await em.findOne(Usuario, {
+          $or: [{ usuario: u.usuario }, { email: u.email }],
+        });
+
+        if (!existe) {
+          const validatedData = UsuarioSchema.parse(u);
+          const { contrasenia, ...rest } = validatedData;
+          const passwordHash = await bcrypt.hash(contrasenia, 10);
+          em.create(Usuario, { ...rest, passwordHash });
+        }
       } catch (error) {
         if (error instanceof ZodError) {
-          console.error(
-            `❌ Error validando usuario ${data.usuario}:`,
-            error.issues,
-          );
+          console.error(`Error validando usuario ${u.usuario}:`, error.issues);
           throw error;
         }
         throw error;
@@ -103,6 +106,6 @@ export class UsuarioSeeder extends Seeder {
 
     await em.flush();
 
-    console.log("✅ Usuarios creados exitosamente.");
+    console.log("Usuarios creados exitosamente.");
   }
 }
