@@ -20,6 +20,7 @@ export async function crearPreferencia(req: Request, res: Response) {
     );
 
     const preference = new Preference(mp);
+
     const response = await preference.create({
       body: {
         items: pedido.items.getItems().map((item) => ({
@@ -29,11 +30,11 @@ export async function crearPreferencia(req: Request, res: Response) {
           unit_price: Number(item.mueble.precioUnitario),
         })),
         back_urls: {
-          success: "http://localhost:5173/pedidos",
-          failure: "http://localhost:5173/carrito",
-          pending: "http://localhost:5173/pedidos",
+          success: `${process.env.FRONTEND_URL}/pedidos`,
+          failure: `${process.env.FRONTEND_URL}/carrito`,
+          pending: `${process.env.FRONTEND_URL}/pedidos`,
         },
-        // auto_return: "approved",
+        notification_url: `${process.env.BACKEND_URL}/api/pagos/webhook`,
         external_reference: String(pedidoId),
       },
     });
