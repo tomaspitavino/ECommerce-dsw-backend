@@ -5,9 +5,10 @@
   "description": "API para e-commerce de mueblería",
   "scripts": {
     "build": "tsc -p ./tsconfig.json",
+    "start": "node dist/src/app.js",
+    "db:deploy": "mikro-orm migration:up && mikro-orm seeder:run",
     "start:dev": "tsc-watch --noClear -p ./tsconfig.json --onSuccess \"node ./dist/src/app.js\"",
-    "migration:create": "mikro-orm migration:create",
-    "migration:up": "mikro-orm migration:up",
+    "migration:up": "npx mikro-orm migration:up",
     "seed": "npx mikro-orm seeder:run",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "vitest"
