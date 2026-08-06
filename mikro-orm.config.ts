@@ -14,7 +14,7 @@ export default defineConfig({
     pathTs: "src/migrations",
   },
 
-  dbName: process.env.MIKRO_ORM_DB_NAME || process.env.DB_NAME,
+  dbName: process.env.DB_NAME,
   type: "mysql",
   clientUrl: process.env.DB_URL, // Ej: mysql://user:pass@host:port/db
   highlighter: new SqlHighlighter(),
