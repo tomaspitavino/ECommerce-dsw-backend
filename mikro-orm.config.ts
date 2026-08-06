@@ -10,7 +10,7 @@ export default defineConfig({
   entitiesTs: ["src/**/*.entity.mysql.ts"],
 
   migrations: {
-    path: "dist/migrations",
+    path: "dist/src/migrations",
     pathTs: "src/migrations",
   },
 
