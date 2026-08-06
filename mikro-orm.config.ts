@@ -14,9 +14,13 @@ export default defineConfig({
     pathTs: "src/migrations",
   },
 
+  host: process.env.DB_HOST || "localhost",
+  port: Number(process.env.DB_PORT) || 3306,
   dbName: process.env.DB_NAME,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
   type: "mysql",
-  clientUrl: process.env.DB_URL, // Ej: mysql://user:pass@host:port/db
+  // clientUrl: process.env.DB_URL, // Ej: mysql://user:pass@host:port/db
   highlighter: new SqlHighlighter(),
   debug: !isProduction,
   schemaGenerator: {
