@@ -7,19 +7,24 @@ const PasswordSchema = z
   .regex(/[a-z]/, "Debe contener al menos una minúscula")
   .regex(/[0-9]/, "Debe contener al menos un número");
 
-const RolSchema = z.enum(["cliente", "admin"]).default("cliente");
-const EstadoPedidoSchema = z
-  .enum([
-    "pendiente",
-    "confirmado",
-    "pagado",
-    "enviado",
-    "entregado",
-    "cancelado",
-  ])
-  .default("pendiente");
+const RolSchema = z.enum(["cliente", "admin"]);
 
 export type Rol = z.infer<typeof RolSchema>;
+
+// crear un schema Zod para el body con el estado permitido.
+export const EstadoPedidoSchema = z.enum([
+  "pendiente",
+  "confirmado",
+  "pagado",
+  "enviado",
+  "entregado",
+  "cancelado",
+]);
+export type estadoPedido = z.infer<typeof EstadoPedidoSchema>;
+
+export const updateEstadoPedidoSchema = z.object({
+  estado: EstadoPedidoSchema,
+});
 
 export const UsuarioSchema = z.object({
   nombre: z.string().min(2),
@@ -32,6 +37,17 @@ export const UsuarioSchema = z.object({
   contrasenia: PasswordSchema,
   rol: RolSchema,
   fondos: z.number().nonnegative(),
+});
+
+export const RegistroSchema = z.object({
+  nombre: z.string().min(2),
+  apellido: z.string().min(2),
+  direccion: z.string(),
+  telefono: z.string().min(8),
+  dni: z.string().min(8),
+  usuario: z.string().min(3),
+  email: z.email(),
+  contrasenia: PasswordSchema,
 });
 
 export const LoginSchema = z.object({

@@ -5,7 +5,11 @@ import { orm } from "../shared/db/orm.js";
 import { Mueble } from "../mueble/mueble.entity.mysql.js";
 import { Pedido } from "./pedido.entity.mysql.js";
 import { validate } from "../shared/validation/validateRequest.js";
-import { PedidoSchema } from "../shared/validation/zodSchemas.js";
+import {
+  estadoPedido,
+  PedidoSchema,
+  updateEstadoPedidoSchema,
+} from "../shared/validation/zodSchemas.js";
 import { FilterQuery } from "@mikro-orm/core";
 
 function parseDateStart(value: string): Date {
@@ -62,6 +66,9 @@ function serializePedido(pedido: Pedido) {
 const em = orm.em;
 
 export const sanitizePedidoInput = validate(PedidoSchema);
+export const validateUpdateEstadoPedidoInput = validate(
+  updateEstadoPedidoSchema,
+);
 
 export async function crearPedido(
   req: Request,
@@ -208,11 +215,11 @@ export async function findPedidoById(req: Request, res: Response) {
 export async function updateEstadoPedido(req: Request, res: Response) {
   try {
     const id = Number(req.params.pedidoId);
-    const nuevoEstado = req.body.estado;
+    const nuevoEstado = req.body.estado as estadoPedido; // viene validado del back con updateEstadoPedido
 
-    const pedido = await em.findOneOrFail(Pedido, { id });
-
-    const transiciones: Record<string, string[]> = {
+    // el key que tiene el estado en cada momento y
+    // los determinados valores que puede adquirir estos son "tipos"
+    const transiciones: Record<estadoPedido, estadoPedido[]> = {
       pendiente: ["confirmado", "cancelado"],
       confirmado: ["pagado", "cancelado"],
       pagado: ["enviado"],
@@ -220,6 +227,26 @@ export async function updateEstadoPedido(req: Request, res: Response) {
       entregado: [],
       cancelado: [],
     };
+
+    const pedido = await em.findOneOrFail(Pedido, { id });
+
+    // mantener el estado pagado bajo control del flujo confirmado de pagos cuando corresponda.
+    if (nuevoEstado === "pagado") {
+      return res.status(400).json({
+        message:
+          "El estado 'pagado' debe procesarse mediante el flujo de confirmación de pagos",
+      });
+    }
+
+    // comprobar que nuevoEstado esté incluido en transiciones[pedido.estado] antes de persistir.
+    const transicionesValidas =
+      transiciones[pedido.estado as estadoPedido] || [];
+    if (!transicionesValidas.includes(nuevoEstado)) {
+      // responder 400 cuando la transición sea inválida.
+      return res.status(400).json({
+        message: `Transición de estado inválida: no se puede pasar de '${pedido.estado}' a '${nuevoEstado}'.`,
+      });
+    }
 
     pedido.estado = nuevoEstado;
     await em.flush();

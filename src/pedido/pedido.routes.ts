@@ -7,6 +7,7 @@ import {
   findPedidoById,
   sanitizePedidoInput,
   updateEstadoPedido,
+  validateUpdateEstadoPedidoInput,
 } from "./pedido.controller.js";
 import { requireRole, verifyToken } from "../auth/auth.middleware.js";
 
@@ -239,6 +240,7 @@ pedidoRouter.patch(
   "/:pedidoId/estado",
   verifyToken,
   requireRole("admin"),
+  validateUpdateEstadoPedidoInput,
   updateEstadoPedido,
 );
 pedidoRouter.patch("/:pedidoId/cancelar", verifyToken, cancelarPedido);
