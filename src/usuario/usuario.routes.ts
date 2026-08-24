@@ -20,6 +20,7 @@ import {
   sanitizeClientPatchInput,
   perfil,
   update,
+  sanitizeRegistroInput,
 } from "./usuario.controller.js";
 
 export const usuarioRouter = Router();
@@ -341,7 +342,7 @@ usuarioRouter.delete("/:id/favoritos/:muebleId", verifyToken, removeFavorito);
 
 // CRUD independiente: /api/clientes
 // CRUD — registro público, resto protegido
-usuarioRouter.post("/", sanitizeClientInput, add); // público: registro
+usuarioRouter.post("/", sanitizeRegistroInput, add); // público: registro
 usuarioRouter.get("/", verifyToken, requireRole("admin"), findAll); // solo admin
 usuarioRouter.get("/perfil", verifyToken, perfil);
 usuarioRouter.get("/:id", verifyToken, requireSelfOrAdmin, findOne); // autenticado

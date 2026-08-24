@@ -2,13 +2,17 @@ import bcrypt from "bcrypt";
 import { Request, Response } from "express";
 import { orm } from "../shared/db/orm.js";
 import { validate } from "../shared/validation/validateRequest.js";
-import { UsuarioSchema } from "../shared/validation/zodSchemas.js";
+import {
+  RegistroSchema,
+  UsuarioSchema,
+} from "../shared/validation/zodSchemas.js";
 import { Usuario } from "./usuario.entity.mysql.js";
 
 const em = orm.em;
 
 export const sanitizeClientInput = validate(UsuarioSchema);
 export const sanitizeClientPatchInput = validate(UsuarioSchema.partial());
+export const sanitizeRegistroInput = validate(RegistroSchema);
 
 export async function findAll(req: Request, res: Response) {
   try {
@@ -48,7 +52,12 @@ export async function add(req: Request, res: Response) {
     const { contrasenia, ...rest } = req.body.validated; // no le pasa la contra en texto plano
     const passwordHash = await bcrypt.hash(contrasenia, 10); // encripta la misma contra
 
-    const usuario = em.create(Usuario, { ...rest, passwordHash }); // añade la contra hasheada al cliente
+    const usuario = em.create(Usuario, {
+      ...rest,
+      passwordHash,
+      rol: "cliente",
+      fondos: 0,
+    }); // añade la contra hasheada al cliente
     await em.flush();
 
     const { passwordHash: _, ...safeData } = usuario;

@@ -1,7 +1,9 @@
 import jwt from "jsonwebtoken";
 import request from "supertest";
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, afterAll } from "vitest";
 import { createApp } from "../createApp.js";
+import { orm } from "../shared/db/orm.js";
+import { Usuario } from "../usuario/usuario.entity.mysql.js";
 
 describe("Auth integration", () => {
   const app = createApp();
@@ -38,5 +40,33 @@ describe("Auth integration", () => {
 
     expect(res.status).toBe(401);
     expect(res.body.message).toMatch(/Acceso denegado/);
+  });
+
+  it("POST /api/clientes no permite registrarse como admin ni con fondos arbitrarios", async () => {
+    const res = await request(app).post("/api/clientes").send({
+      nombre: "Test",
+      apellido: "User",
+      direccion: "Calle 123",
+      telefono: "12345678",
+      dni: "99887766",
+      usuario: "testadmin99",
+      email: "testadmin99@test.com",
+      contrasenia: "test1234a",
+      rol: "admin",
+      fondos: 999999,
+    });
+    expect(res.status).toBe(201);
+    expect(res.body.data.rol).toBe("cliente");
+    expect(res.body.data.fondos).toBe(0);
+  });
+
+  afterAll(async () => {
+    const em = orm.em.fork();
+    const usuario = await em.findOne(Usuario, {
+      email: "testadmin99@test.com",
+    });
+    if (usuario) {
+      await em.removeAndFlush(usuario);
+    }
   });
 });
