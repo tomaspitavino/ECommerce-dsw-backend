@@ -11,6 +11,10 @@ import {
   updateEstadoPedidoSchema,
 } from "../shared/validation/zodSchemas.js";
 import { FilterQuery } from "@mikro-orm/core";
+// orm.em viene tipado como el EntityManager genérico de @mikro-orm/core,
+// que no expone getKnex() ni otros métodos SQL. Se importa el tipo del
+// driver para castear y poder usar knex.raw() en descuentos atómicos.
+import type { EntityManager as SqlEntityManager } from "@mikro-orm/mysql";
 
 function parseDateStart(value: string): Date {
   const [year, month, day] = value.split("-").map(Number);
@@ -63,7 +67,9 @@ function serializePedido(pedido: Pedido) {
   return result;
 }
 
-const em = orm.em;
+class PedidoValidationError extends Error {}
+
+const em = orm.em as SqlEntityManager;
 
 export const sanitizePedidoInput = validate(PedidoSchema);
 export const validateUpdateEstadoPedidoInput = validate(
@@ -78,57 +84,90 @@ export async function crearPedido(
   try {
     const { items } = req.body.validated;
 
-    // Buscar el cliente
-    const cliente = await em.findOneOrFail(Usuario, {
-      id: req.user!.id,
-    });
-
-    // Crear el pedido base
-    const pedido = em.create(Pedido, {
-      usuario: cliente,
-      estado: "pendiente",
-      fechaHora: new Date(),
-      total: 0,
-    });
-
-    let total = 0;
-
+    const cantidadPorMueble = new Map<number, number>();
     for (const i of items) {
-      const mueble = await em.findOne(Mueble, { id: i.mueble, activo: true });
-      if (!mueble) {
-        return res.status(400).json({
-          message: "Uno o más productos no están disponibles",
-        });
-      }
-
-      if (i.cantidad > mueble.stock) {
-        return res.status(400).json({
-          message: `Stock insuficiente para "${mueble.etiqueta}". Stock disponible: ${mueble.stock}`,
-        });
-      }
-
-      const subtotal = mueble.precioUnitario * i.cantidad;
-
-      const item = em.create(Item, {
-        mueble,
-        cantidad: i.cantidad,
-        subtotal,
-        pedido,
-        estado: "pendiente",
-      });
-
-      pedido.items.add(item);
-      total += subtotal;
+      cantidadPorMueble.set(
+        i.mueble,
+        (cantidadPorMueble.get(i.mueble) ?? 0) + i.cantidad,
+      );
     }
 
-    pedido.total = total;
-    await em.persistAndFlush(pedido);
+    const pedidoCreado = await em.transactional(async (tem) => {
+      const cliente = await tem.findOneOrFail(Usuario, {
+        id: req.user!.id,
+      });
+
+      const pedido = tem.create(Pedido, {
+        usuario: cliente,
+        estado: "pendiente",
+        fechaHora: new Date(),
+        total: 0,
+      });
+
+      let total = 0;
+
+      for (const [muebleId, cantidadTotal] of cantidadPorMueble) {
+        const mueble = await tem.findOne(Mueble, {
+          id: muebleId,
+          activo: true,
+        });
+        if (!mueble) {
+          throw new PedidoValidationError(
+            "Uno o más productos no están disponibles",
+          );
+        }
+
+        // solo resta stock si sigue habiendo suficiente
+        const knex = tem.getKnex();
+        const filasAfectadas = await tem.nativeUpdate(
+          Mueble,
+          { id: mueble.id, stock: { $gte: cantidadTotal } },
+          {
+            stock: knex.raw("stock - ?", [cantidadTotal]) as unknown as number,
+          },
+        );
+
+        if (filasAfectadas === 0) {
+          throw new PedidoValidationError(
+            `Stock insuficiente para "${mueble.etiqueta}".`,
+          );
+        }
+
+        // Repartir la cantidad consolidada de vuelta en ítems individuales
+        // por cada línea original pedida para ese mueble.
+        const subtotalUnitario = mueble.precioUnitario;
+        for (const i of items) {
+          if (i.mueble !== muebleId) continue;
+
+          const subtotal = subtotalUnitario * i.cantidad;
+
+          const item = tem.create(Item, {
+            mueble,
+            cantidad: i.cantidad,
+            subtotal,
+            pedido,
+            estado: "pendiente",
+          });
+
+          pedido.items.add(item);
+          total += subtotal;
+        }
+      }
+
+      pedido.total = total;
+      await tem.persistAndFlush(pedido);
+
+      return pedido;
+    });
 
     res.status(201).json({
       message: "Pedido creado correctamente",
-      data: pedido,
+      data: pedidoCreado,
     });
   } catch (error: any) {
+    if (error instanceof PedidoValidationError) {
+      return res.status(400).json({ message: error.message });
+    }
     next(error);
   }
 }

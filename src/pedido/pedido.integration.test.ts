@@ -354,4 +354,172 @@ describe("Pedidos integration", () => {
       expect(res.status).toBe(404);
     });
   });
+
+  // ---------------------------------------------------------------------
+  // Descuento real de stock al crear 
+  // ---------------------------------------------------------------------
+  describe("POST /api/pedidos — descuento de stock", () => {
+    it("descuenta el stock del mueble al crear el pedido", async () => {
+      const cliente = await crearUsuario("cliente");
+      const mueble = await crearMueble({ stock: 5, precioUnitario: 1000 });
+      const token = tokenPara(cliente);
+
+      const res = await request(app)
+        .post("/api/pedidos")
+        .set("Authorization", `Bearer ${token}`)
+        .send({ items: [{ mueble: mueble.id, cantidad: 2 }] });
+
+      expect(res.status).toBe(201);
+
+      await em.refresh(mueble);
+      expect(mueble.stock).toBe(3);
+    });
+
+    it("no descuenta stock cuando el pedido falla por stock insuficiente", async () => {
+      const cliente = await crearUsuario("cliente");
+      const mueble = await crearMueble({ stock: 1, precioUnitario: 1000 });
+      const token = tokenPara(cliente);
+
+      const res = await request(app)
+        .post("/api/pedidos")
+        .set("Authorization", `Bearer ${token}`)
+        .send({ items: [{ mueble: mueble.id, cantidad: 5 }] });
+
+      expect(res.status).toBe(400);
+
+      await em.refresh(mueble);
+      expect(mueble.stock).toBe(1);
+    });
+
+    it("consolida cantidades repetidas del mismo mueble antes de descontar stock", async () => {
+      const cliente = await crearUsuario("cliente");
+      const mueble = await crearMueble({ stock: 10, precioUnitario: 100 });
+      const token = tokenPara(cliente);
+
+      const res = await request(app)
+        .post("/api/pedidos")
+        .set("Authorization", `Bearer ${token}`)
+        .send({
+          items: [
+            { mueble: mueble.id, cantidad: 2 },
+            { mueble: mueble.id, cantidad: 3 },
+          ],
+        });
+
+      expect(res.status).toBe(201);
+      expect(res.body.data.total).toBe(500); // (2 + 3) * 100
+
+      await em.refresh(mueble);
+      // Debe descontarse 5 en total (2+3), consolidado en un solo
+      // UPDATE atómico, no dos descuentos parciales independientes.
+      expect(mueble.stock).toBe(5);
+    });
+
+    it("con ítems repetidos, si la cantidad consolidada supera el stock, el pedido completo falla (ninguna línea se descuenta)", async () => {
+      const cliente = await crearUsuario("cliente");
+      // Individualmente cada línea (3 y 3) pasaría contra un stock de 5,
+      // pero consolidadas (6) no. El pedido entero debe fallar.
+      const mueble = await crearMueble({ stock: 5, precioUnitario: 100 });
+      const token = tokenPara(cliente);
+
+      const res = await request(app)
+        .post("/api/pedidos")
+        .set("Authorization", `Bearer ${token}`)
+        .send({
+          items: [
+            { mueble: mueble.id, cantidad: 3 },
+            { mueble: mueble.id, cantidad: 3 },
+          ],
+        });
+
+      expect(res.status).toBe(400);
+
+      await em.refresh(mueble);
+      expect(mueble.stock).toBe(5);
+    });
+  });
+
+  // ---------------------------------------------------------------------
+  // Concurrencia / sobreventa
+  // ---------------------------------------------------------------------
+  describe("POST /api/pedidos — concurrencia y sobreventa", () => {
+    it("con stock=1 y 2 solicitudes simultáneas, solo una tiene éxito y el stock nunca queda negativo", async () => {
+      const cliente = await crearUsuario("cliente");
+      const mueble = await crearMueble({ stock: 1, precioUnitario: 1000 });
+      const token = tokenPara(cliente);
+
+      const [r1, r2] = await Promise.all([
+        request(app)
+          .post("/api/pedidos")
+          .set("Authorization", `Bearer ${token}`)
+          .send({ items: [{ mueble: mueble.id, cantidad: 1 }] }),
+        request(app)
+          .post("/api/pedidos")
+          .set("Authorization", `Bearer ${token}`)
+          .send({ items: [{ mueble: mueble.id, cantidad: 1 }] }),
+      ]);
+
+      const estados = [r1.status, r2.status].sort((a, b) => a - b);
+      expect(estados).toEqual([201, 400]);
+
+      await em.refresh(mueble);
+      expect(mueble.stock).toBe(0);
+    });
+
+    it("con stock=3 y 6 solicitudes simultáneas, exactamente 3 tienen éxito y el stock final es 0 (nunca negativo)", async () => {
+      const cliente = await crearUsuario("cliente");
+      const mueble = await crearMueble({ stock: 3, precioUnitario: 500 });
+      const token = tokenPara(cliente);
+
+      const solicitudes = Array.from({ length: 6 }, () =>
+        request(app)
+          .post("/api/pedidos")
+          .set("Authorization", `Bearer ${token}`)
+          .send({ items: [{ mueble: mueble.id, cantidad: 1 }] }),
+      );
+
+      const respuestas = await Promise.all(solicitudes);
+      const exitosas = respuestas.filter((r) => r.status === 201);
+      const fallidas = respuestas.filter((r) => r.status === 400);
+
+      expect(exitosas).toHaveLength(3);
+      expect(fallidas).toHaveLength(3);
+
+      await em.refresh(mueble);
+      expect(mueble.stock).toBe(0);
+    });
+  });
+
+  // ---------------------------------------------------------------------
+  // Ciclo completo: crear (descuenta) + cancelar (repone) sobre el
+  // endpoint real, sin bypassear la lógica del controller
+  // ---------------------------------------------------------------------
+  describe("Ciclo completo crear + cancelar", () => {
+    it("el stock final tras crear y cancelar es igual al stock original", async () => {
+      const cliente = await crearUsuario("cliente");
+      const mueble = await crearMueble({ stock: 4, precioUnitario: 700 });
+      const stockOriginal = mueble.stock;
+      const token = tokenPara(cliente);
+
+      const resCrear = await request(app)
+        .post("/api/pedidos")
+        .set("Authorization", `Bearer ${token}`)
+        .send({ items: [{ mueble: mueble.id, cantidad: 2 }] });
+
+      expect(resCrear.status).toBe(201);
+
+      await em.refresh(mueble);
+      expect(mueble.stock).toBe(stockOriginal - 2);
+
+      const pedidoId = resCrear.body.data.id;
+      const resCancelar = await request(app)
+        .patch(`/api/pedidos/${pedidoId}/cancelar`)
+        .set("Authorization", `Bearer ${token}`);
+
+      expect(resCancelar.status).toBe(200);
+
+      await em.refresh(mueble);
+      expect(mueble.stock).toBe(stockOriginal);
+    });
+  });
 });
