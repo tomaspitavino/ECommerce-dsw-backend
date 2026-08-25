@@ -48,8 +48,18 @@ export async function findAllFavoritos(req: Request, res: Response) {
 
 export async function removeFavorito(req: Request, res: Response) {
   try {
-    const usuarioId = Number.parseInt(req.params.id);
+    const idSolicitado = Number.parseInt(req.params.id);
     const muebleId = Number.parseInt(req.params.muebleId);
+    const esAdmin = req.user!.rol === "admin";
+
+    const usuarioId = esAdmin ? idSolicitado : req.user!.id;
+
+    // Se devuelve 403 explícito en vez de dejar que el findOneOrFail de bajo caiga en un 404
+    if (!esAdmin && idSolicitado !== req.user!.id) {
+      return res.status(403).json({
+        message: "No podés eliminar favoritos de otra cuenta",
+      });
+    }
 
     const favorito = await em.findOneOrFail(Favorito, {
       usuario: usuarioId,
@@ -59,7 +69,12 @@ export async function removeFavorito(req: Request, res: Response) {
     await em.removeAndFlush(favorito);
     res.status(200).json({ message: "Favorito eliminado" });
   } catch (error: any) {
-    res
+    if (error.name === "NotFoundError") {
+      return res.status(404).json({
+        message: "Favorito no encontrado",
+      });
+    }
+    return res
       .status(500)
       .json({ message: "Error al eliminar favorito", error: error.message });
   }
