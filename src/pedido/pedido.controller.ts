@@ -11,6 +11,10 @@ import {
   updateEstadoPedidoSchema,
 } from "../shared/validation/zodSchemas.js";
 import { FilterQuery } from "@mikro-orm/core";
+// orm.em viene tipado como el EntityManager genérico de @mikro-orm/core,
+// que no expone getKnex() ni otros métodos SQL. Se importa el tipo del
+// driver para castear y poder usar knex.raw() en descuentos atómicos.
+import type { EntityManager as SqlEntityManager } from "@mikro-orm/mysql";
 
 function parseDateStart(value: string): Date {
   const [year, month, day] = value.split("-").map(Number);
@@ -28,15 +32,15 @@ function parseDateEnd(value: string): Date {
 function serializePedido(pedido: Pedido) {
   const items = pedido.items.isInitialized()
     ? pedido.items.getItems().map((item) => ({
-        id: item.id,
-        cantidad: item.cantidad,
-        subtotal: Number(item.subtotal),
-        mueble: {
-          id: item.mueble.id,
-          descripcion: item.mueble.descripcion,
-          etiqueta: item.mueble.etiqueta,
-        },
-      }))
+      id: item.id,
+      cantidad: item.cantidad,
+      subtotal: Number(item.subtotal),
+      mueble: {
+        id: item.mueble.id,
+        descripcion: item.mueble.descripcion,
+        etiqueta: item.mueble.etiqueta,
+      },
+    }))
     : [];
 
   const result: Record<string, unknown> = {
@@ -63,7 +67,9 @@ function serializePedido(pedido: Pedido) {
   return result;
 }
 
-const em = orm.em;
+class PedidoValidationError extends Error {}
+
+const em = orm.em as SqlEntityManager;
 
 export const sanitizePedidoInput = validate(PedidoSchema);
 export const validateUpdateEstadoPedidoInput = validate(
@@ -78,57 +84,90 @@ export async function crearPedido(
   try {
     const { items } = req.body.validated;
 
-    // Buscar el cliente
-    const cliente = await em.findOneOrFail(Usuario, {
-      id: req.user!.id,
-    });
-
-    // Crear el pedido base
-    const pedido = em.create(Pedido, {
-      usuario: cliente,
-      estado: "pendiente",
-      fechaHora: new Date(),
-      total: 0,
-    });
-
-    let total = 0;
-
+    const cantidadPorMueble = new Map<number, number>();
     for (const i of items) {
-      const mueble = await em.findOne(Mueble, { id: i.mueble, activo: true });
-      if (!mueble) {
-        return res.status(400).json({
-          message: "Uno o más productos no están disponibles",
-        });
-      }
-
-      if (i.cantidad > mueble.stock) {
-        return res.status(400).json({
-          message: `Stock insuficiente para "${mueble.etiqueta}". Stock disponible: ${mueble.stock}`,
-        });
-      }
-
-      const subtotal = mueble.precioUnitario * i.cantidad;
-
-      const item = em.create(Item, {
-        mueble,
-        cantidad: i.cantidad,
-        subtotal,
-        pedido,
-        estado: "pendiente",
-      });
-
-      pedido.items.add(item);
-      total += subtotal;
+      cantidadPorMueble.set(
+        i.mueble,
+        (cantidadPorMueble.get(i.mueble) ?? 0) + i.cantidad,
+      );
     }
 
-    pedido.total = total;
-    await em.persistAndFlush(pedido);
+    const pedidoCreado = await em.transactional(async (tem) => {
+      const cliente = await tem.findOneOrFail(Usuario, {
+        id: req.user!.id,
+      });
+
+      const pedido = tem.create(Pedido, {
+        usuario: cliente,
+        estado: "pendiente",
+        fechaHora: new Date(),
+        total: 0,
+      });
+
+      let total = 0;
+
+      for (const [muebleId, cantidadTotal] of cantidadPorMueble) {
+        const mueble = await tem.findOne(Mueble, {
+          id: muebleId,
+          activo: true,
+        });
+        if (!mueble) {
+          throw new PedidoValidationError(
+            "Uno o más productos no están disponibles",
+          );
+        }
+
+        // solo resta stock si sigue habiendo suficiente
+        const knex = tem.getKnex();
+        const filasAfectadas = await tem.nativeUpdate(
+          Mueble,
+          { id: mueble.id, stock: { $gte: cantidadTotal } },
+          {
+            stock: knex.raw("stock - ?", [cantidadTotal]) as unknown as number,
+          },
+        );
+
+        if (filasAfectadas === 0) {
+          throw new PedidoValidationError(
+            `Stock insuficiente para "${mueble.etiqueta}".`,
+          );
+        }
+
+        // Repartir la cantidad consolidada de vuelta en ítems individuales
+        // por cada línea original pedida para ese mueble.
+        const subtotalUnitario = mueble.precioUnitario;
+        for (const i of items) {
+          if (i.mueble !== muebleId) continue;
+
+          const subtotal = subtotalUnitario * i.cantidad;
+
+          const item = tem.create(Item, {
+            mueble,
+            cantidad: i.cantidad,
+            subtotal,
+            pedido,
+            estado: "pendiente",
+          });
+
+          pedido.items.add(item);
+          total += subtotal;
+        }
+      }
+
+      pedido.total = total;
+      await tem.persistAndFlush(pedido);
+
+      return pedido;
+    });
 
     res.status(201).json({
       message: "Pedido creado correctamente",
-      data: pedido,
+      data: pedidoCreado,
     });
   } catch (error: any) {
+    if (error instanceof PedidoValidationError) {
+      return res.status(400).json({ message: error.message });
+    }
     next(error);
   }
 }
@@ -194,9 +233,14 @@ export async function findAllPedidosAdmin(req: Request, res: Response) {
 export async function findPedidoById(req: Request, res: Response) {
   try {
     const id = Number.parseInt(req.params.pedidoId);
+    const usuario = await em.findOneOrFail(Usuario, { id: req.user!.id });
+
     const pedido = await em.findOneOrFail(
       Pedido,
-      { id },
+      {
+        id,
+        usuario,
+      },
       { populate: ["items.mueble", "pago"] },
     );
 
@@ -205,9 +249,8 @@ export async function findPedidoById(req: Request, res: Response) {
       data: pedido,
     });
   } catch (error: any) {
-    res.status(500).json({
-      message: "Error al obtener el pedido",
-      error: error.message,
+    res.status(404).json({
+      message: "Error al obtener el pedido"
     });
   }
 }
@@ -215,10 +258,11 @@ export async function findPedidoById(req: Request, res: Response) {
 export async function updateEstadoPedido(req: Request, res: Response) {
   try {
     const id = Number(req.params.pedidoId);
-    const nuevoEstado = req.body.estado as estadoPedido; // viene validado del back con updateEstadoPedido
+    const nuevoEstado = req.body.estado as estadoPedido;
 
-    // el key que tiene el estado en cada momento y
-    // los determinados valores que puede adquirir estos son "tipos"
+    console.log("ID:", id);
+    console.log("Estado recibido:", nuevoEstado);
+
     const transiciones: Record<estadoPedido, estadoPedido[]> = {
       pendiente: ["confirmado", "cancelado"],
       confirmado: ["pagado", "cancelado"],
@@ -228,9 +272,6 @@ export async function updateEstadoPedido(req: Request, res: Response) {
       cancelado: [],
     };
 
-    const pedido = await em.findOneOrFail(Pedido, { id });
-
-    // mantener el estado pagado bajo control del flujo confirmado de pagos cuando corresponda.
     if (nuevoEstado === "pagado") {
       return res.status(400).json({
         message:
@@ -238,11 +279,16 @@ export async function updateEstadoPedido(req: Request, res: Response) {
       });
     }
 
-    // comprobar que nuevoEstado esté incluido en transiciones[pedido.estado] antes de persistir.
+    const pedido = await em.findOneOrFail(Pedido, { id });
+
     const transicionesValidas =
       transiciones[pedido.estado as estadoPedido] || [];
+
+    console.log("Transiciones válidas:", transicionesValidas);
+
     if (!transicionesValidas.includes(nuevoEstado)) {
-      // responder 400 cuando la transición sea inválida.
+      console.log("TRANSICIÓN INVÁLIDA");
+
       return res.status(400).json({
         message: `Transición de estado inválida: no se puede pasar de '${pedido.estado}' a '${nuevoEstado}'.`,
       });
@@ -251,14 +297,15 @@ export async function updateEstadoPedido(req: Request, res: Response) {
     pedido.estado = nuevoEstado;
     await em.flush();
 
-    res.status(200).json({
+    return res.status(200).json({
       message: `Estado del pedido actualizado a '${nuevoEstado}'.`,
       data: pedido,
     });
   } catch (error: any) {
-    res.status(500).json({
-      message: "Error al actualizar el estado del pedido",
-      error: error.message,
+    console.error("ERROR REAL:", error);
+
+    return res.status(500).json({
+      message: error.message,
     });
   }
 }
@@ -296,6 +343,14 @@ export async function cancelarPedido(req: Request, res: Response) {
 
     res.status(200).json({ message: "Pedido cancelado", data: pedido });
   } catch (error: any) {
-    res.status(500).json({ message: error.message });
+    if (error.name === "NotFoundError") {
+      return res.status(404).json({
+        message: "Pedido no encontrado",
+      });
+    }
+
+    return res.status(500).json({
+      message: error.message,
+    });
   }
 }

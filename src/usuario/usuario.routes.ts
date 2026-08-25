@@ -338,7 +338,12 @@ usuarioRouter.post(
   sanitizeFavoritoInput,
   addFavorito,
 );
-usuarioRouter.delete("/:id/favoritos/:muebleId", verifyToken, removeFavorito);
+usuarioRouter.delete(
+  "/:id/favoritos/:muebleId",
+  verifyToken,
+  requireSelfOrAdmin,
+  removeFavorito,
+);
 
 // CRUD independiente: /api/clientes
 // CRUD — registro público, resto protegido

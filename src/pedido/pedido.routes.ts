@@ -143,7 +143,7 @@ export const pedidoRouter = Router();
 
 /**
  * @swagger
- * /api/pedidos/{clienteId}/pedido/{id}:
+ * /api/pedidos/pedido/{id}:
  *   get:
  *     summary: Obtener un pedido específico del cliente
  *     tags: [Pedidos]
@@ -199,6 +199,8 @@ export const pedidoRouter = Router();
  *         description: Token requerido
  *       403:
  *         description: Acceso denegado
+ *       404:
+ *         description: Pedido no encontrado
  */
 
 /**
@@ -222,6 +224,8 @@ export const pedidoRouter = Router();
  *         description: Token requerido
  *       403:
  *         description: No podés cancelar un pedido ajeno
+ *       404:
+ *         description: Pedido no encontrado
  */
 
 // solo el usuario autenticado puede crear pedido
@@ -233,7 +237,7 @@ pedidoRouter.get(
   findAllPedidosAdmin,
 );
 pedidoRouter.get("/:clienteId", verifyToken, findAllPedidos);
-pedidoRouter.get("/:clienteId/pedido/:id", verifyToken, findPedidoById);
+pedidoRouter.get("/pedido/:pedidoId", verifyToken, findPedidoById);
 
 // admin
 pedidoRouter.patch(
