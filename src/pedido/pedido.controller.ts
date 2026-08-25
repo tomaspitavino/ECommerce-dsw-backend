@@ -28,15 +28,15 @@ function parseDateEnd(value: string): Date {
 function serializePedido(pedido: Pedido) {
   const items = pedido.items.isInitialized()
     ? pedido.items.getItems().map((item) => ({
-        id: item.id,
-        cantidad: item.cantidad,
-        subtotal: Number(item.subtotal),
-        mueble: {
-          id: item.mueble.id,
-          descripcion: item.mueble.descripcion,
-          etiqueta: item.mueble.etiqueta,
-        },
-      }))
+      id: item.id,
+      cantidad: item.cantidad,
+      subtotal: Number(item.subtotal),
+      mueble: {
+        id: item.mueble.id,
+        descripcion: item.mueble.descripcion,
+        etiqueta: item.mueble.etiqueta,
+      },
+    }))
     : [];
 
   const result: Record<string, unknown> = {
@@ -194,9 +194,14 @@ export async function findAllPedidosAdmin(req: Request, res: Response) {
 export async function findPedidoById(req: Request, res: Response) {
   try {
     const id = Number.parseInt(req.params.pedidoId);
+    const usuario = await em.findOneOrFail(Usuario, { id: req.user!.id });
+
     const pedido = await em.findOneOrFail(
       Pedido,
-      { id },
+      {
+        id,
+        usuario,
+      },
       { populate: ["items.mueble", "pago"] },
     );
 
@@ -205,9 +210,8 @@ export async function findPedidoById(req: Request, res: Response) {
       data: pedido,
     });
   } catch (error: any) {
-    res.status(500).json({
-      message: "Error al obtener el pedido",
-      error: error.message,
+    res.status(404).json({
+      message: "Error al obtener el pedido"
     });
   }
 }
@@ -215,10 +219,11 @@ export async function findPedidoById(req: Request, res: Response) {
 export async function updateEstadoPedido(req: Request, res: Response) {
   try {
     const id = Number(req.params.pedidoId);
-    const nuevoEstado = req.body.estado as estadoPedido; // viene validado del back con updateEstadoPedido
+    const nuevoEstado = req.body.estado as estadoPedido;
 
-    // el key que tiene el estado en cada momento y
-    // los determinados valores que puede adquirir estos son "tipos"
+    console.log("ID:", id);
+    console.log("Estado recibido:", nuevoEstado);
+
     const transiciones: Record<estadoPedido, estadoPedido[]> = {
       pendiente: ["confirmado", "cancelado"],
       confirmado: ["pagado", "cancelado"],
@@ -228,9 +233,6 @@ export async function updateEstadoPedido(req: Request, res: Response) {
       cancelado: [],
     };
 
-    const pedido = await em.findOneOrFail(Pedido, { id });
-
-    // mantener el estado pagado bajo control del flujo confirmado de pagos cuando corresponda.
     if (nuevoEstado === "pagado") {
       return res.status(400).json({
         message:
@@ -238,11 +240,16 @@ export async function updateEstadoPedido(req: Request, res: Response) {
       });
     }
 
-    // comprobar que nuevoEstado esté incluido en transiciones[pedido.estado] antes de persistir.
+    const pedido = await em.findOneOrFail(Pedido, { id });
+
     const transicionesValidas =
       transiciones[pedido.estado as estadoPedido] || [];
+
+    console.log("Transiciones válidas:", transicionesValidas);
+
     if (!transicionesValidas.includes(nuevoEstado)) {
-      // responder 400 cuando la transición sea inválida.
+      console.log("TRANSICIÓN INVÁLIDA");
+
       return res.status(400).json({
         message: `Transición de estado inválida: no se puede pasar de '${pedido.estado}' a '${nuevoEstado}'.`,
       });
@@ -251,14 +258,15 @@ export async function updateEstadoPedido(req: Request, res: Response) {
     pedido.estado = nuevoEstado;
     await em.flush();
 
-    res.status(200).json({
+    return res.status(200).json({
       message: `Estado del pedido actualizado a '${nuevoEstado}'.`,
       data: pedido,
     });
   } catch (error: any) {
-    res.status(500).json({
-      message: "Error al actualizar el estado del pedido",
-      error: error.message,
+    console.error("ERROR REAL:", error);
+
+    return res.status(500).json({
+      message: error.message,
     });
   }
 }
@@ -296,6 +304,14 @@ export async function cancelarPedido(req: Request, res: Response) {
 
     res.status(200).json({ message: "Pedido cancelado", data: pedido });
   } catch (error: any) {
-    res.status(500).json({ message: error.message });
+    if (error.name === "NotFoundError") {
+      return res.status(404).json({
+        message: "Pedido no encontrado",
+      });
+    }
+
+    return res.status(500).json({
+      message: error.message,
+    });
   }
 }

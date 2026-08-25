@@ -95,7 +95,6 @@ export const ItemInputSchema = z.object({
 });
 
 export const PedidoSchema = z.object({
-  estado: EstadoPedidoSchema,
   items: z.array(ItemInputSchema).min(1, "Debe haber al menos un item"),
   pago: z.number().int().positive().optional(),
 });

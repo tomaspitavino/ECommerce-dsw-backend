@@ -36,3 +36,5 @@ dist/**/*
 ## built vscode extensions
 *.vsix
 dump.sql
+
+pnpm-workspace.yaml
